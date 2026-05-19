@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/css/mobilestyle.css">
+    <link rel="stylesheet" href="/css/desktopstyle.css" media="(min-width:768px)">
+    <link rel="icon" type="ico" href="/styleguide/img/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Monoton&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Racing+Sans+One&display=swap"
+        rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="inner-header">
+            <h3>Mr. W's</h3>
+            <h1>Bil<br>uthyrning</h1>
+            <h2>En biluthyrningsservice som levererar.</h2>
+        </div>
+    </header>
+    <nav>
+        <dl class="menu" id="guest-menu">
+            <dt><a href="#" id="cars-link" class="menu-link">Våra bilar</a></dt>
+            <dt><a href="#" id="login-link" class="menu-link">Logga in</a></dt>
+        </dl>
+
+        <dl class="menu" id="user-menu">
+            <dt><a href="#" id="userpages-link" class="menu-link">Mina sidor</a></dt>
+            <!-- Hämta mina bokningar, hämta en specifik bokning, hämta min info, uppdatera min info -->
+            <dt><a href="#" id="user-info-link" class="menu-link under-link">Min info</a></dt>
+            <dt><a href="#" id="user-bookings-link" class="menu-link under-link">Mina bokningar</a></dt>
+            <dt><a href="#" id="user-cars-link" class="menu-link">Boka bil</a></dt>
+            <!-- alla bilar, specifik bil,skapa bokning,hämta mina bokningar? -->
+             <dt><a href="#" id="logout-user-link" class="menu-link">Logga ut</a></dt>
+        </dl>
+        <dl class="menu" id="admin-menu">
+            <dt class="menu-link">Admin</dt>
+            <dd><a href="#" id="adm-vehicles-link" class="menu-link">Bilar</a></dd>
+            <!-- Skapa bil,Uppdatera Kolla och sortera alla bilar -->
+            <dd><a href="#" id="adm-bookings-link" class="menu-link">Bokningar</a></dd>
+            <!-- updatera bokning, avsluta bokning, ta bort bokning,kolla aktiva bokningar, kolla alla bokningar kopplade till en user,alla bokningar nånsin   -->
+            <dd><a href="#" id="adm-users-link" class="menu-link">Kunder</a></dd>
+            <!-- Hämta alla kunder, hämta info om kund, uppdatera kund, ta bort kund, skapa ny kund -->
+            <dt><a href="#" id="adm-styleguide-link" class="menu-link">Webbplatsinfo</a></dt>
+            <!-- Styleguide som ska följas. -->
+             <dt><a href="#" id="logout-admin-link" class="menu-link">Logga ut</a></dt>
+        </dl>
+    </nav>
+
+    <main>
+        <div class="main-content">
+            <div id="hero">
+                <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
+                <h1></h1>
+            </div>
+            <div class="first-panel">
+                <div class="panel-medium">"Wow! <p> Alltid en bra upplevelse."</p>
+                </div>
+                <div class="panel-medium">"Vilken otrolig tjänst!<p> Inga negativa kommentarer."</p>
+                </div>
+                <div class="panel-medium">"Fantastiskt!<p> Fyra tummar upp!"</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>
+                <p>&copy; 2025 - Wigellkoncernen. All rights reserved.</p>
+                <img src="/styleguide/img/logo-white.png" alt="Wigellkoncernen Logo" width="45 px">
+            </div>
+        </footer>
+    </main>
+    <!-- ______________________________________________________________________INLOGG________________________________________________________________ -->
+    <dialog class="dialog" id="login-dialog">
+        <div class="dialog-content">
+            <div id="login-header">
+                <h2>Inloggning</h2>
+                <p> Logga in för att få tillgång till bokningar och din historik.</p>
+            </div>
+            <form id="login-form">
+                <label for="input-username">Användarnamn:</label><br>
+                <input id="input-username" type="text" maxlength="15" minlength="5" placeholder="Användarnamn"><br>
+                <label for="input-password">Lösenord:</label><br>
+                <input id="input-password" type="password" maxlength="20" minlength="5" placeholder="Lösenord"><br>
+                <span class="btn-spacer">
+                    <button id="login-btn" type="button" class="std-btn">Logga in</button>
+                    <button id="new-user-btn" type="button" class="std-btn">Nytt konto</button>
+                    <button id="escape-btn" type="button" class="std-btn ">Avbryt</button></span>
+            </form>
+        </div>
+    </dialog>
+
+    <dialog class="dialog" id="info-dialog">
+        <div class="dialog-content">
+            <div id="info-header">
+                <h2>Info</h2>
+                <p> Här är lite info som kan behövas ibland.</p>
+            </div>
+            <button id="escape-btn" type="button" class="std-btn "> OK </button>
+        </div>
+    </dialog>
+</body>

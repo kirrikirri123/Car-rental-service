@@ -1,0 +1,235 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ /* AAA — Ljust tema */
+ /* .light-theme { */
+ /* Bakgrund */
+ /* --color-bg:              #D0C5BA;  
+  -color-surface:         #302822;   */
+
+ /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
+ /* --color-text-primary:   #181717;  
+  --color-text-secondary: #302822;   */
+
+ /* --color-primary:         #712B0D;   */
+ /* Primär — AAA för stor text (≥18px), AA annars */
+
+ /* Dekoration — INTE för text */
+ /* --color-accent:          #944017;  
+  --color-accent-warm:     #AC5327;   */
+
+ /* Kanter */
+ /* --color-border:          #444347;   */
+ /* }  */
+
+ /* Mörkt tema */
+ :root {
+     /* Bakgrund */
+     --color-bg: #181717;
+     --color-surface: #302822;
+     --color-surface-raised: #444347;
+     /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
+     --color-text: #D0C5BA;
+
+     /* Knappar eller liknande element */
+     --color-primary: #712B0D;
+     --color-primary-hover: #944017;
+
+     /* Dekoration */
+     --color-dec-accent: #AC5327;
+
+     /* Kanter */
+     --color-border: #444347;
+
+     /* Utrymme */
+     --padding: 2em;
+     --margin: 1.5em;
+ }
+
+ .racing-sans-one-regular {
+     font-family: "Racing Sans One", sans-serif;
+     font-weight: 400;
+     font-style: normal;
+ }
+
+ .bbh-bartle-regular {
+     font-family: "BBH Bartle", sans-serif;
+     font-weight: 400;
+     font-style: normal;
+ }
+
+
+ .noto-serif-bodytext {
+     font-family: "Noto Serif", serif;
+     font-optical-sizing: auto;
+     font-weight: 125;
+     font-style: normal;
+     font-variation-settings:
+         "wdth" 100;
+ }
+
+ body {
+     grid-template-areas:
+         "header"
+         "sidebar"
+         "content"
+         "footer";
+     background-color: var(--color-bg);
+     color: var(--color-text);
+     font-family: "Noto Serif", serif;
+ }
+
+ h1 {
+     font-family: "BBH Bartle", sans-serif;
+     font-size: 1.5rem;
+     margin-bottom: 0.5em;
+     letter-spacing: 0.05em;
+     overflow-x:auto;
+ }
+ h2 {
+     font-size: 1.25rem;
+ }
+
+ h3 {
+     font-size: 1rem;
+ }
+
+ header {    
+     display: flex;
+     flex-direction: column;
+     grid-area: header;
+     padding: var(--padding);
+     background-color: var(--color-bg);
+     font-family: "Racing Sans One", sans-serif;
+     letter-spacing: 0.05em;
+     text-transform: uppercase;
+ }
+.inner-header {
+    
+ }  
+
+ header h2 {
+     align-self: flex-end;
+ }
+
+
+
+ .main-content {
+     grid-area: content;
+     display: flex;
+     flex-direction: column;
+     background-color: var(--color-surface-raised);
+ }
+
+ .main-content div {
+     align-items: center;
+
+ }
+
+ footer {
+     padding: 0.5rem;
+     height: clamp(1rem, 5%, 10rem);
+ }
+
+ footer div {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     font-style: italic;
+ }
+
+ #w-icon {
+     justify-self: flex-end;
+ }
+
+ nav {
+     display: none;
+ }
+
+ .first-panel {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
+ }
+
+ .panel-medium {
+     border: 0.13rem solid var(--color-dec-accent);
+     border-radius: 1em;
+     margin: 1em;
+     padding: 1em;
+ }
+/* Dialogrutor------------------------------------------------------Dialogrutor--------------- */
+ #login-dialog {
+     /* display: none; */
+    text-align: center;
+     background-color: var(--color-surface-raised);
+     border: 0.17em solid var(--color-dec-accent);
+     color: var(--color-text);
+     border-radius: 2em;
+     padding: 2rem;
+ }
+
+ dialog {
+    position: fixed;
+     top: 30%;
+     left: 15%;
+     translate: -8.5% -20%;
+ }
+
+ #info-dialog {
+     background-color: var(--color-surface-raised);
+     border: 0.17em solid var(--color-dec-accent);
+     color: var(--color-text);
+     border-radius: 2em;
+     padding: 2rem;
+     position: fixed;
+     top: 70%;
+     translate: -10% -10%;
+ }
+
+ /*Knappar----------------------------------------------------------Knappar--------------------*/
+ .std-btn {
+   width: clamp(48px, 80%, 175px);
+   height: clamp(48px, 25%, 55px);
+   border: 0.15rem solid var(--color-dec-accent);
+   font-size: 1.1rem;
+   text-align: center;
+   border-radius: 1rem;
+   padding: 0.8rem;
+ }
+ #login-btn{
+    border:0.25rem solid var(--color-dec-accent);
+ }
+ #escape-btn{
+    padding:1rem;
+    border:none;
+ }
+
+
+  /*Formulär---------------------------------------------------------Formulär--------------- */
+  .login-form, label,input,button{
+    margin:0.2em;
+  }
+
+  .login-form, input{
+    display: block;
+    font-size: 1rem;
+    font-style: italic;
+     width: 100%;
+     max-width: 300px;
+     margin-left: auto;
+     margin-right: auto;
+     padding: 0.25rem;
+  }
+  #login-header{
+     margin-bottom: 0.5em;
+  }
+  .btn-spacer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;  
+  } 

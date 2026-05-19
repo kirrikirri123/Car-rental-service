@@ -1,0 +1,122 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ :root {
+     /* Bakgrund */
+     --color-bg: #181717;
+     --color-surface: #302822;
+     --color-surface-raised: #444347;
+     /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
+     --color-text: #D0C5BA;
+
+     /* Knappar eller liknande element */
+     --color-primary: #712B0D;
+     --color-primary-hover: #944017;
+
+     /* Dekoration */
+     --color-dec-accent: #AC5327;
+
+     /* Kanter */
+     --color-border: #444347;
+
+     /* Utrymme */
+     --padding: 2em;
+     --margin: 1.5em;
+ }
+
+ body {
+     display: grid;
+     grid-template:
+         "header header"
+         "sidebar main "
+         "sidebar main "
+         "footer footer ";
+
+ }
+
+ h1 {
+     font-family: "BBH Bartle", sans-serif;
+     font-size: 4.5em;
+     margin-bottom: 0.5em;
+     letter-spacing: 0.05em;
+ }
+
+ header {
+     grid-area: header;
+ }
+
+ .main-content {
+     grid-area: main;
+     background-color: var(--color-surface-raised);
+    /*  padding: var(--padding); */
+ }
+
+/* Navigering-------------------------------------------------------Navigering------------------------------- */
+ nav {
+     grid-area: sidebar;
+     font-family: "Racing Sans One", sans-serif;
+     background-color: var(--color-primary);
+     display: flex;
+     flex-direction: column;
+
+
+ }
+
+ .menu-link {
+     display: block;
+     text-decoration: none;
+     text-transform: uppercase;
+     color: var(--color-text);
+     background-color: var(--color-primary);
+     padding: 0.7em;
+
+ }
+
+ .menu-link:hover {
+     background-color: var(--color-primary-hover);
+     transition: background 0.2s, color 0.2s;
+
+ }
+.under-link{
+    font-size: 0.8rem;
+    padding-left: 1.5em;
+}
+
+#guest-menu {
+    display: block; }
+
+
+#user-menu {
+     display: none;
+ }
+#admin-menu {
+     display: none;
+ }
+
+
+ dialog {
+     background-color: var(--accent-color);
+     border: 0.17em solid var(--border-color);
+     border-radius: var(--border-radius);
+     padding: 2rem;
+     position: fixed;
+     top: 50%;
+     left: 50%;
+     translate: -50% -50%;
+ }
+
+ #info-dialog {
+     transition: ease-out 5s;
+     background-color: var(--color-surface-raised);
+     border: 0.17em solid var(--color-dec-accent);
+     color: var(--color-text);
+     border-radius: 2em;
+     padding: 2rem;
+     position: fixed;
+     top: 80%;
+     left: 70%;
+     translate: -5% -5%;
+ }
