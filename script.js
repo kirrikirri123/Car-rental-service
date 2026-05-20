@@ -245,63 +245,52 @@ function admUsersPage() {
 function admStyleguidePage() {
     mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
 }
+/* ------------------------------------------------ */
+/* DISPLAY-FUNKTIONER */
+/*------------------------------------------------- */
 
-function displayDataInDiv(data) {
+/* Skapar en wrapper div och returnerar den efter append to content-page. */
+function createPanelWrapper() {
     const page = document.querySelector(".content-page");
-    let list = data;
-    const outerDiv = document.createElement("div");
-    outerDiv.classList.add("panel-wrapper");
-    list.forEach(thing => {
+    const wrapperDiv = document.createElement("div");
+    wrapperDiv.classList.add("panel-wrapper");
+    page.appendChild(wrapperDiv);
+    return wrapperDiv;
+
+}
+/* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.*/
+function displayCars(cars) {
+    const wrapper = createPanelWrapper();
+    cars.forEach(car => {
         const innerDiv = document.createElement("div");
         innerDiv.innerHTML =
             ` <div class="panel">
-            <dt>
-        <dd> Märke : ${thing.name}</dd>
-        <dd> Modell : ${thing.model}</dd>
-        <dd> Pris : ${thing.price}</dd>
-        </dt>
+            <dl>
+        <dd> Märke : ${car.name}</dd>
+        <dd> Modell : ${car.model}</dd>
+        <dd> Pris : ${car.price}</dd>
+        </dl>
         </div> `
-        outerDiv.appendChild(innerDiv);
+        wrapper.appendChild(innerDiv);
     });
-    page.appendChild(outerDiv);
-
 }
-
 
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER */
 /*------------------------------------------------- */
-/* Bilar */
-function displayCars(data) {
-     const page = document.querySelector(".content-page");
-    let carList = data;
-    carList.forEach(car => { 
-        const div = document.createElement("div");
-        div.innerHTML =
-            `<div class="panel">
-            <dt>
-        <li> Märke : ${car.name}</li>
-        <li> Modell : ${car.model}</li>
-        <li> Pris : ${car.price}</li>
-        </dt>
-        </div>
-        `
-        page.appendChild(div);
-    });
-}
 
+/* Hämta bilar */
 async function fetchCars() {
     const url = 'http://localhost:8080/api/v1/cars';
     try {
         const response = await fetch(url, { method: 'GET' })
         if (!response.ok) {
-            updateInfoDialog(`Något gick fel vid hämtning av bilar. Prova igen senare.`);
-            throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
+            updateInfoDialog(`Något gick fel vid inladdnig av fordon. Prova igen senare.`);
+            throw new Error('Problem vid inladdnings. Status: ' + response.status);
         }
 
         const data = await response.json();
-        displayDataInDiv(data);
-        /* displayCars(data); */
+        displayCars(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -309,7 +298,7 @@ async function fetchCars() {
     }
 }
 async function fetchCarById(id) {
-    const url = 'http://localhost:8080/api/v1/cars/${id}';
+    const url = `http://localhost:8080/api/v1/cars/${id}`;
     try {
         const response = await fetch(url, {
             method: 'GET'
@@ -317,11 +306,11 @@ async function fetchCarById(id) {
         })
         if (!response.ok) {
 
-            throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
+            throw new Error('Något gick fel vid inladdning av valt fordon. Status: ' + response.status);
         }
 
         const data = await response.json();
-        putCarsInSection(data);
+        displayDataInDiv(data);
 
     } catch (error) {
         console.error('Error:' + error.message);

@@ -35,6 +35,7 @@
          "sidebar main "
          "footer footer ";
          grid-template-columns: clamp(10em, 15vw, 15em) 1fr;
+        
  }
 
  h1 {
@@ -51,6 +52,7 @@
  .main-content {
      grid-area: main;
      background-color: var(--color-surface-raised); 
+     height: 70vh;
  }
   /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
 .panel-wrapper {
@@ -66,7 +68,7 @@
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-   /*  width: clamp(10em, 15vw, 15em); */
+     height:70vh;
      
  }
  #hamburger-icon {
