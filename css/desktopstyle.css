@@ -34,6 +34,7 @@
          "sidebar main "
          "sidebar main "
          "footer footer ";
+         grid-template-columns: clamp(10em, 15vw, 15em) 1fr;
  }
 
  h1 {
@@ -49,12 +50,13 @@
 
  .main-content {
      grid-area: main;
-     background-color: var(--color-surface-raised);
-     height: 100%;
-     width: 100%;
+     background-color: var(--color-surface-raised); 
  }
- .content-page{
-
+  /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
+.panel-wrapper {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
  }
 
  /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
@@ -64,7 +66,8 @@
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-     width: clamp(10em, 15vw, 20em);
+   /*  width: clamp(10em, 15vw, 15em); */
+     
  }
  #hamburger-icon {
      display: none;
@@ -91,14 +94,15 @@
  }
 
  #info-dialog {
-     transition: ease-out 5s;
+     /* transition: ease-out 5s; */
+     width: clamp(165px,25%,450px);
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
      position: fixed;
-     top: 80%;
+     top: 70%;
      left: 70%;
-     translate: -5% -5%;
+     translate: -7% -7%;
  }

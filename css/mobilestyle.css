@@ -150,6 +150,7 @@
  }
 
  footer {
+    grid-area: footer;
      padding: 0.5rem;
      height: clamp(1rem, 5%, 10rem);
  }
@@ -207,7 +208,6 @@
      display: block;
  }
 
-
  #user-menu {
      display: none;
  }
@@ -219,7 +219,6 @@
  .mobile-menu {
      display: none;
  }
-
 
 
  /* Dialogrutor-------------------------------------------------------------------------------Dialogrutor--------------- */
@@ -311,8 +310,8 @@
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
  .panel-wrapper {
      display: flex;
-     flex-direction: row;
-     justify-content: space-around;
+     flex-direction: column;
+     align-items: center;
  }
 
  .panel {

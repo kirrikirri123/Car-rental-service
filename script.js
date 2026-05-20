@@ -60,7 +60,7 @@ function login() {
     })
         .then(response => {
             if (!response.ok) {
-
+                updateInfoDialog(`Felaktigt inlogg. Dubbelkolla dina uppgifter.`);
                 throw new Error('Felaktigt inlogg. Status: ' + response.status);
             }
             return response.json();
@@ -69,9 +69,7 @@ function login() {
             /* Bättre att plocka ur datan och lägga i credentials eller likn? */
             loginDialog.close();
             sessionStorage.setItem("principal", JSON.stringify(data));
-            infoDialog.querySelector('p').innerText = `Välkommen ${data.username}! Du är inloggad.`;
-            infoDialog.showModal();
-            infoDialog.querySelector('button').addEventListener('click', () => { infoDialog.close(); });
+            updateInfoDialog(`Välkommen ${data.username}! Du är inloggad.`)
             checkRole();
         })
 
@@ -92,7 +90,7 @@ function logout() {
 
 /* Sätter nav-meny utifrån användarroll */
 
-document.querySelector("#hamburger-icon").addEventListener('click', () => {mobileMenu();});
+document.querySelector("#hamburger-icon").addEventListener('click', () => { mobileMenu(); });
 let navGuest = document.querySelector("#guest-menu");
 let navUser = document.querySelector("#user-menu");
 let navAdmin = document.querySelector("#admin-menu");
@@ -248,16 +246,36 @@ function admStyleguidePage() {
     mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
 }
 
+function displayDataInDiv(data) {
+    const page = document.querySelector(".content-page");
+    let list = data;
+    const outerDiv = document.createElement("div");
+    outerDiv.classList.add("panel-wrapper");
+    list.forEach(thing => {
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel">
+            <dt>
+        <dd> Märke : ${thing.name}</dd>
+        <dd> Modell : ${thing.model}</dd>
+        <dd> Pris : ${thing.price}</dd>
+        </dt>
+        </div> `
+        outerDiv.appendChild(innerDiv);
+    });
+    page.appendChild(outerDiv);
+
+}
 
 
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER */
 /*------------------------------------------------- */
-
-function putCarsInSection(data) {
-    const page = document.querySelector(".content-page");
+/* Bilar */
+function displayCars(data) {
+     const page = document.querySelector(".content-page");
     let carList = data;
-    carList.forEach(car => {
+    carList.forEach(car => { 
         const div = document.createElement("div");
         div.innerHTML =
             `<div class="panel">
@@ -277,6 +295,28 @@ async function fetchCars() {
     try {
         const response = await fetch(url, { method: 'GET' })
         if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid hämtning av bilar. Prova igen senare.`);
+            throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
+        }
+
+        const data = await response.json();
+        displayDataInDiv(data);
+        /* displayCars(data); */
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error);
+    }
+}
+async function fetchCarById(id) {
+    const url = 'http://localhost:8080/api/v1/cars/${id}';
+    try {
+        const response = await fetch(url, {
+            method: 'GET'
+
+        })
+        if (!response.ok) {
+
             throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
         }
 
