@@ -47,6 +47,9 @@
      /* Utrymme */
      --padding: 2em;
      --margin: 1.5em;
+
+     /* Font */
+     --small-headlines: "Racing Sans One", sans-serif;
  }
 
  .racing-sans-one-regular {
@@ -61,7 +64,6 @@
      font-style: normal;
  }
 
-
  .noto-serif-bodytext {
      font-family: "Noto Serif", serif;
      font-optical-sizing: auto;
@@ -74,7 +76,7 @@
  body {
      grid-template-areas:
          "header"
-         "sidebar"
+         "nav"
          "content"
          "footer";
      background-color: var(--color-bg);
@@ -87,17 +89,20 @@
      font-size: 1.5rem;
      margin-bottom: 0.5em;
      letter-spacing: 0.05em;
-     overflow-x:auto;
+     overflow-x: auto;
  }
+
  h2 {
      font-size: 1.25rem;
+
  }
 
  h3 {
      font-size: 1rem;
  }
 
- header {    
+ header {
+
      display: flex;
      flex-direction: column;
      grid-area: header;
@@ -107,15 +112,21 @@
      letter-spacing: 0.05em;
      text-transform: uppercase;
  }
-.inner-header {
-    
- }  
+
+ .inner-header {
+     overflow: hidden;
+ }
+
+ #hamburger-icon {
+     align-self: flex-end;
+     color: var(--color-text);
+     cursor: pointer;
+     
+ }
 
  header h2 {
      align-self: flex-end;
  }
-
-
 
  .main-content {
      grid-area: content;
@@ -129,7 +140,17 @@
 
  }
 
+ .headline-contentpage {
+     /* BYTNAMN */
+     padding: var(--padding);
+
+ }
+ .content-page{
+    padding: var(--padding);
+ }
+
  footer {
+    grid-area: footer;
      padding: 0.5rem;
      height: clamp(1rem, 5%, 10rem);
  }
@@ -145,27 +166,64 @@
  #w-icon {
      justify-self: flex-end;
  }
+ /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
- nav {
+ .mobile-menu {
+    display: none;
+     grid-area: nav;
+     font-family: "Racing Sans One", sans-serif;
+     background-color: var(--color-primary);
+     display: flex;
+     flex-direction: column;
+     width:100%;
+     transition: ease-in-out;
+ }
+
+ .menu-link {
+     display: block;
+     text-decoration: none;
+     text-transform: uppercase;
+     color: var(--color-text);
+     background-color: var(--color-primary);
+     padding: 0.7em;
+
+ }
+
+ .menu-link:hover {
+     background-color: var(--color-primary-hover);
+     transition: background 0.2s, color 0.2s;
+
+ }
+
+ .under-link {
+     font-size: 0.8rem;
+     padding-left: 1.5em;
+ }
+
+ .mobile-menu a:focus{
+    background-color: var(--color-primary-hover);
+ }
+
+ #guest-menu {
+     display: block;
+ }
+
+ #user-menu {
      display: none;
  }
 
- .first-panel {
-     display: flex;
-     flex-direction: row;
-     justify-content: space-around;
+ #admin-menu {
+     display: none;
  }
 
- .panel-medium {
-     border: 0.13rem solid var(--color-dec-accent);
-     border-radius: 1em;
-     margin: 1em;
-     padding: 1em;
+ .mobile-menu {
+     display: none;
  }
-/* Dialogrutor------------------------------------------------------Dialogrutor--------------- */
+
+
+ /* Dialogrutor-------------------------------------------------------------------------------Dialogrutor--------------- */
  #login-dialog {
-     /* display: none; */
-    text-align: center;
+     text-align: center;
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
      color: var(--color-text);
@@ -174,7 +232,7 @@
  }
 
  dialog {
-    position: fixed;
+     position: fixed;
      top: 30%;
      left: 15%;
      translate: -8.5% -20%;
@@ -191,45 +249,77 @@
      translate: -10% -10%;
  }
 
- /*Knappar----------------------------------------------------------Knappar--------------------*/
+ /*Knappar--------------------------------------------------------------------------Knappar----------------------------------*/
  .std-btn {
-   width: clamp(48px, 80%, 175px);
-   height: clamp(48px, 25%, 55px);
-   border: 0.15rem solid var(--color-dec-accent);
-   font-size: 1.1rem;
-   text-align: center;
-   border-radius: 1rem;
-   padding: 0.8rem;
+     width: clamp(48px, 80%, 175px);
+     height: clamp(48px, 25%, 55px);
+     border: 0.15rem solid var(--color-dec-accent);
+     font-size: 1.1rem;
+     text-align: center;
+     border-radius: 1rem;
+     padding: 0.8rem;
  }
- #login-btn{
-    border:0.25rem solid var(--color-dec-accent);
+
+ .icon-btn {
+
+     background-color: transparent;
+     border: none;
+     cursor: pointer;
  }
- #escape-btn{
-    padding:1rem;
-    border:none;
+
+ #login-btn {
+     border: 0.25rem solid var(--color-dec-accent);
+ }
+
+ #escape-btn {
+     padding: 1rem;
+     border: none;
  }
 
 
-  /*Formulär---------------------------------------------------------Formulär--------------- */
-  .login-form, label,input,button{
-    margin:0.2em;
-  }
+ /*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
+ .login-form,
+ label,
+ input,
+ button {
+     margin: 0.2em;
+ }
 
-  .login-form, input{
-    display: block;
-    font-size: 1rem;
-    font-style: italic;
+ .login-form,
+ input {
+     display: block;
+     font-size: 1rem;
+     font-style: italic;
      width: 100%;
      max-width: 300px;
      margin-left: auto;
      margin-right: auto;
      padding: 0.25rem;
-  }
-  #login-header{
+ }
+
+ #login-header {
      margin-bottom: 0.5em;
-  }
-  .btn-spacer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;  
-  } 
+ }
+
+ .btn-spacer {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+      }
+
+ /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
+ .panel-wrapper {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+
+ .panel {
+     border: 0.13rem solid var(--color-dec-accent);
+     border-radius: 1em;
+     margin: 1em;
+     padding: 1em;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }

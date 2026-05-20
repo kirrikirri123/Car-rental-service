@@ -34,7 +34,8 @@
          "sidebar main "
          "sidebar main "
          "footer footer ";
-
+         grid-template-columns: clamp(10em, 15vw, 15em) 1fr;
+        
  }
 
  h1 {
@@ -50,53 +51,39 @@
 
  .main-content {
      grid-area: main;
-     background-color: var(--color-surface-raised);
-    /*  padding: var(--padding); */
+     background-color: var(--color-surface-raised); 
+     height: 70vh;
+ }
+  /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
+.panel-wrapper {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
  }
 
-/* Navigering-------------------------------------------------------Navigering------------------------------- */
- nav {
+ /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
+ .desktop-menu {
      grid-area: sidebar;
      font-family: "Racing Sans One", sans-serif;
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-
-
+     height:70vh;
+     
  }
-
- .menu-link {
-     display: block;
-     text-decoration: none;
-     text-transform: uppercase;
-     color: var(--color-text);
-     background-color: var(--color-primary);
-     padding: 0.7em;
-
- }
-
- .menu-link:hover {
-     background-color: var(--color-primary-hover);
-     transition: background 0.2s, color 0.2s;
-
- }
-.under-link{
-    font-size: 0.8rem;
-    padding-left: 1.5em;
-}
-
-#guest-menu {
-    display: block; }
-
-
-#user-menu {
+ #hamburger-icon {
      display: none;
  }
-#admin-menu {
-     display: none;
+ /* Knapprelaterat--------------------------------------------------------------------Knapprelaterat------------------ */
+
+ .btn-spacer {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
+     
  }
 
-
+ /* DIALOGRUTOR-----------------------------------------------------------DIALOGRUTOR---------------------------------- */
  dialog {
      background-color: var(--accent-color);
      border: 0.17em solid var(--border-color);
@@ -109,14 +96,15 @@
  }
 
  #info-dialog {
-     transition: ease-out 5s;
+     /* transition: ease-out 5s; */
+     width: clamp(165px,25%,450px);
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
      position: fixed;
-     top: 80%;
+     top: 70%;
      left: 70%;
-     translate: -5% -5%;
+     translate: -7% -7%;
  }
