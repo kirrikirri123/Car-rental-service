@@ -1,3 +1,6 @@
+document.addEventListener('DOMContentLoaded', () => {
+    checkRole();
+});
 
 /* Informations dialogruta */
 const infoDialog = document.querySelector("#info-dialog");
@@ -8,49 +11,9 @@ const password = document.getElementById("input-password");
 const loginDialog = document.querySelector("#login-dialog");
 const loginBtn = document.querySelector("#login-btn");
 const escapeBtn = document.querySelector("#escape-btn");
+const newUserBtn = document.querySelector("#new-user-btn");
 
 const credentials = btoa(`${username.value}:${password.value}`);
-
-
-/* Sätt nav-meny utifrån användarroll */
-
-let navGuest = document.querySelector("#guest-menu");
-let navUser = document.querySelector("#user-menu");
-let navAdmin = document.querySelector("#admin-menu");
-
-
-function showGuestMenu() {
-    navGuest.style.display = "block";
-    navUser.style.display = "none";
-    navAdmin.style.display = "none";
-}
-
-function showUserMenu() {
-    navUser.style.display = "block";
-    navGuest.style.display = "none";
-    navAdmin.style.display = "none";
-
-}
-
-function showAdminMenu() {
-    navAdmin.style.display = "block";
-    navGuest.style.display = "none";
-    navUser.style.display = "none";
-}
-
-function checkRole() {
-    const principal = JSON.parse(sessionStorage.getItem("principal"));
-    console.log("från sessionStorage:", principal);
-    if (principal === null) {
-        showGuestMenu();
-    } else if (principal.isAdmin === false) {
-        showUserMenu();
-    } else if (principal.isAdmin === true) {
-        showAdminMenu();
-    }
-
-}
-checkRole();
 
 
 /* Informations popup----------------------------------------------------------Informations poup----------------- */
@@ -71,6 +34,10 @@ function updateInfoDialog(message) {
     infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); })
 }
 
+
+/* ------------------------------------ */
+/* IN och UTLOGGNINGS FUNKTIONER */
+/* ------------------------------------ */
 /* Logga in -----------------------------------------------------------------------------Logga in------------------ */
 function showLoginDialog() {
     if (sessionStorage.getItem("principal") !== null) {
@@ -80,9 +47,9 @@ function showLoginDialog() {
         loginDialog.showModal();
         escapeBtn.addEventListener('click', () => { loginDialog.close(); });
         loginBtn.addEventListener('click', () => { login(); });
+        newUserBtn.addEventListener('click', () => { updateInfoDialog(`Funktionen för nya användare är inte tillgänglig än. Kontakta kundservice!`); });
     }
 }
-
 
 function login() {
     const url = 'http://localhost:8080/api/v1/auth/login';
@@ -118,47 +85,65 @@ function logout() {
     updateInfoDialog("Du är nu utloggad.");
 }
 
-/* Byt innehåll på main-content */
-function changeMainContent(page) {
-    let mainContent = document.querySelector(".main-content");
-
-    switch (page) {
-        case "cars":
-            mainContent.innerHTML = `<section>Våra bilar - syns av alla</section>`;
-            break;
-        case "user-cars":
-            mainContent.innerHTML = `<section>Bilar och bokningsknappar syns av inloggade</section>`;
-            break;
-        case "user-pages":
-            mainContent.innerHTML = `<section>Mina sidor, ser bara din egen information</section>`;
-            break;
-        case "user-info":
-            mainContent.innerHTML = `<section>Användarinformation, ses bara av den inloggade</section>`;
-            break;
-        case "users-bookings":
-            mainContent.innerHTML = `<section>Bokningar,ser bara dina egan bokningar</section>`;
-            break;
-        case "adm-vehicles":
-            mainContent.innerHTML = `<section>ADMIN- alla bilar syns och kan sorteras åt alla håll</section>`;
-            break;
-        case "adm-bookings":
-            mainContent.innerHTML = `<section>ADMIN- alla bokningar syns. sorteras på activa och ej samt mot specifik kund.</section>`;
-            break;
-        case "adm-users":
-            mainContent.innerHTML = `<section>Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section>`;
-            break;
-        case "adm-styleguide":
-            mainContent.innerHTML = `<section>Styleguide</section>`;
-            break;
+/* ------------------------------------ */
+/* BEHÖRGIHETS FUNKTOINER */
+/* ------------------------------------ */
 
 
-        default:
-            mainContent.innerHTML = "Vad hände nu? Det gick inte att ladda sidan.";
+/* Sätter nav-meny utifrån användarroll */
+
+document.querySelector("#hamburger-icon").addEventListener('click', () => {mobileMenu();});
+let navGuest = document.querySelector("#guest-menu");
+let navUser = document.querySelector("#user-menu");
+let navAdmin = document.querySelector("#admin-menu");
+
+function mobileMenu() {
+    const menu = document.querySelector(".mobile-menu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
     }
 }
 
+function showGuestMenu() {
+    navGuest.style.display = "block";
+    navUser.style.display = "none";
+    navAdmin.style.display = "none";
+}
+
+function showUserMenu() {
+    navUser.style.display = "block";
+    navGuest.style.display = "none";
+    navAdmin.style.display = "none";
+
+}
+
+function showAdminMenu() {
+    navAdmin.style.display = "block";
+    navGuest.style.display = "none";
+    navUser.style.display = "none";
+}
+
+function checkRole() {/* Skriv om så att man sparar kanske roll och användare i sessionstorage och plockar därifrån */
+    const principal = JSON.parse(sessionStorage.getItem("principal"));
+    console.log("från sessionStorage:", principal);
+    if (principal === null) {
+        showGuestMenu();
+    } else if (principal.isAdmin === false) {
+        showUserMenu();
+    } else if (principal.isAdmin === true) {
+        showAdminMenu();
+    }
+
+}
+
+/* ------------------------------------ */
+/* NAVIGATIONS FUNKTOINER */
+/* ------------------------------------ */
 
 /* Menylänkar-----------------------------------------------------------------------------Menylänkar---------------- */
+/* Något smidigare sätt att göra detta på? Är det tungt med eventlisteners? */
 /* Behörighet ALLA: */
 document.querySelector("#cars-link").addEventListener('click', () => { changeMainContent("cars"); });
 document.querySelector("#login-link").addEventListener('click', () => { showLoginDialog(); });
@@ -177,48 +162,132 @@ document.querySelector("#adm-styleguide-link").addEventListener('click', () => {
 document.querySelector("#logout-user-link").addEventListener('click', () => { logout(); });
 document.querySelector("#logout-admin-link").addEventListener('click', () => { logout(); });
 
+let mainContent = document.querySelector(".main-content");
+
+/* Byt innehåll på main-content */
+function changeMainContent(page) {
+
+    switch (page) {
+        case "cars":
+            carsPage();
+            break;
+
+        case "user-cars":
+            userCarsPage();
+            break;
+
+        case "user-pages":
+            userPagesPage();
+            break;
+
+        case "user-info":
+            userInfoPage();
+            break;
+
+        case "user-bookings":
+            userBookingsPage();
+            break;
+
+        case "adm-vehicles":
+            admVehiclesPage();
+            break;
+
+        case "adm-bookings":
+            admBookingsPage();
+            break;
+
+        case "adm-users":
+            admUsersPage();
+            break;
+
+        case "adm-styleguide":
+            admStyleguidePage();
+            break;
+
+        default:
+            mainContent.innerHTML = "Vad hände nu? Det gick inte att ladda sidan.";
+    }
+}
+
+/* InnerHTML-funktioner för pages */
+
+function carsPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section></div>`;
+    fetchCars();
+}
+
+function userCarsPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Bilar och bokningsknapp syns av inloggade</section></div>`;
+}
+
+function userPagesPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Mina sidor, ser bara din egen information</section></div>`;
+}
+
+function userInfoPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Användarinformation, ses bara av den inloggade</section></div>`;
+}
+
+function userBookingsPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Bokningar,ser bara dina egna bokningar</section></div>`;
+}
+
+function admVehiclesPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN- alla bilar syns och kan sorteras åt alla håll</section></div>`;
+}
+
+function admBookingsPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN- alla bokningar syns. sorteras på activa och ej samt mot specifik kund.</section></div>`;
+}
+
+function admUsersPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section></div>`;
+}
+
+function admStyleguidePage() {
+    mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
+}
 
 
-/* Hämta alla bilar - behöver ingen auth */
 
-function putCarsInSection() {
-    /* const section = document.querySelector("car-section"); */
+/* ------------------------------------------------ */
+/* FETCH-FUNKTIONER */
+/*------------------------------------------------- */
 
-    let carList = JSON.parse(data);
+function putCarsInSection(data) {
+    const page = document.querySelector(".content-page");
+    let carList = data;
     carList.forEach(car => {
         const div = document.createElement("div");
         div.innerHTML =
-            `<ul>
-        <li>${car.name}</li>
-        <li>${car.model}</li>
-        <li> ${car.price}</li>
-        </ul>
+            `<div class="panel">
+            <dt>
+        <li> Märke : ${car.name}</li>
+        <li> Modell : ${car.model}</li>
+        <li> Pris : ${car.price}</li>
+        </dt>
+        </div>
         `
-        section.appendChild(div);
-    })
+        page.appendChild(div);
+    });
 }
 
 async function fetchCars() {
     const url = 'http://localhost:8080/api/v1/cars';
     try {
         const response = await fetch(url, { method: 'GET' })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
-                }
-            })
+        if (!response.ok) {
+            throw new Error('Något gick fel vid hämtning av bilar. Status: ' + response.status);
+        }
+
         const data = await response.json();
-        console.log(data);
         putCarsInSection(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
-        updateInfoDialog(error);
+        updateInfoDialog("Fel uppstod: " + error);
     }
 }
-
-
-
 
 /* Hämta bokningar */
 

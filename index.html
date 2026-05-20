@@ -4,17 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
     <link rel="stylesheet" href="/css/mobilestyle.css">
     <link rel="stylesheet" href="/css/desktopstyle.css" media="(min-width:768px)">
     <link rel="icon" type="ico" href="/styleguide/img/favicon.ico">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Monoton&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Racing+Sans+One&display=swap"
         rel="stylesheet">
+    <script src="https://kit.fontawesome.com/b4e56fcdc2.js" crossorigin="anonymous"></script>
     <script src="script.js" defer></script>
+    <title>Mr. W's Biluthyrning </title>
 </head>
 
 <body>
@@ -25,13 +25,18 @@
             <h1>Bil<br>uthyrning</h1>
             <h2>En biluthyrningsservice som levererar.</h2>
         </div>
+        <div>
+            <button class="icon-btn std-btn" id="hamburger-icon"><i class="fa-solid fa-bars"></i></button>
+        </div>
     </header>
-    <nav>
+
+    <nav class="desktop-menu mobile-menu">
+        <!-- <div class="mobile-menu"> -->
         <dl class="menu" id="guest-menu">
             <dt><a href="#" id="cars-link" class="menu-link">Våra bilar</a></dt>
             <dt><a href="#" id="login-link" class="menu-link">Logga in</a></dt>
-        </dl>
-
+        </dl><!-- </div>  -->
+        <!-- Detta lär måsta plockas in i JS-filen för att ändras -->
         <dl class="menu" id="user-menu">
             <dt><a href="#" id="userpages-link" class="menu-link">Mina sidor</a></dt>
             <!-- Hämta mina bokningar, hämta en specifik bokning, hämta min info, uppdatera min info -->
@@ -39,8 +44,9 @@
             <dt><a href="#" id="user-bookings-link" class="menu-link under-link">Mina bokningar</a></dt>
             <dt><a href="#" id="user-cars-link" class="menu-link">Boka bil</a></dt>
             <!-- alla bilar, specifik bil,skapa bokning,hämta mina bokningar? -->
-             <dt><a href="#" id="logout-user-link" class="menu-link">Logga ut</a></dt>
+            <dt><a href="#" id="logout-user-link" class="menu-link">Logga ut</a></dt>
         </dl>
+
         <dl class="menu" id="admin-menu">
             <dt class="menu-link">Admin</dt>
             <dd><a href="#" id="adm-vehicles-link" class="menu-link">Bilar</a></dd>
@@ -51,8 +57,9 @@
             <!-- Hämta alla kunder, hämta info om kund, uppdatera kund, ta bort kund, skapa ny kund -->
             <dt><a href="#" id="adm-styleguide-link" class="menu-link">Webbplatsinfo</a></dt>
             <!-- Styleguide som ska följas. -->
-             <dt><a href="#" id="logout-admin-link" class="menu-link">Logga ut</a></dt>
+            <dt><a href="#" id="logout-admin-link" class="menu-link">Logga ut</a></dt>
         </dl>
+        </div>
     </nav>
 
     <main>
@@ -61,16 +68,13 @@
                 <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
                 <h1></h1>
             </div>
-            <div class="first-panel">
-                <div class="panel-medium">"Wow! <p> Alltid en bra upplevelse."</p>
+            <div class="panel-wrapper">
+                <div class="panel">"Wow! <p> Alltid en bra upplevelse."</p>
                 </div>
-                <div class="panel-medium">"Vilken otrolig tjänst!<p> Inga negativa kommentarer."</p>
-                </div>
-                <div class="panel-medium">"Fantastiskt!<p> Fyra tummar upp!"</p>
+                <div class="panel">"Fantastiskt!<p> Fyra tummar upp!"</p>
                 </div>
             </div>
         </div>
-
         <footer>
             <div>
                 <p>&copy; 2025 - Wigellkoncernen. All rights reserved.</p>

@@ -34,7 +34,6 @@
          "sidebar main "
          "sidebar main "
          "footer footer ";
-
  }
 
  h1 {
@@ -51,52 +50,27 @@
  .main-content {
      grid-area: main;
      background-color: var(--color-surface-raised);
-    /*  padding: var(--padding); */
+     height: 100%;
+     width: 100%;
+ }
+ .content-page{
+
  }
 
-/* Navigering-------------------------------------------------------Navigering------------------------------- */
- nav {
+ /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
+ .desktop-menu {
      grid-area: sidebar;
      font-family: "Racing Sans One", sans-serif;
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-
-
+     width: clamp(10em, 15vw, 20em);
  }
-
- .menu-link {
-     display: block;
-     text-decoration: none;
-     text-transform: uppercase;
-     color: var(--color-text);
-     background-color: var(--color-primary);
-     padding: 0.7em;
-
- }
-
- .menu-link:hover {
-     background-color: var(--color-primary-hover);
-     transition: background 0.2s, color 0.2s;
-
- }
-.under-link{
-    font-size: 0.8rem;
-    padding-left: 1.5em;
-}
-
-#guest-menu {
-    display: block; }
-
-
-#user-menu {
-     display: none;
- }
-#admin-menu {
+ #hamburger-icon {
      display: none;
  }
 
-
+ /* DIALOGRUTOR-----------------------------------------------------------DIALOGRUTOR---------------------------------- */
  dialog {
      background-color: var(--accent-color);
      border: 0.17em solid var(--border-color);
