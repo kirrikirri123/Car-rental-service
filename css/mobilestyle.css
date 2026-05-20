@@ -106,7 +106,7 @@
      display: flex;
      flex-direction: column;
      grid-area: header;
-     padding: var(--padding);
+     padding: 1em;
      background-color: var(--color-bg);
      font-family: "Racing Sans One", sans-serif;
      letter-spacing: 0.05em;
@@ -116,13 +116,10 @@
  .inner-header {
      overflow: hidden;
  }
-
- #hamburger-icon {
-     align-self: flex-end;
-     color: var(--color-text);
-     cursor: pointer;
-     
- }
+.hamburger-div{
+    text-align: end;
+}
+ 
 
  header h2 {
      align-self: flex-end;
@@ -166,6 +163,11 @@
  #w-icon {
      justify-self: flex-end;
  }
+
+ #hamburger-icon {
+     color: var(--color-text);
+     cursor: pointer;
+ }
  /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
  .mobile-menu {
@@ -176,7 +178,6 @@
      display: flex;
      flex-direction: column;
      width:100%;
-     transition: ease-in-out;
  }
 
  .menu-link {
@@ -261,7 +262,7 @@
  }
 
  .icon-btn {
-
+    text-align: end;
      background-color: transparent;
      border: none;
      cursor: pointer;

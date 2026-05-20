@@ -47,6 +47,7 @@
 
  header {
      grid-area: header;
+     padding: var(--padding);
  }
 
  .main-content {
