@@ -69,6 +69,14 @@
  #hamburger-icon {
      display: none;
  }
+ /* Knapprelaterat--------------------------------------------------------------------Knapprelaterat------------------ */
+
+ .btn-spacer {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
+     
+ }
 
  /* DIALOGRUTOR-----------------------------------------------------------DIALOGRUTOR---------------------------------- */
  dialog {
