@@ -13,7 +13,10 @@ const loginBtn = document.querySelector("#login-btn");
 const escapeBtn = document.querySelector("#escape-btn");
 const newUserBtn = document.querySelector("#new-user-btn");
 
+
 const credentials = btoa(`${username.value}:${password.value}`);
+
+
 
 
 /* Informations popup----------------------------------------------------------Informations poup----------------- */
@@ -25,13 +28,13 @@ function dialogCloseNClear() {
 function updateErrorInfoDialog(error) {
     infoDialog.querySelector('p').innerText = `Tillfälligt fel: ${error.message}`;
     infoDialog.showModal();
-    infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); })
+    infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); });
 }
 
 function updateInfoDialog(message) {
     infoDialog.querySelector('p').innerText = `${message}`;
     infoDialog.showModal();
-    infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); })
+    infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); });
 }
 
 
@@ -47,7 +50,7 @@ function showLoginDialog() {
         loginDialog.showModal();
         escapeBtn.addEventListener('click', () => { loginDialog.close(); });
         loginBtn.addEventListener('click', () => { login(); });
-        newUserBtn.addEventListener('click', () => { updateInfoDialog(`Funktionen för nya användare är inte tillgänglig än. Kontakta kundservice!`); });
+        newUserBtn.addEventListener('click', () => { changeMainContent("new-user"); loginDialog.close(); });
     }
 }
 
@@ -86,7 +89,6 @@ function logout() {
 /* ------------------------------------ */
 /* BEHÖRGIHETS FUNKTOINER */
 /* ------------------------------------ */
-
 
 /* Sätter nav-meny utifrån användarroll */
 
@@ -169,6 +171,10 @@ function changeMainContent(page) {
         case "cars":
             carsPage();
             break;
+        case "new-user":
+            newUsersPage();
+            document.querySelector("#reg-btn").addEventListener('click', () => { createNewUser(); });
+            break;
 
         case "user-cars":
             userCarsPage();
@@ -212,6 +218,30 @@ function changeMainContent(page) {
 function carsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section></div>`;
     fetchCars();
+}
+
+function newUsersPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Välkommen, registrera dig nedan.</h2></section>
+    <div class="panel">            
+    <form>
+        <label for="fname" class="form-margin">Förnamn: </label><br>
+            <input id="fname" class="input-fields form-margin" type="text"></input><br>
+
+        <label for="lname" class="form-margin">Efternamn: </label><br>
+            <input id="lname" class="input-fields form-margin" type="text"></input><br>
+
+        <label for="phoneNr" class="form-margin">Telefonnummer: </label><br>
+            <input id="phoneNr" type="tel" placeholder="070 123 45 78" class="input-fields form-margin form-text"></input><br>
+
+        <label for="email" class="form-margin">Email (obs! Ditt framtida användarnamn): </label><br>
+            <input id="email" type="email" placeholder="namn@mail.com" class="input-fields form-margin form-text"></input><br>
+
+        <label for="password" class="form-margin">Lösenord: </label><br>
+            <input id="password" type="password" placeholder="*****" class="input-fields form-margin form-text"></input><br>
+    
+        <button type="button" class=" form-margin std-btn pos-btn" id="reg-btn"> Registrera </button>
+    </form>    
+    </div>`;
 }
 
 function userCarsPage() {
@@ -268,12 +298,40 @@ function displayCars(cars) {
             <dl>
         <dd> Märke : ${car.name}</dd>
         <dd> Modell : ${car.model}</dd>
-        <dd> Pris : ${car.price}</dd>
+        <dd> Pris : ${car.price} kr/dygn</dd>
         </dl>
         </div> `
         wrapper.appendChild(innerDiv);
     });
 }
+/* ------------------------------------------------ */
+/* HÄMTA -INPUT */
+/*------------------------------------------------- */
+function getNewUserInfo() {
+    const fname = document.querySelector('#fname');
+    const lname = document.querySelector(`form #lname`);
+    const phoneNr = document.querySelector("form #phoneNr");
+    const email = document.querySelector("form #email");
+    const password = document.querySelector("form #password");
+    const newUser = {
+        firstName:fname.value,
+        lastName:lname.value,
+        username:email.value,
+        phone: phoneNr.value,
+        email: email.value,
+        password: password.value,
+    "noOfOrders": 0
+}
+console.log(newUser);
+return newUser;
+}
+
+function getNewBookingInfo() { }
+
+function getNewCarInfo() { }
+
+
+
 
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER */
@@ -286,7 +344,7 @@ async function fetchCars() {
         const response = await fetch(url, { method: 'GET' })
         if (!response.ok) {
             updateInfoDialog(`Något gick fel vid inladdnig av fordon. Prova igen senare.`);
-            throw new Error('Problem vid inladdnings. Status: ' + response.status);
+            throw new Error(`Problem vid inladdnings. Status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -303,10 +361,10 @@ async function fetchCarById(id) {
         const response = await fetch(url, {
             method: 'GET'
 
-        })
+        });
         if (!response.ok) {
 
-            throw new Error('Något gick fel vid inladdning av valt fordon. Status: ' + response.status);
+            throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -322,3 +380,29 @@ async function fetchCarById(id) {
 
 
 /* Hämta användare */
+
+
+async function createNewUser() {
+    const newUser = getNewUserInfo();
+    const url = `http://localhost:8080/api/v1/users`;
+    try {
+        const responseUser = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newUser)
+        });
+        if (!responseUser.ok) {
+            throw new Error(`Fel vid skapade av ny användare. Status: ${responseUser.status}`);
+        }
+
+
+        updateInfoDialog(`Registrering lyckades!`);
+    } catch (error) {
+        updateErrorInfoDialog(error);
+    }
+
+
+
+}

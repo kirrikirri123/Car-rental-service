@@ -49,6 +49,7 @@
      --margin: 1.5em;
 
      /* Font */
+     --big-headlines:"BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
  }
 
@@ -81,9 +82,27 @@
          "footer";
      background-color: var(--color-bg);
      color: var(--color-text);
-     font-family: "Noto Serif", serif;
  }
+ /* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
+h1{
+     font-size: clamp(1.9rem,5.5vw, 5rem);
+     font-family: var(--big-headlines);
+}
+h2 {
+    font-size: clamp(1.52rem, 2.8vw, 4rem);
+}
+h3 {
+    font-size:clamp(1.22rem, 2.24vw, 3.2rem);   
+}
 
+h4 {
+    font-size: 1.1rem;
+}
+
+p{
+    font-size: 1rem;
+}
+/* 
  h1 {
      font-family: "BBH Bartle", sans-serif;
      font-size: 1.5rem;
@@ -99,14 +118,14 @@
 
  h3 {
      font-size: 1rem;
- }
+ } */
 
  header {
 
      display: flex;
      flex-direction: column;
      grid-area: header;
-     padding: var(--padding);
+     padding: 1em;
      background-color: var(--color-bg);
      font-family: "Racing Sans One", sans-serif;
      letter-spacing: 0.05em;
@@ -116,13 +135,9 @@
  .inner-header {
      overflow: hidden;
  }
-
- #hamburger-icon {
-     align-self: flex-end;
-     color: var(--color-text);
-     cursor: pointer;
-     
- }
+.hamburger-div{
+    text-align: end;
+}
 
  header h2 {
      align-self: flex-end;
@@ -146,7 +161,9 @@
 
  }
  .content-page{
+    text-align: center;
     padding: var(--padding);
+
  }
 
  footer {
@@ -166,6 +183,11 @@
  #w-icon {
      justify-self: flex-end;
  }
+
+ #hamburger-icon {
+     color: var(--color-text);
+     cursor: pointer;
+ }
  /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
  .mobile-menu {
@@ -176,7 +198,6 @@
      display: flex;
      flex-direction: column;
      width:100%;
-     transition: ease-in-out;
  }
 
  .menu-link {
@@ -258,32 +279,40 @@
      text-align: center;
      border-radius: 1rem;
      padding: 0.8rem;
+     margin:0.2rem;
  }
 
  .icon-btn {
-
+    text-align: end;
      background-color: transparent;
      border: none;
      cursor: pointer;
  }
 
- #login-btn {
-     border: 0.25rem solid var(--color-dec-accent);
+ .pos-btn{
+    border: 0.25rem solid var(--color-dec-accent);
  }
-
- #escape-btn {
-     padding: 1rem;
-     border: none;
+ 
+ .neg-btn{
+    padding: 1rem;
+    border: none;
  }
+ 
+  .btn-spacer {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+      }
 
 
  /*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
- .login-form,
- label,
- input,
- button {
-     margin: 0.2em;
- }
+form{
+    text-align: start;
+}
+
+ .form-margin{
+    margin-top: 0.2em;
+}
 
  .login-form,
  input {
@@ -297,15 +326,43 @@
      padding: 0.25rem;
  }
 
+/* Login-relaterat */
  #login-header {
      margin-bottom: 0.5em;
  }
 
- .btn-spacer {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-      }
+
+/*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
+.long-table,/* namn?? */
+td {
+    /* width: 100%; */
+    border: 0.5px solid var(--color-dec-accent);
+    border-collapse: collapse;
+}
+
+th {
+    font-family: var(--info-text);
+    background-color: var(--color-surface-raised);
+    border: 0.5px solid #292919;
+    color: var(--color-text);
+    padding: 0.8em;
+}
+
+.long-table tr:nth-child(odd) {
+    background-color: var(--color-surface);
+}
+
+.wide-table,/* namn?? */
+td {
+    /* width: 100%; */
+    border: 0.5px solid var(--color-border);
+    border-collapse: collapse;
+    padding-inline: 0.5rem;
+}
+
+.wide-table td:nth-child(odd) {
+    background-color: var(--color-surface);
+}
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
  .panel-wrapper {
