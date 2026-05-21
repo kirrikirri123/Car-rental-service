@@ -25,21 +25,24 @@
      /* Utrymme */
      --padding: 2em;
      --margin: 1.5em;
+    /* Fonter */
+     --big-headlines:"BBH Bartle", sans-serif;
+     --small-headlines: "Racing Sans One", sans-serif;
+ 
  }
 
  body {
      display: grid;
      grid-template:
          "header header"
-         "sidebar main "
-         "sidebar main "
+         "sidebar content "
+         "sidebar content "
          "footer footer ";
          grid-template-columns: clamp(10em, 15vw, 15em) 1fr;
-        
  }
 
  h1 {
-     font-family: "BBH Bartle", sans-serif;
+     font-family: var(--big-headlines);
      font-size: 4.5em;
      margin-bottom: 0.5em;
      letter-spacing: 0.05em;
@@ -51,15 +54,20 @@
  }
 
  .main-content {
-     grid-area: main;
-     background-color: var(--color-surface-raised); 
-     height: 70vh;
+     grid-area: content;
+     background-color: var(--color-surface); 
+     /* height: 70vh; */
  }
+ .content-page{
+    padding: var(--padding);
+
+ }
+
   /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
 .panel-wrapper {
      display: flex;
      flex-direction: row;
-     justify-content: space-around;
+     flex-wrap: wrap;
  }
 
  /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
@@ -69,7 +77,7 @@
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-     height:70vh;
+   /*   height:70vh; */
      
  }
  #hamburger-icon {

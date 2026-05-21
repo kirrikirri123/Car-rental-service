@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+:root .dark-theme {
+     /* Bakgrund */
+     --color-bg: #181717;
+     --color-surface: #302822;
+     --color-surface-raised: #444347;
+     /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
+     --color-text: #D0C5BA;
+
+     /* Knappar eller liknande element */
+     --color-primary: #712B0D;
+     --color-primary-hover: #944017;
+
+     /* Dekoration */
+     --color-dec-accent: #AC5327;
+
+     /* Kanter */
+     --color-border: #444347;
+
+     /* Utrymme */
+     --padding: 2em;
+     --margin: 1.5em;
+
+    /*  Fonter */
+     --big-headlines:"BBH Bartle", sans-serif;
+     --small-headlines: "Racing Sans One", sans-serif;
+     --info-text: "Noto Serif", serif;
+ }
+ 
+html{
+    font-size: 16px;
+}
+
+body {
+     display: grid;
+     grid-template:
+         "header header"
+         "sidebar content "
+         "sidebar content "
+         "footer footer ";
+         grid-template-columns: clamp(10em, 15vw, 15em) 1fr;
+ }
+
+ header {
+     grid-area: header;
+     padding: var(--padding);
+ }
+
+  .main-content {
+    grid-area: content;
+    overflow-y: auto;}
+
+
+
+
+/* Rubriker visnings-exemepel------------------------------------------------------------Rubriker visnings-exemepel------------------------------------ */
+.font-ex {
+    border: solid var(--border-color);
+    border-width: 0.01rem;
+    border-width: 100%;
+    margin: 0.5rem;
+    padding: 0.25rem;
+}
+
+#headline-ex {
+    background-color:var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--big-headlines);
+}
+
+#headline-small {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: "Playfair Display", serif;
+}
+
+#body-ex {
+    background-color: var(--bg);
+    color: var(--font-color-sharp);
+}
+
+#text-darkmode { /* Används aldrig */
+    background-color: #D0C5BA;
+    color:#181717;
+}
+
+
+/* Meny - Navigationsreleterat --------------------------------------------------Meny - NAvigationsrelaterat------------------------------------------ */
+ .desktop-menu {
+     grid-area: sidebar;
+     font-family: "Racing Sans One", sans-serif;
+     background-color: var(--color-primary);
+     display: flex;
+     flex-direction: column;
+   /*   height:70vh; */
+     
+ }
+ #hamburger-icon {
+     display: none;
+ }
+
+.wrapper-block {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.panel-wrapper {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+ }
+
+
+
+
+
+
+
+
+
+/*BILDER ------------------------------------------------------------------------------------------Bildrelaterat--------------------------------------*/
+/* #palette img {
+    width: 70%;
+}
+.img-color{
+    text-align: center;
+}
+#small-palette{
+    width:80%;
+    border:0.02em solid var(--border-color);
+} */
+
+
+/* MENY exempel för att viewport inställningarna inte ska påverka exempel--------------------------Meny-visnigns exempel----------------------- */
+/* .menu-ex{
+    display: flex;
+    flex-direction: column;
+    width: clamp(15rem,50%,30rem);
+    height: auto;
+}
+
+ .menu-ex a{
+    display: block;
+    text-decoration: none;
+    padding: 0.09em;
+ }
+
+ .menu-ex a:hover{
+    transform: translateX(7px);
+ }
+
+ .menu-link-ex {
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    color: var(--font-color-dark);
+}
+
+.under-link-ex {
+    margin-left: 1.5em;
+    font-family: "Elms Sans", sans-serif;
+    font-size: 1rem;
+    color: var(--font-color-dark);
+}
+ */
+ 
+
+
+
+
