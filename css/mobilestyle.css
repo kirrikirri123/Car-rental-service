@@ -51,6 +51,7 @@
      /* Font */
      --big-headlines:"BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
+     
  }
 
  .racing-sans-one-regular {
@@ -68,7 +69,7 @@
  .noto-serif-bodytext {
      font-family: "Noto Serif", serif;
      font-optical-sizing: auto;
-     font-weight: 125;
+     font-weight: 300;
      font-style: normal;
      font-variation-settings:
          "wdth" 100;
@@ -85,8 +86,9 @@
  }
  /* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
 h1{
-     font-size: clamp(1.9rem,5.5vw, 5rem);
+     font-size: clamp(1rem,6.7vw, 5rem);
      font-family: var(--big-headlines);
+     margin-bottom: 0.5em;
 }
 h2 {
     font-size: clamp(1.52rem, 2.8vw, 4rem);
@@ -102,23 +104,6 @@ h4 {
 p{
     font-size: 1rem;
 }
-/* 
- h1 {
-     font-family: "BBH Bartle", sans-serif;
-     font-size: 1.5rem;
-     margin-bottom: 0.5em;
-     letter-spacing: 0.05em;
-     overflow-x: auto;
- }
-
- h2 {
-     font-size: 1.25rem;
-
- }
-
- h3 {
-     font-size: 1rem;
- } */
 
  header {
 
@@ -127,9 +112,10 @@ p{
      grid-area: header;
      padding: 1em;
      background-color: var(--color-bg);
-     font-family: "Racing Sans One", sans-serif;
+     /* font-family: "Racing Sans One", sans-serif; */
      letter-spacing: 0.05em;
      text-transform: uppercase;
+     overflow-wrap: anywhere;
  }
 
  .inner-header {
@@ -147,7 +133,7 @@ p{
      grid-area: content;
      display: flex;
      flex-direction: column;
-     background-color: var(--color-surface-raised);
+     background-color: var(--color-surface);
  }
 
  .main-content div {
@@ -161,6 +147,8 @@ p{
 
  }
  .content-page{
+    color: var(--color-bg);
+    background-color: var(--color-text);
     text-align: center;
     padding: var(--padding);
 
@@ -297,7 +285,9 @@ p{
     padding: 1rem;
     border: none;
  }
- 
+ .book-btn {
+    margin:1em;
+ }
   .btn-spacer {
      display: flex;
      flex-direction: column;
@@ -305,7 +295,7 @@ p{
       }
 
 
- /*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
+ /*Formulär--------------------------------------------------------------Formulär--------------------------------------- */
 form{
     text-align: start;
 }
@@ -378,5 +368,18 @@ td {
      padding: 1em;
      display: flex;
      flex-direction: column;
-     align-items: center;
+     align-items: center; 
+     background-color: var(--color-surface-raised);
+     color: var(--color-text);
+ }
+ .panel-important{
+    text-align: left;
+    border: 0.02rem solid var(--color-border);
+    border-radius: 0rem;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+font-size:1.3rem;
+ }
+ .panel-car{
+    text-align: start;
  }

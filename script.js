@@ -6,17 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
 const infoDialog = document.querySelector("#info-dialog");
 
 /* Inlogg reltaterade variabler */
-const username = document.getElementById("input-username");
-const password = document.getElementById("input-password");
 const loginDialog = document.querySelector("#login-dialog");
 const loginBtn = document.querySelector("#login-btn");
 const escapeBtn = document.querySelector("#escape-btn");
 const newUserBtn = document.querySelector("#new-user-btn");
-
-
-const credentials = btoa(`${username.value}:${password.value}`);
-
-
 
 
 /* Informations popup----------------------------------------------------------Informations poup----------------- */
@@ -55,11 +48,13 @@ function showLoginDialog() {
 }
 
 function login() {
+    const userInfo = getLogInInfo();
+    console.log(userInfo);
     const url = 'http://localhost:8080/api/v1/auth/login';
     fetch(url, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "username": username.value, "password": password.value })
+        body: JSON.stringify({ "username": userInfo.username, "password": userInfo.password })
     })
         .then(response => {
             if (!response.ok) {
@@ -69,9 +64,9 @@ function login() {
             return response.json();
         })
         .then(data => {
-            /* Bättre att plocka ur datan och lägga i credentials eller likn? */
             loginDialog.close();
             sessionStorage.setItem("principal", JSON.stringify(data));
+            /* fetchUser();  Hämta användar info utifrån den inloggade och lägga i session?*/
             updateInfoDialog(`Välkommen ${data.username}! Du är inloggad.`)
             checkRole();
         })
@@ -135,7 +130,6 @@ function checkRole() {/* Skriv om så att man sparar kanske roll och användare 
     } else if (principal.isAdmin === true) {
         showAdminMenu();
     }
-
 }
 
 /* ------------------------------------ */
@@ -241,35 +235,43 @@ function newUsersPage() {
     
         <button type="button" class=" form-margin std-btn pos-btn" id="reg-btn"> Registrera </button>
     </form>    
-    </div>`;
+    </div></div>`;
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Bilar och bokningsknapp syns av inloggade</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</section></div>`;
 }
 
 function userPagesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Mina sidor, ser bara din egen information</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Hej ${namn}! <br>
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</section></div>`;
 }
 
 function userInfoPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Användarinformation, ses bara av den inloggade</section></div>`;
+    
+   mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Din medlemsinformation </section></div>`;
+    fetchUserById();
 }
 
 function userBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Bokningar,ser bara dina egna bokningar</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Dina bokningar</section></div>`;
+    fetchBookingsById();
 }
 
 function admVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN- alla bilar syns och kan sorteras åt alla håll</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som kan sorteras, skapas, tas bort.</section></div>`;
+    fetchAdmCars();
+    /* Visa bilar, sortera bilar, skapa nya bilar. */
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN- alla bokningar syns. sorteras på activa och ej samt mot specifik kund.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund.</section></div>`;
+    fetchAdmBookings();
 }
 
 function admUsersPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section></div>`;
+    fetchAllUsers();
 }
 
 function admStyleguidePage() {
@@ -294,19 +296,85 @@ function displayCars(cars) {
     cars.forEach(car => {
         const innerDiv = document.createElement("div");
         innerDiv.innerHTML =
+            ` <div class="panel panel-car">
+            <dl>
+        <dd> Märke: ${car.name}</dd>
+        <dd> Modell: ${car.model}</dd>
+        <dd> Pris: ${car.price} kr/dygn</dd>
+        </dl>
+        <button class="std-btn pos-btn book-btn">Boka<button> /* Hur bokar man via denna eller disablar den vid */
+        </div> `
+        wrapper.appendChild(innerDiv);
+    });
+}
+/* Användare  */
+function displayUser(user) {
+    console.log("i display");
+    const wrapper = createPanelWrapper();
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-important">
+            <dl>
+        <dd><b>Medlemsnr:</b> ${user.id}</dd>
+        <dd><b> Namn :</b> ${user.firstName} ${user.lastName}</dd>
+        <dd><b> Telefonnr :</b> ${user.phone} </dd>
+        <dd><b> Email / Användarnamn :</b> ${user.email} </dd>
+        </dl>
+        </div> `
+        wrapper.appendChild(innerDiv);
+    }
+
+function displayAllUser(users) {
+    /* Lägg i en dynamisk tabell */
+    
+    const wrapper = createPanelWrapper();
+    users.forEach(user => {
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
             ` <div class="panel">
             <dl>
-        <dd> Märke : ${car.name}</dd>
-        <dd> Modell : ${car.model}</dd>
-        <dd> Pris : ${car.price} kr/dygn</dd>
+        <dd> Medlemsnr: ${user.id}</dd>
+        <dd> Namn : ${user.firstName} ${user.lastName}</dd>
+        <dd> Telefonnr : ${user.phone} </dd>
+        <dd> Email / Användarnamn : ${user.email} </dd>
         </dl>
         </div> `
         wrapper.appendChild(innerDiv);
     });
 }
+
+function displayBookings(bookings) {
+    const wrapper = createPanelWrapper();
+    bookings.forEach(booking => {
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel">
+            <dl>
+        <dd> ${booking.name}</dd>
+        <dd> ${booking.model}</dd>
+        <dd> ${booking.price} </dd>
+        </dl>
+        </div> `
+        wrapper.appendChild(innerDiv);
+    });
+}
+
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
 /*------------------------------------------------- */
+function getLogInInfo() {
+    const usern = document.getElementById("input-username");
+    const pswrd = document.getElementById("input-password");
+    const userInfo = {
+        username : usern.value,
+        password : pswrd.value
+    }
+    const credentials = btoa(`${usern.value}:${pswrd.value}`);
+    sessionStorage.setItem(`basicAuth`,`Basic ${credentials}`);
+
+    return userInfo;
+}
+
 function getNewUserInfo() {
     const fname = document.querySelector('#fname');
     const lname = document.querySelector(`form #lname`);
@@ -314,23 +382,21 @@ function getNewUserInfo() {
     const email = document.querySelector("form #email");
     const password = document.querySelector("form #password");
     const newUser = {
-        firstName:fname.value,
-        lastName:lname.value,
-        username:email.value,
+        firstName: fname.value,
+        lastName: lname.value,
+        username: email.value,
         phone: phoneNr.value,
         email: email.value,
         password: password.value,
-    "noOfOrders": 0
-}
-console.log(newUser);
-return newUser;
+        "noOfOrders": 0
+    }
+    console.log(newUser);
+    return newUser;
 }
 
 function getNewBookingInfo() { }
 
 function getNewCarInfo() { }
-
-
 
 
 /* ------------------------------------------------ */
@@ -359,16 +425,16 @@ async function fetchCarById(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
     try {
         const response = await fetch(url, {
-            method: 'GET'
-
-        });
+            method: 'GET',
+            headers:{"Authorization":`Basic ${credentials}`
+        }})
         if (!response.ok) {
 
             throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
         }
 
         const data = await response.json();
-        displayDataInDiv(data);
+        
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -380,6 +446,35 @@ async function fetchCarById(id) {
 
 
 /* Hämta användare */
+async function fetchUserById(){
+    const principal = JSON.parse(sessionStorage.getItem("principal"));
+    const id = principal.userId;
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/users/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers:{"Authorization":`${credentials}`
+            }
+
+        });
+        if (!response.ok) {
+                throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
+                  if(response.status=== 403){
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`);}
+        }
+
+        const data = await response.json();
+        displayUser(data);
+    
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error);
+    }
+}
+
+
 
 
 async function createNewUser() {

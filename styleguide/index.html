@@ -14,7 +14,6 @@
         href="https://fonts.googleapis.com/css2?family=BBH+Bartle&family=Monoton&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Racing+Sans+One&display=swap"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/b4e56fcdc2.js" crossorigin="anonymous"></script>
-
     <script src="script.js" defer></script>
 </head>
 
@@ -87,12 +86,17 @@
                 <h3>Färger </h3>
 
                 <div class='guide img-color' id='palette'>
-                    <img src='' alt="Bilden visar nyanser av orange, beige, brun, grå och svart.">
+                    <img src="img/Carpalette.png" alt="Bilden visar nyanser av orange, beige, brun, grå och svart.">
                 </div>
                 <div class="guide" id="background-color">
                     <div class='explain info-box'>
                         <h4>Bakgrunder:</h4>
-                        <p></p>
+                        <p>Vid mörkttema / WGCA's AA-nivå:<br>
+                        I bakgrunder i header och footer används en nästan helt svart nyans (#181717.)
+                        I navigationsbakgrunden används en roströd nyans (#712B0D).
+                        I panelernas bakgrund används en...
+                        </p>
+                        <p>Vid ljusttema / WGCA's AAA-nivå:</p>
                     </div>
                     <div class="wrapper-block">
                         <div class='code info-box'>
@@ -107,15 +111,14 @@
     --color-bg: #D0C5BA;
     -color-surface: #302822;
 }
-
 </pre></code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'><code> header {background-color: var(--bg);}</code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'> <code>body {background-color: var(--bg-behind);}</code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                     </div>
 
@@ -146,17 +149,17 @@
                     </div>
                     <div class="wrapper-block">
                         <div class='code info-box'><code>color: #545333; /* Generellt */</code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'><code>color: #292919; /* Extra tydlig */</code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'><code>color: #FDFBD4; /* Mot mörkbakgrund */</code>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                     </div>
                     <div class="img-color">
-                        <img src='/img/small-palette.png' id="small-palette">
+                        <img src="img/small-high-palette.png" id="small-palette">
                     </div>
                     <div class='explain info-box'>
                         <h4>Ramar & mindre detaljer</h4>
@@ -164,7 +167,7 @@
                             mörkgråfärg.(#878672)</p>
                     </div>
                     <div class='code info-box'><code>border-color: #878672;</code>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
 
                 </div>
@@ -183,9 +186,9 @@
                 </p>
                 <div class="wrapper-block">
                     <div class='code info-box'><code>font-family: "Playfair Display", serif;</code> <button
-                            class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button></div>
+                            class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
                     <div class='code info-box'><code>font-family: "Elms Sans", sans-serif;</code> <button
-                            class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button></div>
+                            class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
                 </div>
                 <!-- <div class='guide'> -->
                 <h4>Storlekar:</h4>
@@ -238,7 +241,7 @@ p{
     font-size: 1rem;
 } </code></pre>
 
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                     <!-- </div> -->
                 </div>
@@ -347,7 +350,7 @@ th {
     background-color: #545333;
     color: #FDFBD4;
 }
-                </code></pre><button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></button>
+                </code></pre><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -362,38 +365,52 @@ td {
 .wide-table td:nth-child(odd) {
     background-color: #FDFBD4;
 }
+
 th {
-    font-family: 'Playfair Display', serif;
     font-weight: 700;
     background-color: #545333;
     color: #FDFBD4;
 }
-                </code></pre><button class="copy-btn std-btn "><i class="bi bi-filetype-css"></i></button>
+                </code></pre><button class="copy-btn std-btn "><i class="fa-brands fa-css"></i></button>
                     </div>
                 </div>
                 <div class="guide" id="text-forms">
                     <h3>Formulär</h3>
                 </div>
-                <div class='example info-box'>
-                    <div>
-                        <form class="form-ex">
-                            <label for="fname" class="form-margin">Namn: </label><br>
-                            <input id="fname" class="input-fields form-margin" type="text"></input><br>
-                            <label for="phoneNr" class="form-margin">Telefonnummer: </label><br>
-                            <input id="phoneNr" type="tel" placeholder="070 123 45 78"
-                                class="input-fields form-margin"></input><br>
-                            <label for="chioce" class="form-margin">Önskas uppringning: </label><br>
-                            <input type="radio" id="yes" value="yesbox" name="choice" class="form-margin" checked>
-                            <label for="yes" class="form-margin">Ja</label><br>
-                            <input type="radio" id="no" value="nixpix" name="choice" class="form-margin">
-                            <label for="no" class="form-margin">Nej</label><br>
-                            <label for="message-input" class="form-margin">Meddelande: </label><br>
-                            <textarea id="message-input" type="text" maxlength="550" class="input-fields form-margin"
-                                placeholder="max 550 tecken.."></textarea><br>
-                            <button type="button" class="pos-btn">SKICKA <i class="bi bi-hand-thumbs-up"></i></button>
-                        </form>
+                <form class="form-ex panel">
+                    <label for="fname" class="form-margin">Förnamn: </label><br>
+                    <input id="fname" class="input-fields form-margin" type="text"></input><br>
+
+                    <label for="lname" class="form-margin">Efternamn: </label><br>
+                    <input id="lname" class="input-fields form-margin" type="text"></input><br>
+
+                    <label for="phoneNr" class="form-margin">Telefonnummer: </label><br>
+                    <input id="phoneNr" type="tel" placeholder="070 123 45 78"
+                        class="input-fields form-margin form-text"></input><br>
+
+                    <label for="email" class="form-margin">Email (obs! Ditt framtida användarnamn): </label><br>
+                    <input id="email" type="email" placeholder="namn@mail.com"
+                        class="input-fields form-margin form-text"></input><br>
+
+                    <label for="password" class="form-margin">Lösenord: </label><br>
+                    <input id="password" type="password" placeholder="*****"
+                        class="input-fields form-margin form-text"></input><br>
+
+                    <p class="form-margin">Önskas uppringning:</p>
+                    <div class="panel-wrapper radio-chk form-margin">
+                        <div>
+                            <label for="yes">Ja</label>
+                            <input type="radio" id="yes" value="yesbox" name="choice" checked>
+                        </div>
+                        <div>
+                            <label for="no">Nej</label>
+                            <input type="radio" id="no" value="nixpix" name="choice">
+                        </div>
                     </div>
-                </div>
+                    <br><button type="button" class=" form-margin std-btn pos-btn" id="reg-btn"> Registrera
+                    </button>
+                </form>
+
                 <div class='explain info-box'>
                     <h4>Formulär</h4>
                     <p>Vid formulär används den primära gröna färgen med en opacitet på 0.62.
@@ -402,26 +419,9 @@ th {
                 </div>
                 <div class='code info-box'>
                     <pre><code>  
-&lt;form class="bg-form"&gt;
-    &lt;label for="fname" class="form-margin"&gt;Namn: &lt;/label&gt;&lt;br&gt;
-        &lt;input id="fname" class="input-fields form-margin" type="text"&gt;&lt;/input&gt;&lt;br&gt;
-
-    &lt;label for="phoneNr" class="form-margin"&gt;Telefonnummer: &lt;/label&gt;&lt;br&gt;
-        &lt;input id="phoneNr" type="tel" placeholder="070 123 45 78" class="input-fields form-margin form-text"&gt;&lt;/input&gt;&lt;br&gt;
-
-    &lt;label for="chioce" class="form-margin"&gt;Önskas uppringning: &lt;/label&gt;&lt;br&gt;
-        &lt;input type="radio" id="yes" value="yesbox" name="choice" class="form-margin" checked&gt;
-
-    &lt;label for="yes" class="form-margin"&gt;Ja&lt;/label&gt;&lt;br&gt;
-        &lt;input type="radio" id="no" value="nixpix" name="choice" class="form-margin"&gt;
-        &lt;label for="no" class="form-margin"&gt;Nej&lt;/label&gt;&lt;br&gt;
-
-    &lt;label for="message-input" class="form-margin form-text"&gt;Meddelande: &lt;/label&gt;&lt;br&gt;
-        &lt;textarea id="message-input" type="text" maxlength="550" class="input-fields form-margin" placeholder="max 550 tecken.."&gt;&lt;/textarea&gt;&lt;br&gt;
-    &lt;button type="button" class="pos-btn"&gt;OK &lt;i class="bi bi-hand-thumbs-up"&gt;&lt;/i&gt;&lt;/button&gt;
-&lt;/form&gt;                    
+             
                     </pre></code>
-                    <button class="copy-btn std-btn"><i class="bi bi-filetype-html"></i></i></button>
+                    <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
                 </div>
                 <div class='code info-box'>
                     <pre><code>
@@ -449,7 +449,7 @@ th {
 
 
                 </code></pre>
-                    <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
             </article>
 
@@ -524,7 +524,7 @@ th {
     &lt;/div&gt;
 &lt;/div&gt;
 
-</code></pre><button class="copy-btn std-btn "><i class="bi bi-filetype-html"></i></button>
+</code></pre><button class="copy-btn std-btn "><i class="fa-solid fa-file-code"></i></button>
                     </div>
 
                     <div class='code info-box'>
@@ -545,7 +545,7 @@ th {
     border:0.05em solid var(--border-color);
     background-color: var(--bg);
     padding:2em;
-} </pre></code><button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+} </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -567,7 +567,7 @@ th {
     background-color: var(--bg);
     padding:2em;
 }
- </pre></code><button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+ </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -588,7 +588,7 @@ th {
     border:0.05em solid var(--border-color);
     background-color: var(--bg);
     padding:2em;
-} </pre></code><button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+} </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                 </div>
             </article>
@@ -634,7 +634,7 @@ th {
         border: solid #5A824F;
         border-width:0.15rem;
         }</code></pre>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
 
                         </div>
                         <div class='code info-box'>
@@ -656,7 +656,7 @@ th {
         border: solid #FDFBD4;
         border-width:0.15rem;
         }</code></pre>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'>
                             <pre><code>.pos-btn{
@@ -677,7 +677,7 @@ th {
         border: solid #FDFBD4;
         border-width:0.15rem;
         }</code></pre>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                         <div class='code info-box'>
                             <pre><code>.neg-btn{
@@ -697,7 +697,7 @@ th {
         .neg-btn:hover{
         border-width:0.2rem;  
         }</code></pre>
-                            <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                         </div>
                     </div>
                 </div>
@@ -745,7 +745,7 @@ th {
     &lt;/div&gt;
 &lt;/div&gt;
             </code></pre>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-html"></i></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -778,7 +778,7 @@ th {
 }
 
             </code></pre>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                 </div>
                 <div class="guide" id='warn'>
@@ -816,7 +816,7 @@ th {
     &lt;/div&gt;
 &lt;/div&gt;
             </code></pre>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-html"></i></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -845,27 +845,23 @@ th {
 /* Klass för marginaler mellan text och ikon. */
 .message-text{
     margin-right: 1.2rem;
-}               
+}              
             </code></pre>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
-
                 </div>
                 <div class="guide" id='loading'>
                     <div class='example info-box'>
-                        <span class="loading-icon" id="icon-green">
-                            <i class="bi bi-hypnotize"></i> </span>
-
-                        <span class="loading-icon" id="icon-grey">
-                            <i class="bi bi-hypnotize"></i> </span>
-
-                        <span class="loading-icon" id="icon-sharp">
-                            <i class="bi bi-hypnotize"></i> </span>
+                            <span class="loading-icon">
+                            <i class="fa-solid fa-slash"></i> </span>
+                            <span class="loading-icon" id="icon-accent">
+                            <i class="fa-solid fa-slash"></i> </span>
                     </div>
                     <div class='explain info-box'>
                         <h4>Laddningsindikator</h4>
-                        <p>Laddningsindikatorn är ett snurrande hjul som att visa på en aktiv process.
-                            Går att sätta i grön #5A824F, grå #878672 eller mörkare #292919</p>
+                        <p>Laddningsindikatorn är två symboler av en diagonal linje som genom paralell snurr visar på en aktivprocess.
+                            En ligger i samma färg som knapparnas primära färg och den andra symbolen har samma färg som används på knapparna vid hoovring/aktivering.
+                        </p>
                     </div>
                     <div class='code info-box'>
                         <pre><code>
@@ -874,14 +870,18 @@ th {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
 }
-/* Ikon utan färg */
+/* Symbol 1 och 2*/
 .loading-icon{
     animation: spin 5s linear infinite;
     display: inline-block;
-    font-size: 2rem;
+    color: var(--color-primary);
 }
-                        </code></pre>
-                        <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+#icon-accent {
+    color: var(--color-primary-hover);
+}
+
+</code></pre>
+                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                 </div>
 
@@ -932,7 +932,7 @@ nav a:hover {
     font-size: 1rem;
     color: var(--font-color-dark);
 }</code></pre>
-                    <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button>
+                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
 
             </article>
@@ -961,7 +961,7 @@ nav a:hover {
 &lt;i class="bi bi-exclamation-circle"&gt;&lt;/i&gt;
 &lt;i class="bi bi-list"&gt;&lt;/i&gt;    
                     </code></pre>
-                    <button class="copy-btn std-btn"><i class="bi bi-filetype-css"></i></i></button></button>
+                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></button>
                 </div>
 
             </article>
@@ -973,8 +973,7 @@ nav a:hover {
 
 
 
-        <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06">
-        <div class="hero">
+        <img src="img/Koncernnamn.png">
             <h1></h1>
         </div>
         <div class="first-panel">
