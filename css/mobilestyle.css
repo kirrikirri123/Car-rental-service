@@ -176,6 +176,10 @@ p{
      color: var(--color-text);
      cursor: pointer;
  }
+ .icon-larger{
+    font-size:x-large;
+    text-align: right;
+ }
  /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
  .mobile-menu {

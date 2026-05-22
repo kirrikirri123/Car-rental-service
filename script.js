@@ -19,13 +19,14 @@ function dialogCloseNClear() {
 }
 
 function updateErrorInfoDialog(error) {
-    infoDialog.querySelector('p').innerText = `Tillfälligt fel: ${error.message}`;
+    infoDialog.querySelector('p').innerHTML = `Tillfälligt fel: ${error.message}`;
     infoDialog.showModal();
     infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); });
 }
 
-function updateInfoDialog(message) {
-    infoDialog.querySelector('p').innerText = `${message}`;
+function updateInfoDialog(message, i) {
+    infoDialog.querySelector('p').innerHTML = `${message}`;
+    infoDialog.querySelector('#icon').innerHTML = `${i}`;
     infoDialog.showModal();
     infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); });
 }
@@ -66,8 +67,8 @@ function login() {
         .then(data => {
             loginDialog.close();
             sessionStorage.setItem("principal", JSON.stringify(data));
-            /* fetchUser();  Hämta användar info utifrån den inloggade och lägga i session?*/
-            updateInfoDialog(`Välkommen ${data.username}! Du är inloggad.`)
+            /* fetchUser();  Hämta användarinfo utifrån den inloggade och lägga i session?*/
+            updateInfoDialog(`Välkommen ${data.username}! <br> Du är inloggad.`,`<i class="fa-solid fa-user-check icon-larger"></i>`)
             checkRole();
         })
 
@@ -78,7 +79,7 @@ function login() {
 function logout() {
     sessionStorage.clear();
     showGuestMenu();
-    updateInfoDialog("Du är nu utloggad.");
+    updateInfoDialog('Du är utloggad.',`<i class="fa-solid fa-truck-fast icon-large"></i>`);
 }
 
 /* ------------------------------------ */
@@ -148,12 +149,16 @@ document.querySelector("#userpages-link").addEventListener('click', () => { chan
 document.querySelector("#user-info-link").addEventListener('click', () => { changeMainContent("user-info"); });
 document.querySelector("#user-bookings-link").addEventListener('click', () => { changeMainContent("user-bookings"); });
 document.querySelector("#logout-user-link").addEventListener('click', () => { logout(); });
+
 /* Behörighet ROLE_ADMIN: */
 document.querySelector("#adm-vehicles-link").addEventListener('click', () => { changeMainContent("adm-vehicles"); });
+document.querySelector("#adm-change-vehicles-link").addEventListener('click', () => { changeMainContent("adm-change-vehicles"); });
 document.querySelector("#adm-bookings-link").addEventListener('click', () => { changeMainContent("adm-bookings"); });
+document.querySelector("#adm-change-bookings-link").addEventListener('click', () => { changeMainContent("adm-change-bookings"); });
+document.querySelector("#adm-history-link").addEventListener('click', () => { changeMainContent("adm-history"); });
 document.querySelector("#adm-users-link").addEventListener('click', () => { changeMainContent("adm-users"); });
+document.querySelector("#adm-change-user-link").addEventListener('click', () => { changeMainContent("adm-change-user"); });
 document.querySelector("#adm-styleguide-link").addEventListener('click', () => { changeMainContent("adm-styleguide"); });
-document.querySelector("#logout-user-link").addEventListener('click', () => { logout(); });
 document.querySelector("#logout-admin-link").addEventListener('click', () => { logout(); });
 
 let mainContent = document.querySelector(".main-content");
@@ -190,12 +195,28 @@ function changeMainContent(page) {
             admVehiclesPage();
             break;
 
+        case "adm-change-vehicles":
+            admChangeVehiclesPage();
+            break;    
+
         case "adm-bookings":
             admBookingsPage();
             break;
 
+        case "adm-change-bookings":
+            admChangeBookingsPage();
+            break;
+
+        case "adm-history":
+            admHistoryPage();
+            break;  
+
         case "adm-users":
             admUsersPage();
+            break;
+
+        case "adm-change-user":
+            admChangeUserPage();
             break;
 
         case "adm-styleguide":
@@ -259,19 +280,33 @@ function userBookingsPage() {
 }
 
 function admVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som kan sorteras, skapas, tas bort.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som visas och sorteras.</section></div>`;
     fetchAdmCars();
     /* Visa bilar, sortera bilar, skapa nya bilar. */
 }
+function admChangeVehiclesPage(){
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - bilar skapas, redigeras och tas bort.</section></div>`;
+}
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section></div>`;
+    fetchAdmBookings();
+}
+function admChangeBookingsPage(){
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar skapas, redigeras och tas bort.</section></div>`;
+}
+
+function admHistoryPage(){
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Alla bokningar - All info. </section></div>`;
     fetchAdmBookings();
 }
 
 function admUsersPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section></div>`;
     fetchAllUsers();
+}
+function admChangeUserPage(){
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - skapa, updatera och radera.</section></div>`;
 }
 
 function admStyleguidePage() {
