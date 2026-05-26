@@ -132,7 +132,6 @@ function showAdminMenu() {
 
 function checkRole() {/* Skriv om så att man sparar kanske roll och användare i sessionstorage och plockar därifrån */
     const principal = JSON.parse(sessionStorage.getItem("principal"));
-    console.log("från sessionStorage:", principal);
     if (principal === null) {
         showGuestMenu();
     } else if (principal.isAdmin === false) {
@@ -378,6 +377,7 @@ function admVehiclesPage() {
     <table class="adm-table" id="carsTable">
     <thead>
        <tr>
+            <th>Redigera bil</th>
             <th>Id</th>
             <th>Tillverkare</th>
             <th>Modell</th>
@@ -386,7 +386,7 @@ function admVehiclesPage() {
             <th>Utrustning</th>
             <th>Tillbehör</th>
             <th>Bokad</th>
-            <th>Radera bil</th>
+            
         </tr>
     </thead>
     <tbody><td> Inga fordon att visa </td></tbody>
@@ -440,12 +440,14 @@ function admBookingsPage() {
     <table class="adm-table" id="activeBookingsTable">
     <thead>
        <tr>
+            <th>Återlämna</th>
             <th>Boknings-id</th>
             <th>Kund-id</th>
             <th>Bil-id</th>
             <th>Från Datum</th>
             <th>Till Datum</th>
-            <th>Återlämna bil</th>
+            <th>Redigera bokning</th>
+            
         </tr>
     </thead>
     <tbody><td> Inga bokningar att visa</td></tbody>
@@ -481,9 +483,10 @@ function admHistoryPage() {
 
 function admUsersPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section>
-    <table class="adm-table" id="activeBookingsTable">
+    <table class="adm-table" id="usersTable">
     <thead>
        <tr>
+            <th>Redigera kund</th>
             <th>Kund-id</th>
             <th>Email</th>
             <th>Förnamn</th>
@@ -498,7 +501,7 @@ function admUsersPage() {
     <table> 
     </div>   
     `;
-    fetchAllUsers();
+    fetchUsers();
 }
 function admChangeUserPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - skapa, updatera och radera.</section></div>`;
@@ -581,7 +584,7 @@ function displayCarsTable(cars) {
         tr.innerHTML =
             ` 
       <td>
-      <button onclick="deleteCar(${car.id})"class="std-btn neg-btn"><i class="fa-regular fa-trash-can"></i></button>
+      <button onclick="fetchCarById(${car.id})"class="std-btn neg-btn" alt="Knapp för att redigera eller radera bil" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
       </td>
       <td>${car.id}</td>
       <td>${car.name}</td>
@@ -614,25 +617,30 @@ function displayUser(user) {
     wrapper.appendChild(innerDiv);
 }
 
-function displayAllUser(users) {
-    const tbody = document.querySelector('#userTable tbody');
+function displayAllUsers(users) {
+    const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
+    
     users.forEach(user => {
         const tr = document.createElement("tr");
         tr.innerHTML =
-            `Medlemsnr: ${user.id} 
-        <td>Namn : ${user.firstName} ${user.lastName}</td>
-        <td>Namn : ${user.firstName} ${user.lastName}</td>
-        <td>Telefonnr : ${user.phone} </td>
-        <td>Email / Användarnamn : ${user.email} </td>
+            `
         <td>
-        <button onclick="deleteUser(${user.id}) class="std-btn neg-btn">Ta bort</button> <!-- skapa denna metod någonstans också !! Finns ej !!-->
-        </td>      
+        <button onclick='fetchUserById(${user.id})' class="std-btn neg-btn" alt="Knapp för att redigera eller radera kund" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+        </td>
+        <td>${user.id} </td>
+        <td>${user.email}</td>
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
+        <td>${user.noOfOrders}</td>
+        <td>${user.phone}</td>
+        <td>${user.role}</td>
+        <td>${user.username} </td>      
+        
         `
         tbody.appendChild(tr);
     });
 }
-
 function displayActiveBookingsTable(bookings) {
     const tbody = document.querySelector('#activeBookingsTable tbody');
     tbody.innerHTML = "";
@@ -640,17 +648,17 @@ function displayActiveBookingsTable(bookings) {
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
+       <td>
+     <button onclick="returnCar(${booking.id})" class="std-btn"> Återlämna fordon </button>
+      </td>
       <td>${booking.id}</td>
       <td>${booking.userId}</td>
       <td>${booking.carId}</td>
-      
       <td>${booking.fromDate}</td>
-      <td>${booking.toDate}</td>     
+      <td>${booking.toDate}</td> 
       <td>
-     <button onclick="returnCar(${booking.id})" class="std-btn" >Återlämna fordon</button>
-      </td>
-        
-        `
+      <button onclick='fetchBookingById(${booking.id})' class="std-btn neg-btn" alt="Knapp för att redigera eller radera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+      </td>  `
         tbody.appendChild(tr);
     });
 }
@@ -668,7 +676,7 @@ function displayBookingsTable(bookings) {
       <td>${booking.carId}</td>
       
       <td>${booking.fromDate}</td>
-      <td>${ booking.toDate} </td>     
+      <td>${booking.toDate} </td>     
       <td>${booking.active}</td>
         `
         tbody.appendChild(tr);
@@ -780,9 +788,15 @@ async function fetchAdmCars() {
         updateInfoDialog("Fel uppstod: " + error);
     }
 }
+async function fetchNUpdateCar(id){
+}
+async function fetchNUpdateUser(id){
+}
+async function fetchNUpdateBooking(id){
+}
 
 /* Radera bil */
-function deleteCar(id){
+async function deleteCar(id){
 
 }
 
@@ -877,19 +891,20 @@ async function createNewBooking(){/* KOlla upp hur backenden ser ut!!!!!! */
     } catch (error) {
         updateErrorInfoDialog(error);
     }
-
 }
 
 /* Hämta användare */
 async function fetchUsers() {
     const url = 'http://localhost:8080/api/v1/users';
+    const credentials = sessionStorage.getItem("basicAuth");
     try {
-        const response = await fetch(url, { 
+        const response = await fetch(url,
+            { 
             method: 'GET',
-            header:{
+            headers:{
              "Authorization": `${credentials}`
             }
-        })
+        });
        
         if (!response.ok) {
             updateInfoDialog(`Något gick fel vid inladdnig av kunder. Prova igen senare.`,`<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -897,7 +912,7 @@ async function fetchUsers() {
         }
 
         const data = await response.json();
-        displayCars(data);
+        displayAllUsers(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -956,8 +971,8 @@ async function fetchNSaveUserById(){
 
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        console.error('Fel vid laddning och sparande av specifik användare:' + error.message);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -976,13 +991,14 @@ async function createNewUser() {
         if (!responseUser.ok) {
             throw new Error(`Fel vid skapade av ny användare. Status: ${responseUser.status}`);
         }
-
-
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-check"></i>`);
+
     } catch (error) {
-        updateErrorInfoDialog(error);
+        updatInfoDialog(error,`<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
+}
 
-
+/* Radera användare */
+async function deleteUser(id){
 
 }
