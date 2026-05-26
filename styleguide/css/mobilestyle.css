@@ -4,6 +4,7 @@
     --color-bg: #181717;
     --color-surface: #302822;
     --color-surface-raised: #444347;
+    --color-bg-accent: #712B0D;
     /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
     --color-text: #D0C5BA;
 
@@ -51,7 +52,7 @@
 .noto-serif-bodytext {
     font-family: "Noto Serif", serif;
     font-optical-sizing: auto;
-    font-weight: 300;
+    font-weight: 300;  
     font-style: normal;
     font-variation-settings:
         "wdth" 100;
@@ -74,7 +75,6 @@ body {
     grid-area: header;
     padding: 1em;
     background-color: var(--color-bg);
-    font-family: "Racing Sans One", sans-serif;
     letter-spacing: 0.05em;
     text-transform: uppercase;
  }
@@ -166,7 +166,7 @@ h1, h2, h3, h4 { line-height: 1.15; }
     display: none;
      grid-area: nav;
      font-family: var(--small-headlines);
-     background-color: var(--color-primary);
+     background-color: var(--color-bg-accent);
      display: flex;
      flex-direction: column;
      width:100%;
@@ -177,7 +177,7 @@ h1, h2, h3, h4 { line-height: 1.15; }
      text-decoration: none;
      text-transform: uppercase;
      color: var(--color-text);
-     background-color: var(--color-primary);
+     background-color: var(--color-bg-accent);
      padding: 0.7em;
 
  }
@@ -267,15 +267,12 @@ h1, h2, h3, h4 { line-height: 1.15; }
     padding: 1rem;
     border: none;
  }
-
- /* #login-btn {
-     border: 0.25rem solid var(--color-dec-accent);
+ .radio-chk{
+    display: flex;
+    justify-content: space-between;
  }
 
- #escape-btn {
-     padding: 1rem;
-     border: none;
- } */
+
 
 
  /*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
@@ -307,6 +304,12 @@ h1, h2, h3, h4 { line-height: 1.15; }
      flex-direction: column;
      align-items: center;
       }
+
+.form-margin{
+    margin-top: 0.2em;
+}
+
+
 /* Tabeller ----------------------------------------------------------------------------------------------Tabeller------------------------------*/
 .long-table,/* namn?? */
 td {
@@ -382,6 +385,7 @@ td {
 
 /* Block med olika ramar för exempel, förklaring ochn kod */
 .example {
+    text-align: center;
     border: solid var(--color-dec-accent); 
 }
 
@@ -453,9 +457,13 @@ pre {
 /* Ikoner-----------------------------------------------------------------------------------------------Ikoner-------------------------------- */
 
 .loading-icon{
-    animation: spin 5s linear infinite;
+    animation: spin 3s linear infinite;
     display: inline-block;
     font-size: 2rem;
+    color: var(--color-primary);
+}
+#icon-accent {
+    color: var(--color-primary-hover);
 }
 @keyframes spin{
     from {transform: rotate(0deg);}
@@ -488,5 +496,19 @@ pre {
 #icon-neg{
     font-size:2.5rem;
     align-content:flex-start;
-    
+}
+
+
+
+/*BILDER ------------------------------------------------------------------------------------------Bildrelaterat--------------------------------------*/
+#palette img {
+    width: 60%;
+    height: auto;
+}
+.img-color{
+    text-align: center;
+}
+#small-palette{
+    width:80%;
+    border:0.02em solid var(--border-color);
 }
