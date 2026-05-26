@@ -25,6 +25,7 @@ function updateErrorInfoDialog(error) {
 }
 
 function updateInfoDialog(message, i) {
+    /* Uppdatera här så man kan välja icon eller meddelande. Info behöver ju inte stå i text. Kan vara en alt ellet title text på icon blir det bra tillgänglighet?? */
     infoDialog.querySelector('p').innerHTML = `${message}`;
     infoDialog.querySelector('#icon').innerHTML = `${i}`;
     infoDialog.showModal();
@@ -48,38 +49,36 @@ function showLoginDialog() {
     }
 }
 
-function login() {
+async function login() {
     const userInfo = getLogInInfo();
-    console.log(userInfo);
     const url = 'http://localhost:8080/api/v1/auth/login';
-    fetch(url, {
+
+    try{
+    const response = await fetch(url, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ "username": userInfo.username, "password": userInfo.password })
     })
-        .then(response => {
-            if (!response.ok) {
-                updateInfoDialog(`Felaktigt inlogg. Dubbelkolla dina uppgifter.`);
+        if(!response.ok) {
+                updateInfoDialog(`Felaktigt inlogg. Dubbelkolla dina uppgifter.`,`<i class="fa-solid fa-car-burst icon-car"></i>`);
                 throw new Error('Felaktigt inlogg. Status: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            loginDialog.close();
-            sessionStorage.setItem("principal", JSON.stringify(data));
-            /* fetchUser();  Hämta användarinfo utifrån den inloggade och lägga i session?*/
-            updateInfoDialog(`Välkommen ${data.username}! <br> Du är inloggad.`,`<i class="fa-solid fa-user-check icon-larger"></i>`)
-            checkRole();
-        })
-
-        .catch(error => console.error('Error:' + error.message));
+                return;
+        }
+        const data = await response.json();
+        loginDialog.close();
+        sessionStorage.setItem("principal", JSON.stringify(data));
+        updateInfoDialog(`Välkommen ${data.username}! <br> Du är inloggad.`, `<i class="fa-solid fa-user-check icon-larger"></i>`)
+        checkRole();
+            
+    }catch(error) {console.error('Error:' + error.message)};
+    fetchNSaveUserById();
 }
 /* Logga ut -----------------------------------------------------------------------------Logga ut------------------ */
 
 function logout() {
     sessionStorage.clear();
     showGuestMenu();
-    updateInfoDialog('Du är utloggad.',`<i class="fa-solid fa-truck-fast icon-large"></i>`);
+    updateInfoDialog('Du är utloggad.', `<i class="fa-solid fa-truck-fast icon-large"></i>`);
 }
 
 /* ------------------------------------ */
@@ -94,13 +93,22 @@ let navUser = document.querySelector("#user-menu");
 let navAdmin = document.querySelector("#admin-menu");
 
 function mobileMenu() {
+
     const menu = document.querySelector(".mobile-menu");
     if (menu.style.display === "block") {
         menu.style.display = "none";
+        document.querySelector("#hamburger-icon").innerHTML = `<i class="fa-solid fa-bars"></i>`;
     } else {
+        document.querySelector("#hamburger-icon").innerHTML = `<i class="fa-regular fa-circle-xmark"></i>`;
         menu.style.display = "block";
     }
 }
+function closeMobileMenu() {
+    const menu = document.querySelector(".mobile-menu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+        document.querySelector("#hamburger-icon").innerHTML = `<i class="fa-solid fa-bars"></i>`;
+}}
 
 function showGuestMenu() {
     navGuest.style.display = "block";
@@ -138,27 +146,66 @@ function checkRole() {/* Skriv om så att man sparar kanske roll och användare 
 /* ------------------------------------ */
 
 /* Menylänkar-----------------------------------------------------------------------------Menylänkar---------------- */
-/* Något smidigare sätt att göra detta på? Är det tungt med eventlisteners? */
 /* Behörighet ALLA: */
-document.querySelector("#cars-link").addEventListener('click', () => { changeMainContent("cars"); });
+document.querySelector("#cars-link").addEventListener('click', () => {
+    changeMainContent("cars");
+    closeMobileMenu();
+});
 document.querySelector("#login-link").addEventListener('click', () => { showLoginDialog(); });
 
 /* Behörighet ROLE_USER: */
-document.querySelector("#user-cars-link").addEventListener('click', () => { changeMainContent("user-cars"); });
-document.querySelector("#userpages-link").addEventListener('click', () => { changeMainContent("user-pages"); });
-document.querySelector("#user-info-link").addEventListener('click', () => { changeMainContent("user-info"); });
-document.querySelector("#user-bookings-link").addEventListener('click', () => { changeMainContent("user-bookings"); });
+document.querySelector("#user-cars-link").addEventListener('click', () => {
+    changeMainContent("user-cars");
+    closeMobileMenu();
+});
+document.querySelector("#userpages-link").addEventListener('click', () => {
+    changeMainContent("user-pages");
+    closeMobileMenu();
+});
+document.querySelector("#user-info-link").addEventListener('click', () => {
+    changeMainContent("user-info");
+    closeMobileMenu();
+});
+document.querySelector("#user-bookings-link").addEventListener('click', () => {
+    changeMainContent("user-bookings");
+    closeMobileMenu();
+});
+
 document.querySelector("#logout-user-link").addEventListener('click', () => { logout(); });
 
 /* Behörighet ROLE_ADMIN: */
-document.querySelector("#adm-vehicles-link").addEventListener('click', () => { changeMainContent("adm-vehicles"); });
-document.querySelector("#adm-change-vehicles-link").addEventListener('click', () => { changeMainContent("adm-change-vehicles"); });
-document.querySelector("#adm-bookings-link").addEventListener('click', () => { changeMainContent("adm-bookings"); });
-document.querySelector("#adm-change-bookings-link").addEventListener('click', () => { changeMainContent("adm-change-bookings"); });
-document.querySelector("#adm-history-link").addEventListener('click', () => { changeMainContent("adm-history"); });
-document.querySelector("#adm-users-link").addEventListener('click', () => { changeMainContent("adm-users"); });
-document.querySelector("#adm-change-user-link").addEventListener('click', () => { changeMainContent("adm-change-user"); });
-document.querySelector("#adm-styleguide-link").addEventListener('click', () => { changeMainContent("adm-styleguide"); });
+document.querySelector("#adm-vehicles-link").addEventListener('click', () => {
+    changeMainContent("adm-vehicles");
+    closeMobileMenu();
+});
+document.querySelector("#adm-change-vehicles-link").addEventListener('click', () => {
+    changeMainContent("adm-change-vehicles");
+    closeMobileMenu();
+});
+document.querySelector("#adm-bookings-link").addEventListener('click', () => {
+    changeMainContent("adm-bookings");
+    closeMobileMenu();
+});
+document.querySelector("#adm-change-bookings-link").addEventListener('click', () => {
+    changeMainContent("adm-change-bookings");
+    closeMobileMenu();
+});
+document.querySelector("#adm-history-link").addEventListener('click', () => {
+    changeMainContent("adm-history");
+    closeMobileMenu();
+});
+document.querySelector("#adm-users-link").addEventListener('click', () => {
+    changeMainContent("adm-users");
+    closeMobileMenu();
+});
+document.querySelector("#adm-change-user-link").addEventListener('click', () => {
+    changeMainContent("adm-change-user");
+    closeMobileMenu();
+});
+document.querySelector("#adm-styleguide-link").addEventListener('click', () => {
+    changeMainContent("adm-styleguide");
+    closeMobileMenu();
+});
 document.querySelector("#logout-admin-link").addEventListener('click', () => { logout(); });
 
 let mainContent = document.querySelector(".main-content");
@@ -197,7 +244,7 @@ function changeMainContent(page) {
 
         case "adm-change-vehicles":
             admChangeVehiclesPage();
-            break;    
+            break;
 
         case "adm-bookings":
             admBookingsPage();
@@ -209,7 +256,7 @@ function changeMainContent(page) {
 
         case "adm-history":
             admHistoryPage();
-            break;  
+            break;
 
         case "adm-users":
             admUsersPage();
@@ -260,17 +307,20 @@ function newUsersPage() {
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</section>
+    </div>`;
+    fetchCars();
+    /* activateBooking(); funktion som öppnar bokniningsknappen */
 }
 
 function userPagesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Hej ${namn}! <br>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Hej !
     Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</section></div>`;
 }
 
 function userInfoPage() {
-    
-   mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Din medlemsinformation </section></div>`;
+
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Din medlemsinformation </section></div>`;
     fetchUserById();
 }
 
@@ -280,32 +330,134 @@ function userBookingsPage() {
 }
 
 function admVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som visas och sorteras.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som visas och sorteras.</section>
+    <div class="table-div">
+    <table class="adm-table" id="carsTable">
+    <thead>
+       <tr>
+            <th>Id</th>
+            <th>Tillverkare</th>
+            <th>Modell</th>
+            <th>Typ</th>
+            <th>Finness</th>
+            <th>Utrustning</th>
+            <th>Tillbehör</th>
+            <th>Bokad</th>
+            <th>Radera bil</th>
+        </tr>
+    </thead>
+    <tbody><td> Inga fordon att visa </td></tbody>
+    <table>
+    </div>
+    </div>
+    `;
     fetchAdmCars();
     /* Visa bilar, sortera bilar, skapa nya bilar. */
 }
-function admChangeVehiclesPage(){
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - bilar skapas, redigeras och tas bort.</section></div>`;
+function admChangeVehiclesPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - bilar skapas, redigeras och tas bort.</section>
+    <div class="panel">            
+    <h3>Addera nytt fordon</h3>
+    <form>
+        <label for="brand" class="form-margin">Tillverkare: </label><br>
+            <input id="brand" class="input-fields form-margin" type="text"></input><br>
+
+        <label for="model" class="form-margin">Modell: </label><br>
+            <input id="model" class="input-fields form-margin" type="text"></input><br>
+
+        <label for="price" class="form-margin">Kostnad/dygn: </label><br>
+            <input id="price" type="number" placeholder="3500" class="input-fields form-margin form-text"></input><br>
+       
+        <label for="feature1" class="form-margin">Utrustning ex. 1: </label><br>
+            <input id="feature1" type="text" class="input-fields form-margin form-text"></input><br>
+
+        <label for="feature2" class="form-margin">Utrustning ex.2: </label><br>
+            <input id="feature2" type="text"  class="input-fields form-margin form-text"></input><br>
+
+        <label for="feature3" class="form-margin">Utrustning ex.3:</label><br>
+            <input id="password" class="input-fields form-margin form-text"></input><br>
+            
+        <label for="type" class="form-margin">Klass: </label><br>
+        <select id="type" name="type" class="form-margin input-fields">
+        <option value="combi">Komib</option>
+        <option value="sedan">Sedan</option>
+        <option value="cab">Cab</option>
+        <option value="electric">El</option>
+        <option value="bus">Familjebuss</option>
+        </select><br>
+            
+        <button type="button" class="std-btn pos-btn" id="reg-btn"> Registrera </button>
+    </form>    
+    </div>
+    </div>`;
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section></div>`;
-    fetchAdmBookings();
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
+    <table class="adm-table" id="activeBookingsTable">
+    <thead>
+       <tr>
+            <th>Boknings-id</th>
+            <th>Kund-id</th>
+            <th>Bil-id</th>
+            <th>Från Datum</th>
+            <th>Till Datum</th>
+            <th>Återlämna bil</th>
+        </tr>
+    </thead>
+    <tbody><td> Inga bokningar att visa</td></tbody>
+    <table> 
+    </div>   
+    `;
+    fetchActiveBookings();
 }
-function admChangeBookingsPage(){
+function admChangeBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar skapas, redigeras och tas bort.</section></div>`;
 }
 
-function admHistoryPage(){
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Alla bokningar - All info. </section></div>`;
-    fetchAdmBookings();
+function admHistoryPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Alla bokningar - All info. </section>
+    <table class="adm-table" id="bookingsTable">
+    <thead>
+       <tr>
+            <th>Boknings-id</th>
+            <th>Kund-id</th>
+            <th>Bil-id</th>
+            <th>Från Datum</th>
+            <th>Till Datum</th>
+            <th>Aktiv uthyrning</th>
+
+        </tr>
+    </thead>
+    <tbody><td> Ingen bokningshistorik att visa </td></tbody>
+    <table>    
+    </div>
+    `;
+    fetchAllBookings();
 }
 
 function admUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - alla kunder syns. funktioner för att uppdatera, skapa och radera.</section>
+    <table class="adm-table" id="activeBookingsTable">
+    <thead>
+       <tr>
+            <th>Kund-id</th>
+            <th>Email</th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+            <th>Antal hyresordrar</th>
+            <th>Telefonnummer</th>
+            <th>Roll</th>
+            <th>Ev. användarnamn</th>
+        </tr>
+    </thead>
+    <tbody><td> Inga användare att visa</td></tbody>
+    <table> 
+    </div>   
+    `;
     fetchAllUsers();
 }
-function admChangeUserPage(){
+function admChangeUserPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - skapa, updatera och radera.</section></div>`;
 }
 
@@ -330,25 +482,84 @@ function displayCars(cars) {
     const wrapper = createPanelWrapper();
     cars.forEach(car => {
         const innerDiv = document.createElement("div");
+        const imgSrc = `/img/images/cars/${car.model}.jpg`;
+        const defaultSrc = `/img/images/cars/default.png`;
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
+            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
             <dl>
-        <dd> Märke: ${car.name}</dd>
-        <dd> Modell: ${car.model}</dd>
-        <dd> Pris: ${car.price} kr/dygn</dd>
+        <dd><b>Märke:</b> ${car.name}</dd>
+        <dd><b>Modell:</b> ${car.model}</dd>
+        <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
+        <dd> <i class="fa-solid fa-road"></i> ${car.type} </dd>
         </dl>
-        <button class="std-btn pos-btn book-btn">Boka<button> /* Hur bokar man via denna eller disablar den vid */
+        <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn book-btn" id="guest-book-btn" }>Se mer<button> 
         </div> `
         wrapper.appendChild(innerDiv);
     });
 }
-/* Användare  */
-function displayUser(user) {
-    console.log("i display");
+
+function displayACar(data) {
+    console.log("i displayACar"+ data);
+    const car = data;
     const wrapper = createPanelWrapper();
         const innerDiv = document.createElement("div");
+        const imgSrc = `/img/images/cars/${car.model}.jpg`;
+        const defaultSrc = `/img/images/cars/default.png`;
         innerDiv.innerHTML =
-            ` <div class="panel panel-important">
+            ` <div class="panel panel-car">
+            <h3>Information om hyresbil:</h3>
+            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
+            <dl>
+        <dd><b>Märke:</b> ${car.name}</dd>
+        <dd><b>Modell:</b> ${car.model}</dd>
+        <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
+        <dd><b>Utrustning:</b><br></dd>
+        <dd> ${car.feature1}</dd>
+        <dd> ${car.feature2}</dd>
+        <dd> ${car.feature3}</dd>
+        </dl>
+        <button class="std-btn pos-btn book-btn" id="book-btn pos-btn"> Boka bil <button> 
+        <button class="std-btn pos-btn book-btn" id="return-btn"> Åter bilarna <button> 
+        </div> `
+        wrapper.appendChild(innerDiv);
+}
+
+
+
+function displayCarsTable(cars) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#carsTable')
+    const tbody = document.querySelector('#carsTable tbody');
+    tbody.innerHTML = "";
+    cars.forEach(car => {
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+            ` 
+      <td>
+      <button onclick="deleteCar(${car.id})"class="std-btn neg-btn"><i class="fa-regular fa-trash-can"></i></button>
+      </td>
+      <td>${car.id}</td>
+      <td>${car.name}</td>
+      <td>${car.model}</td>
+      <td>${car.type}</td>
+      <td>${car.feature1}</td>
+      <td>${car.feature2}</td>
+      <td>${car.feature3}</td>
+      <td>${car.booked}</td>
+      
+        `
+        tbody.appendChild(tr);
+    });
+    wrapper.appendChild(table);
+};
+
+/* Användare  */
+function displayUser(user) {
+    const wrapper = createPanelWrapper();
+    const innerDiv = document.createElement("div");
+    innerDiv.innerHTML =
+        ` <div class="panel panel-important">
             <dl>
         <dd><b>Medlemsnr:</b> ${user.id}</dd>
         <dd><b> Namn :</b> ${user.firstName} ${user.lastName}</dd>
@@ -356,44 +567,69 @@ function displayUser(user) {
         <dd><b> Email / Användarnamn :</b> ${user.email} </dd>
         </dl>
         </div> `
-        wrapper.appendChild(innerDiv);
-    }
+    wrapper.appendChild(innerDiv);
+}
 
 function displayAllUser(users) {
-    /* Lägg i en dynamisk tabell */
-    
-    const wrapper = createPanelWrapper();
+    const tbody = document.querySelector('#userTable tbody');
+    tbody.innerHTML = "";
     users.forEach(user => {
-        const innerDiv = document.createElement("div");
-        innerDiv.innerHTML =
-            ` <div class="panel">
-            <dl>
-        <dd> Medlemsnr: ${user.id}</dd>
-        <dd> Namn : ${user.firstName} ${user.lastName}</dd>
-        <dd> Telefonnr : ${user.phone} </dd>
-        <dd> Email / Användarnamn : ${user.email} </dd>
-        </dl>
-        </div> `
-        wrapper.appendChild(innerDiv);
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+            `Medlemsnr: ${user.id} 
+        <td>Namn : ${user.firstName} ${user.lastName}</td>
+        <td>Namn : ${user.firstName} ${user.lastName}</td>
+        <td>Telefonnr : ${user.phone} </td>
+        <td>Email / Användarnamn : ${user.email} </td>
+        <td>
+        <button onclick="deleteUser(${user.id}) class="std-btn neg-btn">Ta bort</button> <!-- skapa denna metod någonstans också !! Finns ej !!-->
+        </td>      
+        `
+        tbody.appendChild(tr);
     });
 }
 
-function displayBookings(bookings) {
-    const wrapper = createPanelWrapper();
+function displayActiveBookingsTable(bookings) {
+    const tbody = document.querySelector('#activeBookingsTable tbody');
+    tbody.innerHTML = "";
     bookings.forEach(booking => {
-        const innerDiv = document.createElement("div");
-        innerDiv.innerHTML =
-            ` <div class="panel">
-            <dl>
-        <dd> ${booking.name}</dd>
-        <dd> ${booking.model}</dd>
-        <dd> ${booking.price} </dd>
-        </dl>
-        </div> `
-        wrapper.appendChild(innerDiv);
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+            ` 
+      <td>${booking.id}</td>
+      <td>${booking.userId}</td>
+      <td>${booking.carId}</td>
+      
+      <td>${booking.fromDate}</td>
+      <td>${booking.toDate}</td>     
+      <td>
+     <button onclick="returnCar(${booking.id})" class="std-btn" >Återlämna fordon</button>
+      </td>
+        
+        `
+        tbody.appendChild(tr);
     });
 }
 
+function displayBookingsTable(bookings) {
+
+    const tbody = document.querySelector('#bookingsTable tbody');
+      tbody.innerHTML = "";
+    bookings.forEach(booking => {
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+            ` 
+      <td>${booking.id}</td>
+      <td>${booking.userId}</td>
+      <td>${booking.carId}</td>
+      
+      <td>${booking.fromDate}</td>
+      <td>${ booking.toDate} </td>     
+      <td>${booking.active}</td>
+        `
+        tbody.appendChild(tr);
+    });
+}
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
 /*------------------------------------------------- */
@@ -401,11 +637,11 @@ function getLogInInfo() {
     const usern = document.getElementById("input-username");
     const pswrd = document.getElementById("input-password");
     const userInfo = {
-        username : usern.value,
-        password : pswrd.value
+        username: usern.value,
+        password: pswrd.value
     }
     const credentials = btoa(`${usern.value}:${pswrd.value}`);
-    sessionStorage.setItem(`basicAuth`,`Basic ${credentials}`);
+    sessionStorage.setItem(`basicAuth`, `Basic ${credentials}`);
 
     return userInfo;
 }
@@ -437,7 +673,6 @@ function getNewCarInfo() { }
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER */
 /*------------------------------------------------- */
-
 /* Hämta bilar */
 async function fetchCars() {
     const url = 'http://localhost:8080/api/v1/cars';
@@ -456,20 +691,45 @@ async function fetchCars() {
         updateInfoDialog("Fel uppstod: " + error);
     }
 }
+
 async function fetchCarById(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
     try {
         const response = await fetch(url, {
             method: 'GET',
-            headers:{"Authorization":`Basic ${credentials}`
-        }})
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        })
         if (!response.ok) {
-
             throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
         }
 
         const data = await response.json();
-        
+        console.log("i fetchbyid"+ data);
+        displayACar(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error);
+    }
+}
+/* Hämta bilar för admin -view! */
+async function fetchAdmCars() {
+    const url = 'http://localhost:8080/api/v1/cars';
+    try {
+        const response = await fetch(url,
+            {
+                method: 'GET'
+            })
+        if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid inladdnig av fordon. Prova igen senare eller kontakta ansvarig för databasen.`);
+            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayCarsTable(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -477,11 +737,131 @@ async function fetchCarById(id) {
     }
 }
 
-/* Hämta bokningar */
+/* Radera bil */
+function deleteCar(id){
 
+}
+
+/* Skapa bil */
+async function createNewCar(){/* KOlla upp hur backenden ser ut!!!!!! */
+     const newCar = getNewCarInfo();
+    const url = `http://localhost:8080/api/v1/cars`;
+    try {
+        const responseCar = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newCar)
+        });
+        if (!responseCar.ok) {
+            throw new Error(`Fel vid skapade av nytt fordon. Status: ${responseCar.status}`);
+        }
+         updateInfoDialog(`Registrering av fordon lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+    } catch (error) {
+        updateErrorInfoDialog(error);
+    }
+
+}
+
+
+/* Hämta bokningar */
+async function fetchActiveBookings() {
+    const url = 'http://localhost:8080/api/v1/bookings/active';
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url,
+            {   method: 'GET',
+                headers: {
+                    "Authorization": `${credentials}`
+                }
+            })
+        if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
+            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayActiveBookingsTable(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message,` `);
+        updateInfoDialog("Fel uppstod: " + error);
+    }
+}
+
+async function fetchAllBookings() {
+    const url = 'http://localhost:8080/api/v1/bookings';
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url,
+            {
+                method: 'GET',
+                headers: {
+                    "Authorization": `${credentials}`
+                }
+            })
+        if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
+            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        displayBookingsTable(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst"></i>`);
+    }
+}
+
+/* Skapa ny bokning */
+async function createNewBooking(){/* KOlla upp hur backenden ser ut!!!!!! */
+    const newBooking = getNewBookingInfo();
+    const url = `http://localhost:8080/api/v1/bookings`;
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newBooking)
+        });
+        if (!response.ok) {
+            throw new Error(`Fel vid skapade av uthyrning. Status: ${response.status}`);
+        }
+         updateInfoDialog(`Uthyrning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+    } catch (error) {
+        updateErrorInfoDialog(error);
+    }
+
+}
 
 /* Hämta användare */
-async function fetchUserById(){
+async function fetchUsers() {
+    const url = 'http://localhost:8080/api/v1/users';
+    try {
+        const response = await fetch(url, { 
+            method: 'GET',
+            header:{
+             "Authorization": `${credentials}`
+            }
+        })
+       
+        if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid inladdnig av kunder. Prova igen senare.`,`<i class="fa-solid fa-car-burst icon-car"></i>`);
+            throw new Error(`Problem vid inladdnings. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayCars(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+    }
+}
+
+
+async function fetchUserById() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     const id = principal.userId;
     const credentials = sessionStorage.getItem("basicAuth");
@@ -489,27 +869,53 @@ async function fetchUserById(){
     try {
         const response = await fetch(url, {
             method: 'GET',
-            headers:{"Authorization":`${credentials}`
+            headers: {
+               "Authorization": `${credentials}`
             }
 
         });
         if (!response.ok) {
-                throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
-                  if(response.status=== 403){
-                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`);}
+            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
+            if (response.status === 403) {
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`,`<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
         }
 
         const data = await response.json();
         displayUser(data);
-    
+
 
     } catch (error) {
         console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
+async function fetchNSaveUserById(){
+    const principal = JSON.parse(sessionStorage.getItem("principal"));
+    const id = principal.userId;
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/users/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+               "Authorization": `${credentials}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
+        }
 
+        const data = await response.json();
+        sessionStorage.setItem("user_principal",JSON.stringify(data));
+
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+}
 
 
 async function createNewUser() {
@@ -528,7 +934,7 @@ async function createNewUser() {
         }
 
 
-        updateInfoDialog(`Registrering lyckades!`);
+        updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-check"></i>`);
     } catch (error) {
         updateErrorInfoDialog(error);
     }

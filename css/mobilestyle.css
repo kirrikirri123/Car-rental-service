@@ -45,7 +45,7 @@
      --color-border: #444347;
 
      /* Utrymme */
-     --padding: 2em;
+     --padding: 0.7em;
      --margin: 1.5em;
 
      /* Font */
@@ -88,7 +88,7 @@
 h1{
      font-size: clamp(1rem,6.7vw, 5rem);
      font-family: var(--big-headlines);
-     margin-bottom: 0.5em;
+     margin-bottom: 0.2em;
 }
 h2 {
     font-size: clamp(1.52rem, 2.8vw, 4rem);
@@ -180,6 +180,23 @@ p{
     font-size:x-large;
     text-align: right;
  }
+
+.icon-car {
+  transform-origin: bottom left; 
+  animation: carTilt 2.4s;
+}
+
+@keyframes carTilt {
+  40% { transform: rotate(18deg) translateY(-6px); }  
+  65% { transform: rotate(18deg) translateY(-6px); }
+}
+
+@keyframes spin{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+
+}
+
  /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
  .mobile-menu {
@@ -258,7 +275,7 @@ p{
      border-radius: 2em;
      padding: 2rem;
      position: fixed;
-     top: 70%;
+     top: 55%;
      translate: -10% -10%;
  }
 
@@ -297,16 +314,31 @@ p{
      flex-direction: column;
      align-items: center;
       }
+/*Bilder---------------------------------------------------------------------Bilder------------------------------------ */
+.img-car{
+    width:clamp(150px,85vw,500px);
+}
 
+/*Formulär--------------------------------------------------------------Formulär--------------------------------------- */
 
- /*Formulär--------------------------------------------------------------Formulär--------------------------------------- */
+/* Formulärets yttreruta */
 form{
-    text-align: start;
+    max-width: 27rem;
+    height: auto;
+    padding:2rem;
+    font-size:1rem;
+    border:0.5px solid var(--color-dec-accent);}
+
+.input-fields{
+    width: 90%;
+    border: none;
+    padding:0.3em;
 }
 
  .form-margin{
     margin-top: 0.2em;
 }
+
 
  .login-form,
  input {
@@ -315,6 +347,7 @@ form{
      font-style: italic;
      width: 100%;
      max-width: 300px;
+     margin-top: 0.2em;
      margin-left: auto;
      margin-right: auto;
      padding: 0.25rem;
@@ -327,35 +360,40 @@ form{
 
 
 /*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
-.long-table,/* namn?? */
-td {
-    /* width: 100%; */
-    border: 0.5px solid var(--color-dec-accent);
-    border-collapse: collapse;
+.table-div{
+   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;  /* Debr? */
+} 
+
+.adm-table{
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+    
 }
 
 th {
     font-family: var(--info-text);
-    background-color: var(--color-surface-raised);
-    border: 0.5px solid #292919;
+    background-color: var(--color-primary);
+    border: 2.5px solid var(--color-dec-accent);
+    font-size: clamp(20px,1.1rem,30px);
     color: var(--color-text);
+    padding: 1em;    
+}
+
+.adm-table,
+td {
+    border: 0.5px solid var(--color-dec-accent);
+    border-collapse: collapse;
+    padding-inline: 0.5rem;
     padding: 0.8em;
 }
 
-.long-table tr:nth-child(odd) {
+.adm-table td:nth-child(odd) {
     background-color: var(--color-surface);
-}
+    color: var(--color-text);
 
-.wide-table,/* namn?? */
-td {
-    /* width: 100%; */
-    border: 0.5px solid var(--color-border);
-    border-collapse: collapse;
-    padding-inline: 0.5rem;
-}
-
-.wide-table td:nth-child(odd) {
-    background-color: var(--color-surface);
 }
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
@@ -385,5 +423,24 @@ td {
 font-size:1.3rem;
  }
  .panel-car{
+    max-width: 536px;
     text-align: start;
+
  }
+
+@media (orientation: landscape) {
+
+ h1{
+    font-size: 2rem; 
+    margin:0.2em ;
+ }
+
+  #info-dialog {
+     position: fixed;
+     top: 35%;
+     translate: -10% -10%;
+ }
+
+    
+  
+}
