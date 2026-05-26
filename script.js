@@ -17,12 +17,12 @@ function dialogCloseNClear() {
     infoDialog.close();
     infoDialog.querySelector('p').innerText = '';
 }
-
+/* 
 function updateErrorInfoDialog(error) {
     infoDialog.querySelector('p').innerHTML = `Tillfälligt fel: ${error.message}`;
     infoDialog.showModal();
     infoDialog.querySelector('button').addEventListener('click', () => { dialogCloseNClear(); });
-}
+} */
 
 function updateInfoDialog(message, i) {
     /* Uppdatera här så man kan välja icon eller meddelande. Info behöver ju inte stå i text. Kan vara en alt ellet title text på icon blir det bra tillgänglighet?? */
@@ -78,6 +78,7 @@ async function login() {
 function logout() {
     sessionStorage.clear();
     showGuestMenu();
+    changeMainContent("home");
     updateInfoDialog('Du är utloggad.', `<i class="fa-solid fa-truck-fast icon-large"></i>`);
 }
 
@@ -214,6 +215,9 @@ let mainContent = document.querySelector(".main-content");
 function changeMainContent(page) {
 
     switch (page) {
+        case "home":
+            homePage();
+            break;
         case "cars":
             carsPage();
             break;
@@ -277,6 +281,25 @@ function changeMainContent(page) {
 
 /* InnerHTML-funktioner för pages */
 
+function homePage(){
+    mainContent.innerHTML =`
+            <div id="hero">
+                <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
+                <h1>service<br>security<br>speed</h1>
+            </div>
+            <div class="panel-wrapper">
+                <div class="panel"><p>"Wow! Alltid en bra upplevelse." <br>- Kickan K (VD REVENT) </p>
+                </div>
+                <div class="panel"><p>"Fantastiskt! Fyra tummar upp!"</p>
+                </div>
+                <div class="panel"><p>"För bra! Överleverar alltid." <br>- Edström Entreprenad </p>
+                </div>
+    </div>`
+
+
+}
+
+
 function carsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section></div>`;
     fetchCars();
@@ -307,30 +330,50 @@ function newUsersPage() {
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
     </div>`;
     fetchCars();
     /* activateBooking(); funktion som öppnar bokniningsknappen */
 }
+function bookingDialog(){
+    const dialog = document.querySelector(`#booking-dialog`);
+    dialog.innerHTML =
+    `<div class="dialog-content">
+            <div id="booking-header">
+                <h2>Boka fordon</h2>
+                <p> Bokas från idag och till ditt valda datum. <br>
+                Välkommen in och hämta nycklarna - Trevlig körning!
+                </p>
+            </div>
+            <form id="booking-form">
+                <label for="input-date">Återlämnings dag:</label><br>
+                <input id="input-date" type="date" class="form-margin"><br>               
+                <span class="btn-spacer">
+                    <button type="button" class="std-btn pos-btn book-btn">BOKA</button>
+                    <button id="escape-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
+            </form>
+        </div>`
+    
+    dialog.showModal();
+ }
 
 function userPagesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Hej !
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</h2></section></div>`;
 }
 
 function userInfoPage() {
-
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Din medlemsinformation </section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section></div>`;
     fetchUserById();
 }
 
 function userBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Dina bokningar</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section></div>`;
     fetchBookingsById();
 }
 
 function admVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bilar som visas och sorteras.</section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> ADMIN - Bilar som visas och sorteras.</h2></section>
     <div class="table-div">
     <table class="adm-table" id="carsTable">
     <thead>
@@ -493,39 +536,40 @@ function displayCars(cars) {
         <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
         <dd> <i class="fa-solid fa-road"></i> ${car.type} </dd>
         </dl>
-        <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn book-btn" id="guest-book-btn" }>Se mer<button> 
-        </div> `
+        <div class="btn-spacer">
+        <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
+        </div></div> `
         wrapper.appendChild(innerDiv);
     });
 }
 
-function displayACar(data) {
-    console.log("i displayACar"+ data);
-    const car = data;
+function displayACar(car) {
+    const page = document.querySelector(".content-page");
+    page.innerHTML= "";
     const wrapper = createPanelWrapper();
-        const innerDiv = document.createElement("div");
-        const imgSrc = `/img/images/cars/${car.model}.jpg`;
-        const defaultSrc = `/img/images/cars/default.png`;
-        innerDiv.innerHTML =
+    const imgSrc = `/img/images/cars/${car.model}.jpg`;
+    const defaultSrc = `/img/images/cars/default.png`;
+    
+    const innerDiv = document.createElement("div");
+    innerDiv.innerHTML =
             ` <div class="panel panel-car">
-            <h3>Information om hyresbil:</h3>
-            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
+            <h2> ${car.name} - ${car.model}</h2>
+            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"></div>
+            <button onclick= 'bookingDialog()' class="std-btn pos-btn book-btn" id="book-btn pos-btn"> Boka nu </button> 
             <dl>
-        <dd><b>Märke:</b> ${car.name}</dd>
-        <dd><b>Modell:</b> ${car.model}</dd>
-        <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
-        <dd><b>Utrustning:</b><br></dd>
-        <dd> ${car.feature1}</dd>
-        <dd> ${car.feature2}</dd>
-        <dd> ${car.feature3}</dd>
+        <dt><b>Märke:</b></dt><dd>${car.name}</dd>
+        <dt><b>Modell:</b></dt> <dd>${car.model}</dd>
+        <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn <i class="fa-regular fa-credit-card"></i></dd>
+        <dt><b>Utrustning:</b><br></dt>
+        <dd>-${car.feature1}</dd>
+        <dd>-${car.feature2}</dd>
+        <dd>-${car.feature3}</dd>
         </dl>
-        <button class="std-btn pos-btn book-btn" id="book-btn pos-btn"> Boka bil <button> 
-        <button class="std-btn pos-btn book-btn" id="return-btn"> Åter bilarna <button> 
-        </div> `
+        <div class="btn-left">
+        <button onclick= 'changeMainContent("user-cars")' class="std-btn neg-btn return-btn"> Fler bilar </button> 
+        </div></div> `
         wrapper.appendChild(innerDiv);
 }
-
-
 
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
@@ -678,9 +722,9 @@ async function fetchCars() {
     const url = 'http://localhost:8080/api/v1/cars';
     try {
         const response = await fetch(url, { method: 'GET' })
+       
         if (!response.ok) {
-            updateInfoDialog(`Något gick fel vid inladdnig av fordon. Prova igen senare.`);
-            throw new Error(`Problem vid inladdnings. Status: ${response.status}`);
+            throw new Error(`Något gick fel vid inladdnig av fordon. Prova igen senare. Status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -688,7 +732,7 @@ async function fetchCars() {
 
     } catch (error) {
         console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error);
+        updateInfoDialog(error,`<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -703,16 +747,16 @@ async function fetchCarById(id) {
             }
         })
         if (!response.ok) {
+            if(`${response.status}`=== '401'){ throw new Error(`Logga in för att boka och se mer info kring våra fordon.`);}
             throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("i fetchbyid"+ data);
         displayACar(data);
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error);
+        console.error(`Fel vid inladdning av specifikt fordon. Error: ${error.message}`);
+        updateInfoDialog(error,`<i class="fa-solid fa-car-burst"></i>`);
     }
 }
 /* Hämta bilar för admin -view! */

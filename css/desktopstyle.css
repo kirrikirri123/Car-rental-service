@@ -69,6 +69,12 @@
      flex-wrap: wrap;
  }
 
+.panel-car{
+    font-size: 1.3rem;
+
+}
+
+
  /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
  .desktop-menu {
      grid-area: sidebar;

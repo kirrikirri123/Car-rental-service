@@ -49,9 +49,9 @@
      --margin: 1.5em;
 
      /* Font */
-     --big-headlines:"BBH Bartle", sans-serif;
+     --big-headlines: "BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
-     
+
  }
 
  .racing-sans-one-regular {
@@ -84,26 +84,29 @@
      background-color: var(--color-bg);
      color: var(--color-text);
  }
+
  /* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
-h1{
-     font-size: clamp(1rem,6.7vw, 5rem);
+ h1 {
+     font-size: clamp(1rem, 6.7vw, 5rem);
      font-family: var(--big-headlines);
      margin-bottom: 0.2em;
-}
-h2 {
-    font-size: clamp(1.52rem, 2.8vw, 4rem);
-}
-h3 {
-    font-size:clamp(1.22rem, 2.24vw, 3.2rem);   
-}
+ }
 
-h4 {
-    font-size: 1.1rem;
-}
+ h2 {
+     font-size: clamp(1.52rem, 2.8vw, 4rem);
+ }
 
-p{
-    font-size: 1rem;
-}
+ h3 {
+     font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+ }
+
+ h4 {
+     font-size: 1.1rem;
+ }
+
+ p {
+     font-size: 1rem;
+ }
 
  header {
 
@@ -121,9 +124,10 @@ p{
  .inner-header {
      overflow: hidden;
  }
-.hamburger-div{
-    text-align: end;
-}
+
+ .hamburger-div {
+     text-align: end;
+ }
 
  header h2 {
      align-self: flex-end;
@@ -146,16 +150,17 @@ p{
      padding: var(--padding);
 
  }
- .content-page{
-    color: var(--color-bg);
-    background-color: var(--color-text);
-    text-align: center;
-    padding: var(--padding);
+
+ .content-page {
+     color: var(--color-bg);
+     background-color: var(--color-text);
+     text-align: center;
+     padding: var(--padding);
 
  }
 
  footer {
-    grid-area: footer;
+     grid-area: footer;
      padding: 0.5rem;
      height: clamp(1rem, 5%, 10rem);
  }
@@ -176,37 +181,48 @@ p{
      color: var(--color-text);
      cursor: pointer;
  }
- .icon-larger{
-    font-size:x-large;
-    text-align: right;
+
+ .icon-larger {
+     font-size: x-large;
+     text-align: right;
  }
 
-.icon-car {
-  transform-origin: bottom left; 
-  animation: carTilt 2.4s;
-}
+ .icon-car {
+     transform-origin: bottom left;
+     animation: carTilt 2.4s;
+ }
 
-@keyframes carTilt {
-  40% { transform: rotate(18deg) translateY(-6px); }  
-  65% { transform: rotate(18deg) translateY(-6px); }
-}
+ @keyframes carTilt {
+     40% {
+         transform: rotate(18deg) translateY(-6px);
+     }
 
-@keyframes spin{
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
+     65% {
+         transform: rotate(18deg) translateY(-6px);
+     }
+ }
 
-}
+ @keyframes spin {
+     from {
+         transform: rotate(0deg);
+     }
+
+     to {
+         transform: rotate(360deg);
+     }
+
+ }
 
  /* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
 
  .mobile-menu {
-    display: none;
+     display: none;
      grid-area: nav;
      font-family: "Racing Sans One", sans-serif;
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
-     width:100%;
+     width: 100%;
  }
 
  .menu-link {
@@ -230,8 +246,8 @@ p{
      padding-left: 1.5em;
  }
 
- .mobile-menu a:focus{
-    background-color: var(--color-primary-hover);
+ .mobile-menu a:focus {
+     background-color: var(--color-primary-hover);
  }
 
  #guest-menu {
@@ -254,6 +270,14 @@ p{
  /* Dialogrutor-------------------------------------------------------------------------------Dialogrutor--------------- */
  #login-dialog {
      text-align: center;
+     background-color: var(--color-surface-raised);
+     border: 0.17em solid var(--color-dec-accent);
+     color: var(--color-text);
+     border-radius: 2em;
+     padding: 2rem;
+ }
+ #booking-dialog{
+    text-align: center;
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
      color: var(--color-text);
@@ -285,59 +309,77 @@ p{
      height: clamp(48px, 25%, 55px);
      border: 0.15rem solid var(--color-dec-accent);
      font-size: 1.1rem;
+     font-family: var(--small-headlines);
+     text-transform: uppercase;
      text-align: center;
      border-radius: 1rem;
      padding: 0.8rem;
-     margin:0.2rem;
+     margin: 0.2rem;
+     cursor: pointer;
  }
 
  .icon-btn {
-    text-align: end;
+     text-align: end;
      background-color: transparent;
      border: none;
      cursor: pointer;
  }
 
- .pos-btn{
-    border: 0.25rem solid var(--color-dec-accent);
+ .pos-btn {
+     border: 0.25rem solid var(--color-dec-accent);
  }
- 
- .neg-btn{
-    padding: 1rem;
-    border: none;
+
+ .neg-btn {
+     padding: 1rem;
+     border: none;
  }
+
  .book-btn {
-    margin:1em;
+     margin: 1em;
+     font-size: 1.5rem;
  }
-  .btn-spacer {
+
+ /* Placering av  en eller flera knappar */
+
+ .btn-spacer {
      display: flex;
      flex-direction: column;
      align-items: center;
-      }
-/*Bilder---------------------------------------------------------------------Bilder------------------------------------ */
-.img-car{
-    width:clamp(150px,85vw,500px);
-}
+ }
 
-/*Formulär--------------------------------------------------------------Formulär--------------------------------------- */
+ .btn-left {
+    margin-top: 1rem;
+    width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-start;
+ }
 
-/* Formulärets yttreruta */
-form{
-    max-width: 27rem;
-    height: auto;
-    padding:2rem;
-    font-size:1rem;
-    border:0.5px solid var(--color-dec-accent);}
+ /*Bilder---------------------------------------------------------------------Bilder------------------------------------ */
+ .img-car {
+     width: clamp(150px, 85vw, 500px);
+ }
 
-.input-fields{
-    width: 90%;
-    border: none;
-    padding:0.3em;
-}
+ /*Formulär--------------------------------------------------------------Formulär--------------------------------------- */
 
- .form-margin{
-    margin-top: 0.2em;
-}
+ /* Formulärets yttreruta */
+ form {
+     max-width: 27rem;
+     height: auto;
+     padding: 2rem;
+     font-size: 1rem;
+     /* border:0.5px solid var(--color-dec-accent); */
+ }
+
+ .input-fields {
+     width: 90%;
+     border: none;
+     padding: 0.3em;
+ }
+
+ .form-margin {
+     margin-top: 0.2em;
+ }
 
 
  .login-form,
@@ -353,48 +395,49 @@ form{
      padding: 0.25rem;
  }
 
-/* Login-relaterat */
+ /* Login-relaterat */
  #login-header {
      margin-bottom: 0.5em;
  }
 
 
-/*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
-.table-div{
-   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;  /* Debr? */
-} 
+ /*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
+ .table-div {
+     overflow-x: auto;
+     -webkit-overflow-scrolling: touch;
+     /* Debr? */
+ }
 
-.adm-table{
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-    
-}
+ .adm-table {
+     background-color: var(--color-bg);
+     color: var(--color-text);
+     overflow-x: auto;
+     -webkit-overflow-scrolling: touch;
 
-th {
-    font-family: var(--info-text);
-    background-color: var(--color-primary);
-    border: 2.5px solid var(--color-dec-accent);
-    font-size: clamp(20px,1.1rem,30px);
-    color: var(--color-text);
-    padding: 1em;    
-}
+ }
 
-.adm-table,
-td {
-    border: 0.5px solid var(--color-dec-accent);
-    border-collapse: collapse;
-    padding-inline: 0.5rem;
-    padding: 0.8em;
-}
+ th {
+     font-family: var(--info-text);
+     background-color: var(--color-primary);
+     border: 2.5px solid var(--color-dec-accent);
+     font-size: clamp(20px, 1.1rem, 30px);
+     color: var(--color-text);
+     padding: 1em;
+ }
 
-.adm-table td:nth-child(odd) {
-    background-color: var(--color-surface);
-    color: var(--color-text);
+ .adm-table,
+ td {
+     border: 0.5px solid var(--color-dec-accent);
+     border-collapse: collapse;
+     padding-inline: 0.5rem;
+     padding: 0.8em;
+ }
 
-}
+ .adm-table td:nth-child(odd) {
+     background-color: var(--color-surface);
+     color: var(--color-text);
+
+ }
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
  .panel-wrapper {
@@ -410,37 +453,41 @@ td {
      padding: 1em;
      display: flex;
      flex-direction: column;
-     align-items: center; 
+     align-items: center;
      background-color: var(--color-surface-raised);
      color: var(--color-text);
  }
- .panel-important{
-    text-align: left;
-    border: 0.02rem solid var(--color-border);
-    border-radius: 0rem;
-    background-color: var(--color-text);
-    color: var(--color-bg);
-font-size:1.3rem;
- }
- .panel-car{
-    max-width: 536px;
-    text-align: start;
 
+ .panel-important {
+     text-align: left;
+     border: 0.02rem solid var(--color-border);
+     border-radius: 0rem;
+     background-color: var(--color-text);
+     color: var(--color-bg);
+     font-size: 1.3rem;
  }
 
-@media (orientation: landscape) {
-
- h1{
-    font-size: 2rem; 
-    margin:0.2em ;
+ .panel-car {
+    background-color: var(--color-surface-raised);
+    border: 0.3rem solid var(--color-border);
+     max-width: 536px;
+     text-align: start;
  }
 
-  #info-dialog {
-     position: fixed;
-     top: 35%;
-     translate: -10% -10%;
- }
 
-    
-  
-}
+ @media (orientation: landscape) {
+
+     h1 {
+         font-size: 2rem;
+         margin: 0.2em;
+     }
+
+     #info-dialog {
+         position: fixed;
+         top: 35%;
+         translate: -10% -10%;
+     }
+
+
+
+ }
