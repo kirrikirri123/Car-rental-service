@@ -189,15 +189,22 @@
 
  .icon-car {
      transform-origin: bottom left;
-     animation: carTilt 2.4s;
+     animation-iteration-count:infinite;
+     animation: carTilt 2s;
+ }
+
+ .icon-swoosh {
+    animation-iteration-count: 1;
+    animation: swoosh 4s;
+
  }
 
  @keyframes carTilt {
-     40% {
+     20% {
          transform: rotate(18deg) translateY(-6px);
      }
 
-     65% {
+     80% {
          transform: rotate(18deg) translateY(-6px);
      }
  }
@@ -210,6 +217,14 @@
      to {
          transform: rotate(360deg);
      }
+
+ }
+
+
+ @keyframes swoosh {
+    80% { 
+         transform: translateX(230px);
+         }
 
  }
 
@@ -276,7 +291,16 @@
      border-radius: 2em;
      padding: 2rem;
  }
- #booking-dialog{
+
+ /* #booking-dialog {
+     text-align: center;
+     background-color: var(--color-surface-raised);
+     border: 0.17em solid var(--color-dec-accent);
+     color: var(--color-text);
+     border-radius: 2em;
+     padding: 2rem;
+ } */
+ .form-dialog{
     text-align: center;
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
@@ -348,8 +372,8 @@
  }
 
  .btn-left {
-    margin-top: 1rem;
-    width: 100%;
+     margin-top: 1rem;
+     width: 100%;
      display: flex;
      flex-direction: row;
      justify-content: flex-start;
@@ -468,8 +492,8 @@
  }
 
  .panel-car {
-    background-color: var(--color-surface-raised);
-    border: 0.3rem solid var(--color-border);
+     background-color: var(--color-surface-raised);
+     border: 0.3rem solid var(--color-border);
      max-width: 536px;
      text-align: start;
  }

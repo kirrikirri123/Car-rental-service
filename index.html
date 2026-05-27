@@ -31,41 +31,32 @@
         </div>
     </header>
     <nav class="desktop-menu mobile-menu">
-        <!-- <div class="mobile-menu"> -->
         <dl class="menu" id="guest-menu">
             <dt><a href="#" id="cars-link" class="menu-link">Våra bilar</a></dt>
             <dt><a href="#" id="login-link" class="menu-link">Logga in</a></dt>
-        </dl><!-- </div>  -->
-        <!-- Detta lär måsta plockas in i JS-filen för att ändras -->
+        </dl>
         <dl class="menu" id="user-menu">
             <dt><a href="#" id="userpages-link" class="menu-link">Mina sidor</a></dt>
-            <!-- Hämta mina bokningar, hämta en specifik bokning, hämta min info, uppdatera min info -->
             <dt><a href="#" id="user-info-link" class="menu-link under-link">Min info</a></dt>
             <dt><a href="#" id="user-bookings-link" class="menu-link under-link">Mina bokningar</a></dt>
             <dt><a href="#" id="user-cars-link" class="menu-link">Boka bil</a></dt>
-            <!-- alla bilar, specifik bil,skapa bokning,hämta mina bokningar? -->
             <dt><a href="#" id="logout-user-link" class="menu-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logga ut</a></dt>
         </dl>
-
         <dl class="menu" id="admin-menu">
-            <dt class="menu-link">Admin</dt>
+            <dt><a href="#" id="home-link" class="menu-link"><i class="fa-regular fa-house"></i> Admin </a></dt>
             <dd><a href="#" id="adm-vehicles-link" class="menu-link">Fordon</a></dd>
-            <dt><a href="#" id="adm-change-vehicles-link" class="menu-link under-link">Lägg till fordon</a></dt>
-            <!-- Skapa bil,Uppdatera Kolla och sortera alla bilar -->
-            <dd><a href="#" id="adm-bookings-link" class="menu-link">Bokningar</a></dd>
-            <dt><a href="#" id="adm-change-bookings-link" class="menu-link under-link">Skapa/Redigera bokning</a></dt>
+            <dt><a href="#" id="adm-new-vehicles-link" class="menu-link under-link">Lägg till fordon</a></dt>
+            <dt><a href="#" id="adm-cars-link" class="menu-link">Boka fordon</a></dt> <!-- NY LÄNK -->
+            <dd><a href="#" id="adm-bookings-link" class="menu-link">Aktuella bokningar</a></dd>
             <dt><a href="#" id="adm-history-link" class="menu-link under-link">Bokningshistorik</a></dt>
-            <!-- updatera bokning, avsluta bokning, ta bort bokning,kolla aktiva bokningar, kolla alla bokningar kopplade till en user,alla bokningar nånsin   -->
             <dd><a href="#" id="adm-users-link" class="menu-link">Kunder</a></dd>
-            <dt><a href="#" id="adm-change-user-link" class="menu-link under-link">Skapa/Redigera användare</a></dt>
-            <!-- Hämta alla kunder, hämta info om kund, uppdatera kund, ta bort kund, skapa ny kund -->
+            <dt><a href="#" id="adm-new-user-link" class="menu-link under-link"> Lägg till användare</a></dt><!-- NY LÄNK -->
             <dt><a href="#" id="adm-styleguide-link" class="menu-link">Webbplatsinfo</a></dt>
             <!-- Hur länka denna? -->
             <dt><a href="#" id="logout-admin-link" class="menu-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>  Logga ut</a></dt>
         </dl>
         </div>
     </nav>
-
     <main>
         <div class="main-content">
             <div id="hero">
@@ -108,12 +99,13 @@
         </div>
     </dialog>
 
-    <dialog class="dialog" id="booking-dialog"></dialog>
+    <dialog class="dialog form-dialog" id="booking-dialog"></dialog>
+    <dialog class="dialog form-dialog" id="update-dialog"></dialog>
 
     <dialog class="dialog" id="info-dialog">
         <div class="dialog-content">
             <div id="info-header">
-                <h2> Info</h2><span class="icon-larger" id="icon">&iquest;</span><!-- Byta så det man redigerar är headlean så man kan ändra Info till en icon eller likn... -->
+                <h2> Info</h2><!--<span class="icon-larger" id="icon">&iquest;</span> Byta så det man redigerar är headlean så man kan ändra Info till en icon eller likn... -->
                 <p> Här är lite info som kan behövas ibland.</p>
             </div>
             <button id="escape-btn" type="button" class="std-btn "> OK </button>
