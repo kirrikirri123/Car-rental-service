@@ -46,30 +46,32 @@ function showLoginDialog() {
 async function login() {
     const userInfo = getLogInInfo();
     const url = 'http://localhost:8080/api/v1/auth/login';
-
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "username": userInfo.username, "password": userInfo.password })
+            body: JSON.stringify( {"username": userInfo.username, "password": userInfo.password})
         })
         if (!response.ok) {
-            updateInfoDialog(`Felaktigt inlogg. Dubbelkolla dina uppgifter.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
-            throw new Error('Felaktigt inlogg. Status: ' + response.status);
-            return;
+             updateInfoDialog('Felaktiga inloggningsuppgifter', `<i class="fa-solid fa-car-burst icon-car"></i>`);
+             throw new Error('Felaktigt inlogg. Dubbelkolla dina uppgifter.Status: '+ response.status);
         }
         const data = await response.json();
         loginDialog.close();
-        console.log(`${userinfo.username} och ${userinfo.password}`)
-        const credentials = btoa(`${userinfo.username}:${userinfo.password}`);
+        console.log(`${userInfo.username} och ${userInfo.password}`)
+        const credentials = btoa(`${userInfo.username}:${userInfo.password}`);
         sessionStorage.setItem(`basicAuth`, `Basic ${credentials}`);
         sessionStorage.setItem("principal", JSON.stringify(data));
         updateInfoDialog(`Välkommen ${data.username}! <br> Du är inloggad.`, `<i class="fa-solid fa-user-check icon-larger"></i>`)
         checkRole();
+        fetchNSaveUserById();
 
-    } catch (error) { console.error('Error:' + error.message) };
-    fetchNSaveUserById();
+    } catch (error) { 
+        console.error('Error:' + error.message);
+    };
+    
 }
+
 
 function clearInputFields() {
     /* Ta bort data från inloggningsfälten */
@@ -467,12 +469,12 @@ function admBookingsPage() {
     `;
     fetchActiveBookings();
 }
-function admChangeBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar skapas, redigeras och tas bort.</section></div>`;
-}
+/* function admChangeBookingsPage() {
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2>ADMIN - Bokningar skapas, redigeras och tas bort.</H2></section></div>`;
+} */
 
 function admHistoryPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Alla bokningar - All info. </section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2> Alla nuvarande och tidigare bokningar - All info. </H2></section>
     <table class="adm-table" id="bookingsTable">
     <thead>
        <tr>
@@ -493,7 +495,7 @@ function admHistoryPage() {
 }
 
 function admUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunderinformation - Här finns funktioner att uppdatera och radera.</section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Kundinformation - Funktioner att uppdatera och radera.</h2></section>
     <table class="adm-table" id="usersTable">
     <thead>
        <tr>
@@ -521,6 +523,25 @@ function admChangeUserPage() {
 
 function admStyleguidePage() {
     mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
+}
+function deleteUserDialog(user){
+       const dialog = document.querySelector('#update-dialog');
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div id="booking-header">
+                <h2>Radera användare</h2>
+                <p>Är du säker du vill radera användare med medlemsnr. ${user.id} ?</p>
+            </div>
+             <span class="btn-spacer">
+                <button type="button" class="std-btn" id="delete-btn">Radera</button>
+                <button type="button" class="std-btn neg-btn" id="exit-btn">Avbryt</button></span>
+            `
+    dialog.showModal();
+    dialog.querySelector('#delete-btn').addEventListener('click', () => {
+        deleteUser(user.id);
+        dialog.close();
+    });
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 
 function updateUserDialog(user) {
@@ -557,7 +578,7 @@ function updateUserDialog(user) {
 
     dialog.showModal();
     dialog.querySelector('#update-btn').addEventListener('click', () => {
-        updateUser(`${user}`);
+        updateUser(user.id);
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -728,10 +749,17 @@ function displayUser(user) {
         <dd><b>Medlemsnr:</b> ${user.id}</dd>
         <dd><b> Namn :</b> ${user.firstName} ${user.lastName}</dd>
         <dd><b> Telefonnr :</b> ${user.phone} </dd>
-        <dd><b> Email / Användarnamn :</b> ${user.email} </dd>
+        <dd><b> Email :</b> ${user.email} </dd>
+        <dd><b> Användarnamn:</b> ${user.username} </dd>
         </dl>
-        </div> `
+        </div> 
+         <div class="btn-spacer">      
+        <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
+        </div>
+        `
     wrapper.appendChild(innerDiv);
+    innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });  
+
 }
 
 function displayUpdateUser(user) {
@@ -752,14 +780,14 @@ function displayUpdateUser(user) {
         </dl>
         </div> 
         <div class="btn-spacer">      
-        <button id="update-btn" class="std-btn" alt="Knapp för att redigera kund" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
-        <button id="delete-btn" class="std-btn neg-btn" alt="Knapp för att radera kund" title="Radera"><i class="fa-regular fa-trash-can"></i></button>/* DELETA MED BEKRÄFTELSE I DIALOG */
+        <button id="update-btn" class="std-btn" alt="Knapp för att redigera kundinfo" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
+        <button id="delete-btn" class="std-btn neg-btn" alt="Knapp för att radera kund" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
         </div>
         </div>`
     wrapper.appendChild(innerDiv);
 
-    innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(`${user}`); });  
-    innerDiv.querySelector('#delete-btn').addEventListener('click', () => { deleteUserDialog(`${user}`); });
+    innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });  
+    innerDiv.querySelector('#delete-btn').addEventListener('click', () => { deleteUserDialog(user); });
     }
 
 
@@ -838,7 +866,7 @@ function getLogInInfo() {
         username: usern.value,
         password: pswrd.value
     }
-    return userInfo;
+   return userInfo;
 }
 
 function getNewUserInfo() {
@@ -1100,10 +1128,11 @@ async function fetchUserById() {
 
         });
         if (!response.ok) {
-            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
             if (response.status === 403) {
                 updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
+            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
+            
         }
 
         const data = await response.json();
@@ -1156,10 +1185,11 @@ async function fetchUserForUpdateView(id) {
 
         });
         if (!response.ok) {
-            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
             if (response.status === 403) {
                 updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
+            throw new Error(`Något gick fel vid verifiering av användare. Status: ${response.status}`);
+            
         }
         const data = await response.json();
         displayUpdateUser(data);
@@ -1184,20 +1214,33 @@ async function createNewUser() {
         if (!responseUser.ok) {
             throw new Error(`Fel vid skapade av ny användare. Status: ${responseUser.status}`);
         }
-        updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-check"></i>`);
+        updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
 
     } catch (error) {
-        updatInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
 /* Radera användare */
 async function deleteUser(id) {
+    const url = `http://localhost:8080/api/v1/users/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const responseUser = await fetch(url, {
+            method: "DELETE",
+            headers: {"Authorization": `${credentials}`}
+        });
+        if (!responseUser.ok) {
+            throw new Error(`Fel vid borttagning av ny användare. Status: ${responseUser.status}`);
+        }
+        updateInfoDialog(`Användare raderad!`, `<i class="fa-solid fa-user-minus"></i>`);
 
+    } catch (error) {
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
 }
 
 /* Updatera användare */
-
 async function updateUser(id) {
     const updatedUser = getUpdatedUser();
     const url = `http://localhost:8080/api/v1/users/${id}`;
@@ -1217,6 +1260,6 @@ async function updateUser(id) {
         updateInfoDialog(`Uppdatering lyckades!`, `<i class="fa-solid fa-user-check"></i>`);
 
     } catch (error) {
-        updatInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
