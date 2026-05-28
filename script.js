@@ -618,8 +618,8 @@ function updateCarDialog(car) {
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
-function deleteCarDialog(car){ 
-const dialog = document.querySelector('#update-dialog');
+function deleteCarDialog(car) {
+    const dialog = document.querySelector('#update-dialog');
     dialog.innerHTML =
         `<div class="dialog-content">
             <div id="dialog-header">
@@ -639,7 +639,7 @@ const dialog = document.querySelector('#update-dialog');
 }
 
 
-function bookingDialog() {
+function bookingDialog(car) {
     const dialog = document.querySelector(`#booking-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -650,8 +650,8 @@ function bookingDialog() {
                 </p>
             </div>
             <form id="booking-form">
-                <label for="input-date">Återlämnings dag:</label><br>
-                <input id="input-date" type="date" class="form-margin"><br>               
+                <label for="to-date">Återlämnings dag:</label><br>
+                <input id="to-date" type="date" class="form-margin"><br>               
                 <span class="btn-spacer">
                     <button id="book-btn" type="button" class="std-btn pos-btn book-btn">BOKA</button>
                     <button id="exit-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
@@ -660,7 +660,7 @@ function bookingDialog() {
 
     dialog.showModal();
     dialog.querySelector('#book-btn').addEventListener('click', () => {
-        console.log("Tryckt på bokningsknapp i dialogruta");
+        createNewBooking(car);
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -734,11 +734,11 @@ function displayACar(car) {
         ` <div class="panel panel-car">
             <h2> ${car.name} - ${car.model}</h2>
             <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"></div>
-            <button onclick= 'bookingDialog()' class="std-btn pos-btn book-btn" id="book-btn pos-btn"> Boka nu </button> 
+            <button class="std-btn pos-btn book-btn" id="book-car-btn"> Boka nu </button> 
             <dl>
         <dt><b>Tillverkare:</b></dt><dd>${car.name}</dd>
         <dt><b>Modell:</b></dt> <dd>${car.model}</dd>
-        <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn <i class="fa-regular fa-credit-card"></i></dd>
+        <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn </dd>
         <dt><b>Utrustning:</b><br></dt>
         <dd>-${car.feature1}</dd>
         <dd>-${car.feature2}</dd>
@@ -747,8 +747,21 @@ function displayACar(car) {
         <div class="btn-left">
         <button onclick= 'changeMainContent("user-cars")' class="std-btn neg-btn return-btn"> Fler bilar </button> 
         </div></div> `
+
+    let bookBtn = innerDiv.querySelector('#book-car-btn');
+    updateBookingBtn(bookBtn,car);
+    bookBtn.addEventListener('click', () => { bookingDialog(car);});
     wrapper.appendChild(innerDiv);
+
 }
+function updateBookingBtn(bookBtn,car) {
+    if (car.booked) {
+        bookBtn.disabled = true;
+        bookBtn.innerText = `Ej tillgänglig`
+    }
+}
+
+
 /* Lägg ihop tillbehör i en lsita för färre kollumner */
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
@@ -953,7 +966,20 @@ function getNewUserInfo() {
     return newUser;
 }
 
-function getNewBookingInfo() { }
+function getNewBookingInfo(car) {
+    const dialog = document.querySelector('#booking-dialog');
+    const toDate = dialog.querySelector('form #to-date').value;
+    const toDay = new Date();
+
+    const newBooking = {
+        "fromDate": toDay.toISOString().split("T")[0],
+        "toDate": toDate,
+        "carId": car.id
+    }
+    console.log(newBooking);
+
+    return newBooking;
+}
 
 function getNewCarInfo() {
     const brand = document.querySelector(`form #brand`);
@@ -1240,14 +1266,16 @@ async function fetchAllBookings() {
 }
 
 /* Skapa ny bokning */
-async function createNewBooking() {/* KOlla upp hur backenden ser ut!!!!!! */
-    const newBooking = getNewBookingInfo();
+async function createNewBooking(car) {
+    const newBooking = getNewBookingInfo(car);
     const url = `http://localhost:8080/api/v1/bookings`;
+    const credentials = sessionStorage.getItem("basicAuth");
     try {
         const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `${credentials}`
             },
             body: JSON.stringify(newBooking)
         });
@@ -1255,10 +1283,12 @@ async function createNewBooking() {/* KOlla upp hur backenden ser ut!!!!!! */
             throw new Error(`Fel vid skapade av uthyrning. Status: ${response.status}`);
         }
         updateInfoDialog(`Uthyrning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+        /*  OM dirigera till mina bokningar sidan?*/
     } catch (error) {
-        updateErrorInfoDialog(error);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
+
 
 /* Hämta användare */
 async function fetchUsers() {
