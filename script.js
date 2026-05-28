@@ -370,9 +370,9 @@ function admVehiclesPage() {
             <th>Tillverkare</th>
             <th>Modell</th>
             <th>Typ</th>
-            <th>Finness</th>
             <th>Utrustning</th>
-            <th>Tillbehör</th>
+            <th>Utrustning</th>
+            <th>Utrustning</th>
             <th>Bokad</th>
             
         </tr>
@@ -406,15 +406,17 @@ function admChangeVehiclesPage() {
             <input id="feature2" type="text"  class="input-fields form-margin form-text"></input><br>
 
         <label for="feature3" class="form-margin">Utrustning ex.3:</label><br>
-            <input id="password" class="input-fields form-margin form-text"></input><br>
+            <input id="feature3" class="input-fields form-margin form-text"></input><br>
             
-        <label for="type" class="form-margin">Klass: </label><br>
-        <select id="type" name="type" class="form-margin input-fields">
+        <label for="carType" class="form-margin">Klass: </label><br>
+        <select id="carType" name="carType" class="form-margin input-fields">
         <option value="combi">Komib</option>
         <option value="sedan">Sedan</option>
         <option value="cab">Cab</option>
         <option value="electric">El</option>
         <option value="bus">Familjebuss</option>
+        <option value="sport">Sport</option>
+        
         </select><br>
             
         <button type="button" class="std-btn pos-btn" id="reg-car-btn"> Registrera </button>
@@ -601,6 +603,7 @@ function updateCarDialog(car) {
         <option value="cab">Cab</option>
         <option value="electric">El</option>
         <option value="bus">Familjebuss</option>
+        <option value="sport">Sport</option>
         </select><br>
                 <span class="btn-spacer">
                     <button type="button" class="std-btn pos-btn book-btn" id="update-btn">Uppdatera</button>
@@ -726,7 +729,7 @@ function displayACar(car) {
         </div></div> `
     wrapper.appendChild(innerDiv);
 }
-
+/* Lägg ihop tillbehör i en lsita för färre kollumner */
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#carsTable')
@@ -939,16 +942,16 @@ function getNewCarInfo() {
     const f1 = document.querySelector("form #feature1");
     const f2 = document.querySelector("form #feature2");
     const f3 = document.querySelector("form #feature3");
-    const type = document.querySelector("select #type");
+    const type = document.querySelector("#carType").value;
     const newCar = {
         "name": brand.value,
         "model": model.value,
         "feature1": f1.value,
         "feature2": f2.value,
         "feature3": f3.value,
-        "type": type.value,
+        "type": type,
         "price": price.value,
-        "booked": booked.value,
+        "booked": false,
     }
     const formData = new FormData()
     formData.append("name", newCar.name);
