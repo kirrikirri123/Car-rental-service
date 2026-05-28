@@ -514,8 +514,8 @@ function deleteUserDialog(user) {
                 <p>Är du säker du vill radera användare med medlemsnr. ${user.id} ?</p>
             </div>
              <span class="btn-spacer">
-                <button type="button" class="std-btn" id="delete-btn">Radera</button>
-                <button type="button" class="std-btn neg-btn" id="exit-btn">Avbryt</button></span>
+                <button type="button" class="std-btn" id="delete-btn">Ja, Radera</button>
+                <button type="button" class="std-btn neg-btn" id="exit-btn">Nej, Avbryt</button></span>
             `
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
@@ -618,6 +618,26 @@ function updateCarDialog(car) {
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
+function deleteCarDialog(car){ 
+const dialog = document.querySelector('#update-dialog');
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div id="dialog-header">
+                <h2>Radera fordon</h2>
+                <p>Är du säker du vill radera fordon med bil-id. ${car.id} ?</p>
+            </div>
+             <span class="btn-spacer">
+                <button type="button" class="std-btn" id="delete-btn">Ja, Radera</button>
+                <button type="button" class="std-btn neg-btn" id="exit-btn">Nej, Avbryt</button></span>
+            `
+    dialog.showModal();
+    dialog.querySelector('#delete-btn').addEventListener('click', () => {
+        deleteCar(car.id);
+        dialog.close();
+    });
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+}
+
 
 function bookingDialog() {
     const dialog = document.querySelector(`#booking-dialog`);
