@@ -176,10 +176,13 @@
 
  footer div {
      display: flex;
-     flex-direction: row;
-     justify-content:space-between;
+     flex-direction: column;
      align-items: center;
      font-style: italic;
+ }
+
+ footer span {
+    padding:0.3rem;
  }
 
  #w-icon {
@@ -324,6 +327,15 @@
      left: 15%;
      translate: -8.5% -20%;
  }
+ .dialog-big{
+    width:75%;
+    
+ }
+ #view-dialog p{
+    text-align: left;
+    margin: 0.5rem;
+ }
+
 
  #info-dialog {
      background-color: var(--color-surface-raised);
@@ -370,6 +382,9 @@
  .book-btn {
      margin: 1em;
      font-size: 1.5rem;
+ }
+ .admin-btn {
+    display: none;
  }
 
  /* Placering av  en eller flera knappar */
@@ -521,7 +536,16 @@
     padding:0.5rem;
  }
 
+/* Tydliga vyer  */
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+}
 
+dl div {
+  display: contents;
+}
 
  @media (orientation: landscape) {
 

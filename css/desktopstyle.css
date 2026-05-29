@@ -125,3 +125,16 @@
      left: 70%;
      translate: -7% -7%;
  }
+
+ .dialog-big{
+    width: clamp(365px,45%,650px);
+    height:70% ;
+ }
+
+  footer div {
+     display: flex;
+     flex-direction: row;
+     justify-content:space-between;
+     align-items: center;
+     font-style: italic;
+ }
