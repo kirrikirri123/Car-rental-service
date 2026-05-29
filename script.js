@@ -1119,7 +1119,7 @@ async function displayABookingDialog(booking) {
                 <div class="btn-spacer">
                     <button type="button" class="std-btn pos-btn"id="exit-btn"> OK </button>
                     <button type="button" class="std-btn btn" id="update-booking-btn"> Uppdatera </button>
-                    <button type="button" class="std-btn neg-btn btn"id="delete-booking-btn"> Radera </button>
+                    <button type="button" class="std-btn neg-btn btn"id="delete-booking-btn"> Radera DIREKT </button>
                     
         </div>`
      if(isAdmin() === false){
@@ -1131,6 +1131,16 @@ async function displayABookingDialog(booking) {
 
     dialog.showModal();
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+    dialog.querySelector('#update-booking-btn').addEventListener('click', () => { 
+        onsole.log("Tryckt på uppdatera boking") 
+        dialog.close();
+    });
+
+    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => { 
+        deleteBooking(booking.id);
+        dialog.close(); });
+
+    
 
 }
 
@@ -1612,7 +1622,8 @@ async function returnBooking(id) {
             throw new Error(`Något gick fel vid återlämning. Status: ${response.status}`);
         }
         const data = await response.json();
-
+        if(data.active=== false) {
+            updateInfoDialog(`Återlämning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);}
     } catch (error) {
         console.error('Error:' + error.message);
         updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -1630,7 +1641,6 @@ async function deleteBooking(id) {
             headers: {
                 "Authorization": `${credentials}`
             }
-
         });
         if (!response.status === 204) {
             throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
