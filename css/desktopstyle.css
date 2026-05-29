@@ -58,8 +58,11 @@
      /* height: 70vh; */
  }
  .content-page{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     padding: var(--padding);
-
+    padding: var(--padding);
  }
 
   /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
@@ -68,9 +71,11 @@
      flex-direction: row;
      flex-wrap: wrap;
  }
-
 .panel-car{
     font-size: 1.3rem;
+}
+.panel-sort{
+    width: 100%;
 }
 
  /* Navigering----------------------------------------------------------------------Navigering------------------------------- */

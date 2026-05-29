@@ -58,7 +58,6 @@ async function login() {
         }
         const data = await response.json();
         loginDialog.close();
-        console.log(`${userInfo.username} och ${userInfo.password}`)
         const credentials = btoa(`${userInfo.username}:${userInfo.password}`);
         sessionStorage.setItem(`basicAuth`, `Basic ${credentials}`);
         sessionStorage.setItem("principal", JSON.stringify(data));
@@ -68,7 +67,7 @@ async function login() {
 
     } catch (error) {
         console.error('Error:' + error.message);
-    };
+    }
 
 }
 
@@ -308,7 +307,10 @@ function homePage() {
 
 
 function carsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn">Bara lediga bilar</button>   </div>
+    </div>`;
     fetchCars();
 }
 
@@ -339,14 +341,22 @@ function newUsersPage() {
 
 function userCarsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
+    <div class="panel-sort btn-spacer "> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button>  <div><label for="sort-car" class="info-headline">Välj bil-typ</label><input list="sort-car"> <datalist id="sort-car">
+     <option value="Sport">
+    <option value="Kombi">
+    <option value="Buss">
+    <option value="El">
+    <option value="Sedan">
+    </datalist></div></div>
     </div>`;
     fetchCars();
 }
 
 
 function userPagesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</h2></section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section></div>`;
 }
 
 function userInfoPage() {
@@ -355,12 +365,15 @@ function userInfoPage() {
 }
 
 function userBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section></div>`;
-    fetchBookingsById();
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section>
+    <div class="panel-sort"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa endast aktiva bokningar:</label><input type="checkbox" id="active-bookings">   </div>
+    </div>`;
+    fetchMyBookings();
 }
 
 function admVehiclesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> ADMIN - Bilar som visas och sorteras.</h2></section>
+    <div class="panel-sort"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa bil relaterad grej:</label><input type="checkbox" id="active-bookings">   </div>
     <div class="table-div">
     <table class="adm-table" id="carsTable">
     <thead>
@@ -428,6 +441,7 @@ function admChangeVehiclesPage() {
 
 function admBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
+    <div class="panel-sort"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa aktiva bokningar:</label><input type="checkbox" id="active-bookings">   </div>
     <table class="adm-table" id="activeBookingsTable">
     <thead>
        <tr>
@@ -722,6 +736,7 @@ function displayCars(cars) {
     });
 }
 
+
 function displayACar(car) {
     const page = document.querySelector(".content-page");
     page.innerHTML = "";
@@ -935,6 +950,29 @@ function displayBookingsTable(bookings) {
         tbody.appendChild(tr);
     });
 }
+/* Fundera på om man ska lägga en logik där man lägger i listor och hämtar, storterar därifrån istället för att fetcha? */
+async function displayMyBookings(bookings){
+    const wrapper = createPanelWrapper();
+    for(const booking of bookings) {
+        const car = await fetchCarByIdTEST(booking.carId);
+        const innerDiv = document.createElement("div");
+        const imgSrc = `/img/images/cars/${car.model}.jpg`;
+        const defaultSrc = `/img/images/cars/default.png`;
+        let returnerd;
+        if(booking.active){ returnerd = "OBS! Aktiv uthyrning"}else{ returnerd = "Återlämnad"};
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car">
+            <h3>${car.name} - ${car.model}</h3>
+            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
+            <p class="panel-font"><h4>Hyrestid:</h4> ${booking.fromDate} -${booking.toDate}<br>
+            <h4>Status :</h4> ${returnerd}.
+            </p>
+        <div class="btn-spacer">
+        <button class="std-btn pos-btn"> Se bokning </button> 
+        </div></div> `
+        wrapper.appendChild(innerDiv);
+    };
+}
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
 /*------------------------------------------------- */
@@ -1100,6 +1138,33 @@ async function fetchCarById(id) {
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
+/* Test attt bara returnera datan som hämtas och lägga den i valfri metod sen. */
+async function fetchCarByIdTEST(id) {
+    const url = `http://localhost:8080/api/v1/cars/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        })
+        if (!response.ok) {
+            if (`${response.status}` === '401') { throw new Error(`Logga in för att boka och se mer info kring våra fordon.`); }
+            throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error(`Fel vid inladdning av specifikt fordon. Error: ${error.message}`);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+}
+
+
+
 /* Hämta bilar för admin -view! */
 async function fetchAdmCars() {
     const url = 'http://localhost:8080/api/v1/cars';
@@ -1287,6 +1352,33 @@ async function createNewBooking(car) {
     } catch (error) {
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
+}
+
+async function fetchMyBookings(){
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/bookings/me`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        });
+        if (!response.ok) {
+            if (response.status === 403) {
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+            throw new Error(`Något gick fel vid hämtning av dina bokningar. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayMyBookings(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
 }
 
 
