@@ -211,6 +211,15 @@
 
  }
 
+.loading-icon{
+    animation: spin 5s linear infinite;
+    display: inline-block;
+    color: var(--color-primary);
+}
+#icon-accent {
+    color: var(--color-primary-hover);
+}
+
  @keyframes carTilt {
      20% {
          transform: rotate(18deg) translateY(-6px);
@@ -383,8 +392,8 @@
      margin: 1em;
      font-size: 1.5rem;
  }
- .admin-btn {
-    display: none;
+ .table-link-btn {
+    cursor: pointer;
  }
 
  /* Placering av  en eller flera knappar */
