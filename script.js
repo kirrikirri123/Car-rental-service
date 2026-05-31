@@ -58,7 +58,6 @@ async function login() {
         }
         const data = await response.json();
         loginDialog.close();
-        console.log(`${userInfo.username} och ${userInfo.password}`)
         const credentials = btoa(`${userInfo.username}:${userInfo.password}`);
         sessionStorage.setItem(`basicAuth`, `Basic ${credentials}`);
         sessionStorage.setItem("principal", JSON.stringify(data));
@@ -68,9 +67,10 @@ async function login() {
 
     } catch (error) {
         console.error('Error:' + error.message);
-    };
+    }
 
 }
+sessionStorage.clear();
 
 
 function clearInputFields() {
@@ -134,6 +134,7 @@ function showAdminMenu() {
     navUser.style.display = "none";
 }
 
+
 function checkRole() {/* Skriv om så att man sparar kanske roll och användare i sessionstorage och plockar därifrån */
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     if (principal === null) {
@@ -142,6 +143,14 @@ function checkRole() {/* Skriv om så att man sparar kanske roll och användare 
         showUserMenu();
     } else if (principal.isAdmin === true) {
         showAdminMenu();
+    }
+}
+/* returnerar true om man är admin */
+function isAdmin() {
+    const principal = JSON.parse(sessionStorage.getItem("user_principal"));
+    if (principal.role === "ROLE_ADMIN") { return true; }
+    else if (!principal.role === "ROLE_ADMIN") {
+        return false;
     }
 }
 
@@ -308,7 +317,10 @@ function homePage() {
 
 
 function carsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
+    <div class="panel-sort btn-spacer "><button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button></div>
+    </div>`;
     fetchCars();
 }
 
@@ -339,14 +351,22 @@ function newUsersPage() {
 
 function userCarsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
+    <div class="panel-sort btn-spacer "> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button>  <div><label for="sort-car" class="info-headline">Välj bil-typ</label><input list="sort-car"> <datalist id="sort-car">
+     <option value="Sport">
+    <option value="Kombi">
+    <option value="Buss">
+    <option value="El">
+    <option value="Sedan">
+    </datalist></div></div>
     </div>`;
     fetchCars();
 }
 
 
 function userPagesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</h2></section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section></div>`;
 }
 
 function userInfoPage() {
@@ -355,12 +375,15 @@ function userInfoPage() {
 }
 
 function userBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section></div>`;
-    fetchBookingsById();
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa endast aktiva bokningar:</label><input type="checkbox" id="active-bookings">   </div>
+    </div>`;
+    fetchMyBookings();
 }
 
 function admVehiclesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> ADMIN - Bilar som visas och sorteras.</h2></section>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa bil relaterad grej:</label><input type="checkbox" id="active-bookings">   </div>
     <div class="table-div">
     <table class="adm-table" id="carsTable">
     <thead>
@@ -427,7 +450,9 @@ function admChangeVehiclesPage() {
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
+        <div class="panel-sort btn-spacer"><button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn">Visa aktiva bokningar</button></div>
     <table class="adm-table" id="activeBookingsTable">
     <thead>
        <tr>
@@ -618,8 +643,8 @@ function updateCarDialog(car) {
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
-function deleteCarDialog(car){ 
-const dialog = document.querySelector('#update-dialog');
+function deleteCarDialog(car) {
+    const dialog = document.querySelector('#update-dialog');
     dialog.innerHTML =
         `<div class="dialog-content">
             <div id="dialog-header">
@@ -638,8 +663,7 @@ const dialog = document.querySelector('#update-dialog');
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 
-
-function bookingDialog() {
+function bookingDialog(car) {
     const dialog = document.querySelector(`#booking-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -650,8 +674,8 @@ function bookingDialog() {
                 </p>
             </div>
             <form id="booking-form">
-                <label for="input-date">Återlämnings dag:</label><br>
-                <input id="input-date" type="date" class="form-margin"><br>               
+                <label for="to-date">Återlämnings dag:</label><br>
+                <input id="to-date" type="date" class="form-margin"><br>               
                 <span class="btn-spacer">
                     <button id="book-btn" type="button" class="std-btn pos-btn book-btn">BOKA</button>
                     <button id="exit-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
@@ -660,7 +684,7 @@ function bookingDialog() {
 
     dialog.showModal();
     dialog.querySelector('#book-btn').addEventListener('click', () => {
-        console.log("Tryckt på bokningsknapp i dialogruta");
+        createNewBooking(car);
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -685,6 +709,33 @@ function updateBookingDialog() {
 
     dialog.showModal();
 }
+
+function returnCarDialog(booking) {
+    const dialog = document.querySelector('#update-dialog');
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div>
+                <h2>Återlämna bil</h2>
+                <h4>Dubbelkolla återlämning.</h4><br><p>
+                Är det kund med medlemsnr ${booking.userId} som återlämnar ?<br>
+                Stämmer fordons-id ${booking.carId}?<br>
+                
+                Planerat återlämningsdatum var ${booking.toDate}. <br>
+                 <i>Vid överträdelse. Informera kund om förseningsränta på 3% dygnet.</i>
+                </p>
+            </div>
+             <span class="btn-spacer">
+                <button type="button" class="std-btn" id="delete-btn">Avsluta uthyrning</button>
+                <button type="button" class="std-btn neg-btn" id="exit-btn">Nej, Avbryt</button></span>
+            `
+    dialog.showModal();
+    dialog.querySelector('#delete-btn').addEventListener('click', () => {
+        returnBooking(booking.id);
+        dialog.close();
+    });
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+}
+
 
 /* ------------------------------------------------ */
 /* DISPLAY-FUNKTIONER */
@@ -734,21 +785,35 @@ function displayACar(car) {
         ` <div class="panel panel-car">
             <h2> ${car.name} - ${car.model}</h2>
             <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"></div>
-            <button onclick= 'bookingDialog()' class="std-btn pos-btn book-btn" id="book-btn pos-btn"> Boka nu </button> 
+            <button class="std-btn pos-btn book-btn" id="book-car-btn"> Boka nu </button> 
             <dl>
         <dt><b>Tillverkare:</b></dt><dd>${car.name}</dd>
         <dt><b>Modell:</b></dt> <dd>${car.model}</dd>
-        <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn <i class="fa-regular fa-credit-card"></i></dd>
+        <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn </dd>
         <dt><b>Utrustning:</b><br></dt>
-        <dd>-${car.feature1}</dd>
-        <dd>-${car.feature2}</dd>
-        <dd>-${car.feature3}</dd>
+        <dd>
+        <li> ${car.feature1}</li>
+        <li>${car.feature2}</li>
+        <li>${car.feature3}</li></dd>
         </dl>
         <div class="btn-left">
         <button onclick= 'changeMainContent("user-cars")' class="std-btn neg-btn return-btn"> Fler bilar </button> 
         </div></div> `
+
+    let bookBtn = innerDiv.querySelector('#book-car-btn');
+    updateBookingBtn(bookBtn, car);
+    bookBtn.addEventListener('click', () => { bookingDialog(car); });
     wrapper.appendChild(innerDiv);
+
 }
+function updateBookingBtn(bookBtn, car) {
+    if (car.booked) {
+        bookBtn.disabled = true;
+        bookBtn.innerText = `Ej tillgänglig`
+    }
+}
+
+
 /* Lägg ihop tillbehör i en lsita för färre kollumner */
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
@@ -779,21 +844,42 @@ function displayCarsTable(cars) {
 function displayUpdateCar(car) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
+    let booked;
+    if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
     innerDiv.innerHTML =
         ` 
         <div class="panel-wrapper">
         <div class="panel panel-important">
             <dl>
-        <dd><b> Bil-id:</b> ${car.id}</dd>
-        <dd><b> Tillverkare :</b> ${car.name}</dd>
-        <dd><b> Model :</b> ${car.model}</dd>
-        <dd><b> Klass :</b> ${car.type} </dd>
-        <dd><b> Utrustning ex.1:</b> ${car.feature1}</dd>
-        <dd><b> Utrustning ex.2:</b> ${car.feature2} </dd>
-        <dd><b> Utrustning ex.3:</b> ${car.feature3}</dd>
-        <dd><b> Bokad?:</b> ${car.booked}</dd>
-        </dl>
-        </div> 
+  <div>
+    <dt><b> Id:</b></dt>
+    <dd>${car.id}</dd>
+  </div>
+  <div>
+    <dt><b> Tillverkare :</b></dt>
+    <dd>${car.name}</dd>
+  </div>
+  <div>
+    <dt><b> Model :</b></dt>
+    <dd>${car.model}</dd>
+  </div>
+  <div>
+    <dt><b> Typ :</b></dt>
+    <dd>${car.type}</dd>
+  </div>
+  <div>
+    <dt><b> Utrustning :</b></dt>
+    <dd><br>
+    <li>${car.feature1}</li>
+        <li>${car.feature2}</li>
+        <li>${car.feature3}</li></dd>
+  </div>
+  <div>
+    <dt><b> Bokad? :</b></dt>
+    <dd> ${booked}</dd>
+  </div>
+</dl>
+    </div> 
         <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera fordons-info" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
         <button id="delete-btn" class="std-btn neg-btn" alt="Knapp för att radera fordon" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
@@ -811,13 +897,29 @@ function displayUser(user) {
     const innerDiv = document.createElement("div");
     innerDiv.innerHTML =
         ` <div class="panel panel-important">
-            <dl>
-        <dd><b>Medlemsnr:</b> ${user.id}</dd>
-        <dd><b> Namn :</b> ${user.firstName} ${user.lastName}</dd>
-        <dd><b> Telefonnr :</b> ${user.phone} </dd>
-        <dd><b> Email :</b> ${user.email} </dd>
-        <dd><b> Användarnamn:</b> ${user.username} </dd>
-        </dl>
+    <dl>
+  <div>
+    <dt><b>Medlemsnr:</b></dt>
+    <dd>${user.id}</dd>
+  </div>
+  <div>
+    <dt><b> Namn :</b></dt>
+    <dd>${user.firstName} ${user.lastName}</dd>
+  </div>
+  <div>
+    <dt><b> Telefonnr :</b></dt>
+    <dd>${user.phonel}</dd>
+  </div>
+  <div>
+    <dt><b> Email :</b></dt>
+    <dd>${user.email}</dd>
+  </div>
+  <div>
+    <dt><b> Användarnamn:</b></dt>
+    <dd>${user.username}</dd>
+  </div>
+  <div>
+    </dl>
         </div> 
          <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
@@ -831,19 +933,44 @@ function displayUser(user) {
 function displayUpdateUser(user) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
+    let role;
+    if (user.role === "ROLE_USER") { role = "Kund" } else { role = "Administratör" };
     innerDiv.innerHTML =
         ` 
         <div class="panel-wrapper">
         <div class="panel panel-important">
-            <dl>
-        <dd><b>Medlemsnr:</b> ${user.id}</dd>
-        <dd><b> Förnamn :</b> ${user.firstName}</dd>
-        <dd><b> Efternamn :</b>${user.lastName}</dd>
-        <dd><b> Telefonnr :</b> ${user.phone} </dd>
-        <dd><b> Email:</b> ${user.email} </dd>
-        <dd><b> Användarnamn:</b> ${user.username} </dd>
-        <dd><b> Roll:</b>${user.role}</dd>
-        </dl>
+
+      <dl>
+  <div>
+    <dt><b>Medlemsnr:</b></dt>
+    <dd>${user.id}</dd>
+  </div>
+  <div>
+    <dt><b> Namn :</b></dt>
+    <dd>${user.firstName}</dd>
+  </div>
+  <div>
+    <dt><b> Namn :</b></dt>
+    <dd>${user.lastName}</dd>
+  </div>
+  <div>
+    <dt><b> Telefonnr :</b></dt>
+    <dd>${user.phone}</dd>
+  </div>
+  <div>
+    <dt><b> Email :</b></dt>
+    <dd>${user.email}</dd>
+  </div>
+  <div>
+    <dt><b> Användarnamn:</b></dt>
+    <dd>${user.username}</dd>
+  </div>
+  <div>
+    <dt><b>Roll:</b></dt>
+    <dd>${role}</dd>
+  </div>
+  <div>
+    </dl>
         </div> 
         <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera kundinfo" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
@@ -889,7 +1016,7 @@ function displayActiveBookingsTable(bookings) {
         tr.innerHTML =
             ` 
        <td>
-     <button onclick="returnCar(${booking.id})" class="std-btn"> Återlämna fordon </button>
+     <button class="std-btn return-car-btn"> Återlämna fordon </button>
       </td>
       <td>${booking.id}</td>
       <td>${booking.userId}</td>
@@ -897,11 +1024,21 @@ function displayActiveBookingsTable(bookings) {
       <td>${booking.fromDate}</td>
       <td>${booking.toDate}</td> 
       <td>
-      <button onclick='fetchBookingById(${booking.id})' class="std-btn neg-btn" alt="Knapp för att redigera eller radera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+      <button class="view-booking-btn std-btn neg-btn" alt="Knapp för att redigera eller radera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
       </td>  `
+        tr.querySelector('.return-car-btn').addEventListener('click', () => {
+            returnCarDialog(booking);
+        });
+
+        tr.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayABookingDialog(booking);
+        });
+
         tbody.appendChild(tr);
     });
+    
 }
+
 
 function displayBookingsTable(bookings) {
 
@@ -922,6 +1059,91 @@ function displayBookingsTable(bookings) {
         tbody.appendChild(tr);
     });
 }
+
+
+/* Fundera på om man ska lägga en logik där man lägger i listor och hämtar, storterar därifrån istället för att fetcha? */
+async function displayMyBookings(bookings) {
+
+    const wrapper = createPanelWrapper();
+    for (const booking of bookings) {
+        const car = await fetchCarByIdTEST(booking.carId);
+        const innerDiv = document.createElement("div");
+        const imgSrc = `/img/images/cars/${car.model}.jpg`;
+        const defaultSrc = `/img/images/cars/default.png`;
+        const book = booking;
+        let returnerd;
+        if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car">
+            <h3>${car.name} - ${car.model}</h3>
+            <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
+            <p class="panel-font"><h4>Hyrestid:</h4> ${booking.fromDate} -${booking.toDate}<br>
+            <h4>Status :</h4> ${returnerd}.
+            </p>
+        <div class="btn-spacer">
+        <button class="std-btn pos-btn view-booking-btn"> Se bokning </button> 
+        </div></div> `
+         innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayABookingDialog(booking);
+        });
+        wrapper.appendChild(innerDiv);
+    };
+}
+
+
+
+async function displayABookingDialog(booking) {
+    const car = await fetchCarByIdTEST(booking.carId);
+    const user = await fetchUserByIdTEST(booking.userId);
+    let returnerd;
+    if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
+    const dialog = document.querySelector(`#view-dialog`);
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div id="booking-header">
+                <h2>Bokningsinformation</h2>
+                Gällande bokningsnr <b>${booking.id}</b>.<br></div>
+                <div><p>
+                Hyrd av <b>${user.firstName} ${user.lastName}</b>. <br>
+                Medlemsnummer ${user.id}.
+                </p>
+            </div>
+            <div>
+        <p>
+        <b>Tillverkare:</b><br> ${car.name}<br>
+        <b>Modell:</b><br> ${car.model}<br>
+        <b>Pris ber dygn:</b><br> ${car.price}<br>
+        <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
+        <b>Status:</b><br> ${returnerd}.<br>
+        </p></div>
+                <div class="btn-spacer">
+                    <button type="button" class="std-btn pos-btn"id="exit-btn"> OK </button>
+                    <button type="button" class="std-btn btn" id="update-booking-btn"> Uppdatera </button>
+                    <button type="button" class="std-btn neg-btn btn"id="delete-booking-btn"> Radera DIREKT </button>
+                    
+        </div>`
+     if(isAdmin() === false){
+        let buttons = dialog.querySelectorAll('.btn');
+        buttons.forEach( button => {
+            button.classList.add('admin-btn');
+        });
+    }
+
+    dialog.showModal();
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+    dialog.querySelector('#update-booking-btn').addEventListener('click', () => { 
+        onsole.log("Tryckt på uppdatera boking") 
+        dialog.close();
+    });
+
+    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => { 
+        deleteBooking(booking.id);
+        dialog.close(); });
+
+    
+
+}
+
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
 /*------------------------------------------------- */
@@ -953,7 +1175,18 @@ function getNewUserInfo() {
     return newUser;
 }
 
-function getNewBookingInfo() { }
+function getNewBookingInfo(car) {
+    const dialog = document.querySelector('#booking-dialog');
+    const toDate = dialog.querySelector('form #to-date').value;
+    const toDay = new Date();
+
+    const newBooking = {
+        "fromDate": toDay.toISOString().split("T")[0],
+        "toDate": toDate,
+        "carId": car.id
+    }
+    return newBooking;
+}
 
 function getNewCarInfo() {
     const brand = document.querySelector(`form #brand`);
@@ -1074,6 +1307,33 @@ async function fetchCarById(id) {
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
+/* Test attt bara returnera datan som hämtas och lägga den i valfri metod sen. */
+async function fetchCarByIdTEST(id) {
+    const url = `http://localhost:8080/api/v1/cars/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        })
+        if (!response.ok) {
+            if (`${response.status}` === '401') { throw new Error(`Logga in för att boka och se mer info kring våra fordon.`); }
+            throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error(`Fel vid inladdning av specifikt fordon. Error: ${error.message}`);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+}
+
+
+
 /* Hämta bilar för admin -view! */
 async function fetchAdmCars() {
     const url = 'http://localhost:8080/api/v1/cars';
@@ -1186,9 +1446,9 @@ async function deleteCar(id) {
 
 }
 
-
-
-
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* BOKNINGAR ----------------- */
+/* ----------------------------------------------------------------------------------------------------------------BOKNINGAR-------------------------------- */
 /* Hämta bokningar */
 async function fetchActiveBookings() {
     const url = 'http://localhost:8080/api/v1/bookings/active';
@@ -1240,14 +1500,16 @@ async function fetchAllBookings() {
 }
 
 /* Skapa ny bokning */
-async function createNewBooking() {/* KOlla upp hur backenden ser ut!!!!!! */
-    const newBooking = getNewBookingInfo();
+async function createNewBooking(car) {
+    const newBooking = getNewBookingInfo(car);
     const url = `http://localhost:8080/api/v1/bookings`;
+    const credentials = sessionStorage.getItem("basicAuth");
     try {
         const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `${credentials}`
             },
             body: JSON.stringify(newBooking)
         });
@@ -1255,10 +1517,146 @@ async function createNewBooking() {/* KOlla upp hur backenden ser ut!!!!!! */
             throw new Error(`Fel vid skapade av uthyrning. Status: ${response.status}`);
         }
         updateInfoDialog(`Uthyrning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+        /*  OM dirigera till mina bokningar sidan?*/
     } catch (error) {
-        updateErrorInfoDialog(error);
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
+
+async function fetchMyBookings() {
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/bookings/me`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        });
+        if (!response.ok) {
+            if (response.status === 403) {
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+            throw new Error(`Något gick fel vid hämtning av dina bokningar. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayMyBookings(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
+}
+/* Hämta specifik bokning. */
+
+async function fetchBookingById(id) {
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/bookings/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+
+        });
+        if (!response.ok) {
+            if (response.status === 403) {
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+            throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data+"i fetchmetod");
+        return data;
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+}
+
+/* Uppdatera bokning */
+async function updateBooking(id) {
+    const updatedBooking = getUpdatedBooking();
+    const url = `http://localhost:8080/api/v1/bookings/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${credentials}`
+            },
+            body: JSON.stringify(updatedBooking)
+        });
+        if (!response.ok) {
+            throw new Error(`Fel vid updatering av bokning. Status: ${response.status}`);
+        }
+        updateInfoDialog(`Uppdatering lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+
+    } catch (error) {
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
+}
+
+/* Återlämna bokninhg */
+async function returnBooking(id) {
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/bookings/return/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        });
+        if (!response.ok) {
+            if (response.status === 404) {
+                updateInfoDialog(`Bokningen hittades ej.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+            throw new Error(`Något gick fel vid återlämning. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if(data.active=== false) {
+            updateInfoDialog(`Återlämning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);}
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
+}
+
+/* Radera bokning */
+async function deleteBooking(id) {
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/bookings/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                "Authorization": `${credentials}`
+            }
+        });
+        if (!response.status === 204) {
+            throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
+        }
+        updateInfoDialog(`Bokning raderad!`, `<i class="fa-solid fa-circle-minus" title="Deleted"></i>`);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
+}
+
+
+
+
 
 /* Hämta användare */
 async function fetchUsers() {
@@ -1298,7 +1696,6 @@ async function fetchUserById() {
             headers: {
                 "Authorization": `${credentials}`
             }
-
         });
         if (!response.ok) {
             if (response.status === 403) {
@@ -1317,7 +1714,7 @@ async function fetchUserById() {
         updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
-
+ 
 async function fetchNSaveUserById() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     const id = principal.userId;
@@ -1355,17 +1752,46 @@ async function fetchUserForUpdateView(id) {
             headers: {
                 "Authorization": `${credentials}`
             }
+        });
+        if (!response.ok) {
+            if (response.status === 403) {
+                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+            throw new Error(`Något gick fel vid hämtning av specifik användare. Status: ${response.status}`);
+
+        }
+        const data = await response.json();
+        displayUpdateUser(data);
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+}
+
+
+/* Hämtar bara användar info ingen displau!!TEST */
+async function fetchUserByIdTEST(id) {
+    const credentials = sessionStorage.getItem("basicAuth");
+    const url = `http://localhost:8080/api/v1/users/${id}`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Authorization": `${credentials}`
+            }
 
         });
         if (!response.ok) {
             if (response.status === 403) {
                 updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
-            throw new Error(`Något gick fel vid hämtninga v specifik användare. Status: ${response.status}`);
-
+            throw new Error(`Något gick fel vid sökning efter användare. Status: ${response.status}`);
         }
+
         const data = await response.json();
-        displayUpdateUser(data);
+        return data;
+
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -1403,7 +1829,7 @@ async function deleteUser(id) {
             method: "DELETE",
             headers: { "Authorization": `${credentials}` }
         });
-        if (!responseUser.ok) {
+        if (!responseUser.status === 204) {
             throw new Error(`Fel vid borttagning av ny användare. Status: ${responseUser.status}`);
         }
         updateInfoDialog(`Användare raderad!`, `<i class="fa-solid fa-user-minus"></i>`);
