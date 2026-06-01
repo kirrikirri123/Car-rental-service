@@ -11,6 +11,28 @@ const loginBtn = document.querySelector("#login-btn");
 const escapeBtn = document.querySelector("#escape-btn");
 const newUserBtn = document.querySelector("#new-user-btn");
 
+/* Data hämtad från databasen för och sortering */
+const dataStore ={
+    cars: [],
+    users: [],
+    bookings: []
+};
+/* Hjälp för sortering */
+let sortValue="name";
+let sortDirection = "asc";
+
+function sortCars(cars,sortValue,sortDirection){
+    return [...cars].sort((a,b) => {
+    dir =sortDirection ==="asc" ? 1 : -1; /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
+        return a[sortValue].localCompare(b[sortValue],"sv") * dir;
+    });}
+
+function sortUsers(users,sortValue,sortDirection){
+    
+}
+function sortBookings(bookings,sortValue,sortDirection){
+    
+}
 
 /* Informations popup----------------------------------------------------------Informations poup----------------- */
 function dialogCloseNClear() {
@@ -353,7 +375,7 @@ function userCarsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
     <div class="panel-sort btn-spacer "> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button>  
-    <div><label for="sort-brand" class="info-headline">Tillverkare</label><input list="sort-brand"> <select name="CarName" id="sort-brand">
+    <div><label for="sort-brand" class="info-headline">Tillverkare</label><select name="CarName" id="sort-brand" class="form-margin">
      option value="Corvette">
     <option value="Kalles">
     <option value="Skoda">
@@ -364,8 +386,9 @@ function userCarsPage() {
     <option value="Farsans">
     <option value="Okänd">
     </select></div>
-    <div><label for="sort-car" class="info-headline">Välj bil-typ</label><input list="sort-car"> <select name="car-type" id="sort-car">
-     <option value="Sport">
+    <div><label for="sort-car" class="info-headline">Välj bil-typ</label>
+    <select name="car-type" id="sort-car">
+    <option value="Sport">
     <option value="Kombi">
     <option value="Buss">
     <option value="El">
@@ -388,14 +411,15 @@ function userInfoPage() {
 
 function userBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section>
-    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings"><button type="button" class=" form-margin std-btn pos-btn">Visa aktiva bokningar</button></div>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <label for="active-bookings"><button type="button" class=" form-margin std-btn pos-btn">Visa aktiva bokningar</button></div>
     </div>`;
     fetchMyBookings();
 }
 
 function admVehiclesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> ADMIN - Bilar som visas och sorteras.</h2></section>
-    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> <label for="active-bookings">Visa bil relaterad grej:</label><input type="checkbox" id="active-bookings">   </div>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> </div>
     <div class="table-div">
     <table class="adm-table" id="carsTable">
     <thead>
@@ -405,8 +429,6 @@ function admVehiclesPage() {
             <th>Tillverkare</th>
             <th>Modell</th>
             <th>Typ</th>
-            <th>Utrustning</th>
-            <th>Utrustning</th>
             <th>Utrustning</th>
             <th>Bokad</th>
             
@@ -484,9 +506,6 @@ function admBookingsPage() {
     `;
     fetchActiveBookings();
 }
-/* function admChangeBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2>ADMIN - Bokningar skapas, redigeras och tas bort.</H2></section></div>`;
-} */
 
 function admHistoryPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2> Alla nuvarande och tidigare bokningar - All info. </H2></section>
@@ -722,11 +741,13 @@ function updateBookingDialog(booking) {
         </div>`
 
     dialog.showModal();
-     dialog.querySelector('.update-btn').addEventListener('click', () => {
-        try{
-        const updatedBook = getUpdatedBooking(booking);
-        updateBooking(booking.id, updatedBook);}
-        catch (error){ updateInfoDialog(error, `<i class="fa-solid fa-slash loading-icon"></i><i class="fa-solid fa-slashloading-icon" id="icon-accent"></i>`)
+    dialog.querySelector('.update-btn').addEventListener('click', () => {
+        try {
+            const updatedBook = getUpdatedBooking(booking);
+            updateBooking(booking.id, updatedBook);
+        }
+        catch (error) {
+            updateInfoDialog(error, `<i class="fa-solid fa-slash loading-icon"></i><i class="fa-solid fa-slashloading-icon" id="icon-accent"></i>`)
 
         }
         dialog.close();
@@ -793,7 +814,13 @@ function displayCars(cars) {
         </dl>
         <div class="btn-spacer">
         <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
+        <span id="icon-holder" class="icon-larger"></span>
         </div></div> `
+         if (car.booked) {
+            innerDiv.querySelector('div .panel-car').classList.add('car-booked');
+            innerDiv.querySelector('#icon-holder').innerHTML = `<i class="fa-solid fa-road-lock" title="Bil ej tillgänglig"></i>`;
+
+            }
         wrapper.appendChild(innerDiv);
     });
 }
@@ -816,7 +843,7 @@ function displayACar(car) {
         <dt><b>Modell:</b></dt> <dd>${car.model}</dd>
         <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn </dd>
         <dt><b>Utrustning:</b><br></dt>
-        <dd>
+        <dd><br>
         <li> ${car.feature1}</li>
         <li>${car.feature2}</li>
         <li>${car.feature3}</li></dd>
@@ -837,8 +864,6 @@ function updateBookingBtn(bookBtn, car) {
         bookBtn.innerText = `Ej tillgänglig`
     }
 }
-
-
 /* Lägg ihop tillbehör i en lsita för färre kollumner */
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
@@ -856,9 +881,10 @@ function displayCarsTable(cars) {
       <td>${car.name}</td>
       <td>${car.model}</td>
       <td>${car.type}</td>
-      <td>${car.feature1}</td>
-      <td>${car.feature2}</td>
-      <td>${car.feature3}</td>
+      <td><ul>
+      <li>${car.feature1}</li>
+      <li>${car.feature2}</li>
+      <li>${car.feature3}</li></ul></td>
       <td>${car.booked}</td>
         `
         tbody.appendChild(tr);
@@ -1012,8 +1038,9 @@ function displayUpdateUser(user) {
 function displayAllUsers(users) {
     const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
-
     users.forEach(user => {
+        let role;
+        if (user.role === "ROLE_USER") { role = "Kund" } else { role = "Administratör" };
         const tr = document.createElement("tr");
         tr.innerHTML =
             `
@@ -1026,12 +1053,12 @@ function displayAllUsers(users) {
         <td>${user.lastName}</td>
         <td class="show-book-btn table-link-btn" title="Klicka för att se bokningar.">${user.noOfOrders}</td>
         <td>${user.phone}</td>
-        <td>${user.role}</td>
+        <td>${role}</td>
         <td>${user.username} </td>
 
         `
         tr.querySelector('.show-book-btn').addEventListener('click', () => {
-        displayBookingsByUserId(22);
+            displayBookingsByUserId(user.id);
         });
         tbody.appendChild(tr);
     });
@@ -1063,9 +1090,7 @@ function displayActiveBookingsTable(bookings) {
         });
         tbody.appendChild(tr);
     });
-    
 }
-
 
 function displayBookingsTable(bookings) {
 
@@ -1108,7 +1133,7 @@ async function displayMyBookings(bookings) {
         <div class="btn-spacer">
         <button class="std-btn pos-btn view-booking-btn"> Se bokning </button> 
         </div></div> `
-         innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
             displayABookingDialog(booking);
         });
         wrapper.appendChild(innerDiv);
@@ -1136,8 +1161,8 @@ async function displayBookingsByUserId(id) {
         <div class="btn-spacer">
         <button class="std-btn pos-btn view-booking-btn"> Se bokning </button> 
         </div></div> `
-         innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
-             displayUpdateBookingDialog(booking);
+        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayUpdateBookingDialog(booking);
         });
         wrapper.appendChild(innerDiv);
     };
@@ -1164,7 +1189,7 @@ async function displayABookingDialog(booking) {
         <p>
         <b>Tillverkare:</b><br> ${car.name}<br>
         <b>Modell:</b><br> ${car.model}<br>
-        <b>Pris ber dygn:</b><br> ${car.price}<br>
+        <b>Pris ber dygn:</b><br> ${car.price} SEK<br>
         <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
         <b>Status:</b><br> ${returnerd}.<br>
         </p></div>
@@ -1173,10 +1198,10 @@ async function displayABookingDialog(booking) {
         </div>`;
 
     dialog.showModal();
-    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });  
-    }
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+}
 
-async function displayUpdateBookingDialog(booking){
+async function displayUpdateBookingDialog(booking) {
     const car = await fetchCarByIdTEST(booking.carId);
     const user = await fetchUserByIdTEST(booking.userId);
     let returnerd;
@@ -1208,16 +1233,17 @@ async function displayUpdateBookingDialog(booking){
         </div>`;
     dialog.showModal();
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
-    dialog.querySelector('#update-booking-btn').addEventListener('click', () => { 
+    dialog.querySelector('#update-booking-btn').addEventListener('click', () => {
         updateBookingDialog(booking);
         dialog.close();
     });
 
-    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => { 
+    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => {
         deleteBooking(booking.id);
-        dialog.close(); });
-  
-    }
+        dialog.close();
+    });
+
+}
 
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
@@ -1319,7 +1345,7 @@ function getUpdatedCar() {
 function getUpdatedBooking(booking) {
     const dialog = document.querySelector('#update-dialog');
     const toDate = dialog.querySelector('form #input-date').value;
-    if(toDate === null){throw new Error(`Ingen datum i fyllt`);}
+    if (toDate === null) { throw new Error(`Ingen datum i fyllt`); }
     const updatedBooking = {
         "fromDate": booking.fromDate,
         "toDate": toDate,
@@ -1627,10 +1653,12 @@ async function fetchMyBookings() {
             }
         });
         if (!response.ok) {
-            if (response.status === 404) { 
-                throw new Error(`Inga bokningar!`); }
+            if (response.status === 404) {
+                throw new Error(`Inga bokningar!`);
+            }
             if (response.status === 403) {
-                throw new Error(`Tyvärr, din behörighet når inte hit.`); }
+                throw new Error(`Tyvärr, din behörighet når inte hit.`);
+            }
             throw new Error(`Något gick fel vid hämtning av dina bokningar. Status: ${response.status}`);
         }
 
@@ -1685,9 +1713,11 @@ async function fetchBookingByUserId(userId) {
         });
         if (!response.ok) {
             if (response.status === 403) {
-                throw new Error(`Tyvärr, din behörighet når inte hit.`);  }
+                throw new Error(`Tyvärr, din behörighet når inte hit.`);
+            }
             if (response.status === 404) {
-                throw new Error(`Inga bokningar finns på kunden.`)}
+                throw new Error(`Inga bokningar finns på kunden.`)
+            }
             throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
         }
         const data = await response.json();
@@ -1745,8 +1775,9 @@ async function returnBooking(id) {
             throw new Error(`Något gick fel vid återlämning. Status: ${response.status}`);
         }
         const data = await response.json();
-        if(data.active=== false) {
-            updateInfoDialog(`Återlämning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);}
+        if (data.active === false) {
+            updateInfoDialog(`Återlämning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
+        }
     } catch (error) {
         console.error('Error:' + error.message);
         updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -1837,7 +1868,7 @@ async function fetchUserById() {
         updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
- 
+
 async function fetchNSaveUserById() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     const id = principal.userId;

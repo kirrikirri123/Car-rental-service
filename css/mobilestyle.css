@@ -3,7 +3,7 @@
      padding: 0;
      box-sizing: border-box;
  }
-
+/* * { -webkit-tap-highlight-color: transparent; } */
  /* AAA — Ljust tema */
  /* .light-theme { */
  /* Bakgrund */
@@ -219,6 +219,9 @@
 #icon-accent {
     color: var(--color-primary-hover);
 }
+#icon-holder {
+    text-align: right;
+}
 
  @keyframes carTilt {
      20% {
@@ -356,6 +359,11 @@
      top: 55%;
      translate: -10% -10%;
  }
+ ul{
+    text-align: left;
+    margin-left:1rem;
+}
+
 
  /*Knappar--------------------------------------------------------------------------Knappar----------------------------------*/
  .std-btn {
@@ -505,7 +513,7 @@
 
  .panel {
      border: 0.13rem solid var(--color-dec-accent);
-     border-radius: 1em;
+     /* border-radius: 1em; */
      margin: 1em;
      padding: 1em;
      display: flex;
@@ -526,9 +534,18 @@
 
  .panel-car {
      background-color: var(--color-surface-raised);
-     border: 0.3rem solid var(--color-border);
+     border: 0.3rem solid var(--color-primary-hover);
      max-width: 536px;
      text-align: start;
+ }
+
+ .panel-car img{
+    border:0.1rem solid var(--color-border);
+    border-radius: 1em;
+ }
+
+ .car-booked{
+    border: 0.3rem solid var(--color-surface);
  }
 
  .panel-sort{
