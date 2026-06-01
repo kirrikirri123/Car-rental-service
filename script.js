@@ -1117,9 +1117,8 @@ async function displayMyBookings(bookings) {
 
 async function displayBookingsByUserId(id) {
     const bookings = await fetchBookingByUserId(id);
-    console.log(bookings);
     const wrapper = createPanelWrapper();
-    bookings.forEach(booking =>  {
+    for (const booking of bookings) {
         const car = await fetchCarByIdTEST(booking.carId);
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
@@ -1141,7 +1140,7 @@ async function displayBookingsByUserId(id) {
              displayUpdateBookingDialog(booking);
         });
         wrapper.appendChild(innerDiv);
-    });
+    };
 }
 
 
