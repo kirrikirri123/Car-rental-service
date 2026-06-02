@@ -17,9 +17,16 @@ const dataStore = {
     users: [],
     bookings: []
 };
+
+/* Spara valet om lediga bilar? */
+const userSortChoices = {
+cars:[]
+};
+
 /* Hjälp för sortering */
 let sortValue = "name";
 let sortDirection = "asc";
+
 
 function sortCars(cars, sortValue, sortDirection) {
     /* Vilket värde sorterar den på eg? */
@@ -33,6 +40,16 @@ function sortCars(cars, sortValue, sortDirection) {
 function availableCars(){
   return dataStore.cars.filter(car => {return car.booked === false});
     } 
+/* Sorterar och displayar */
+function sortByBrand(brand) {
+    const sortedCars = dataStore.cars.filter(car => car.name.toLowerCase() === brand.toLowerCase());
+    displayCars(sortedCars);
+}
+/* Sorterar och displayar */
+function sortByType(type) {
+    const sortedCars = dataStore.cars.filter(car => car.type.toLowerCase() === type.toLowerCase());
+    displayCars(sortedCars);
+}
 
 
 function sortUsers(users, sortValue, sortDirection) {
@@ -336,11 +353,20 @@ function changeMainContent(page) {
             break;
 
         default:
-            mainContent.innerHTML = "Vad hände nu? Det gick inte att ladda sidan.";
+            page404();
     }
 }
 
 /* InnerHTML-funktioner för pages */
+
+function page404(){
+    mainContent.innerHTML =`<div>
+<h2> Sidan hittades inte !</h2>
+<div><i class="fa-solid fa-slash loading-icon"></i><i class="fa-solid fa-slash loading-icon" id="icon-accent"></i></div>
+</div>`
+}
+
+
 
 function homePage() {
     mainContent.innerHTML = `
@@ -401,30 +427,36 @@ function newUsersPage() {
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra utvalda fordon.</h2></section>
     <div class="panel-sort btn-spacer "> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga bilar</button>  
+    <div>
     <label for="sort-brand" class="info-headline">Tillverkare</label>
-    <select name="sort-brand" id="sort-brand" class="form-margin">
-    <option value="Corvette">
-    <option value="Kalles">
-    <option value="Skoda">
-    <option value="Wolkswagen">
-    <option value="Ford">
-    <option value="Porsche">
-    <option value="Volvo">
-    <option value="Farsans">
-    <option value="Okänd">
+    <select name="sort-brand" id="sort-brand" class="form-margin input-fields" onchange="sortByBrand(this.value)">
+    <option value="">Välj</option>
+    <option value="corvette">Corvette</option>
+    <option value="kalles">Kalles</option>
+    <option value="skoda">Skoda</option>
+    <option value="Volkswagen">Volkswagen</option>
+    <option value="ford">Ford</option>
+    <option value="porsche">Porsche</option>
+    <option value="volvo">Volvo</option>
+    <option value="farsans">Farsans</option>
+    <option value="okänd">Okänd</option>
     </select>
+    </div>
+    <div>
     <label for="sort-type" class="info-headline">Välj bil-typ</label>
-    <select name="sort-type" id="sort-type">
-    <option value="Sport">
-    <option value="Kombi">
-    <option value="Cab">
-    <option value="Minibuss">
-    <option value="El">
-    <option value="Sedan">
+    <select name="sort-type" id="sort-type" class="form-margin input-fields" onchange="sortByType(this.value)">
+    <option value="">Välj</option>
+    <option value="sport">Sport</option>
+    <option value="combi">Kombi</option>
+    <option value="cab">Cab</option>
+    <option value="bus">Minibuss</option> 
+    <option value="el">El</option>    
+    <option value="sedan">Sedan</option>
     </select>
+    </div>
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
     <div class="car-container"></div>
@@ -442,7 +474,11 @@ function userCarsPage() {
 
 function userPagesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section></div>`;
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section>
+    <form>
+    <!-- ON of på Revent, slipsuthyrnings, resebyrån, event, cinema, idrotts-coachning-->
+    <form>
+    </div>`;
 }
 
 function userInfoPage() {
@@ -842,6 +878,10 @@ function displayCars(cars) {
     const wrapper = createPanelWrapper();
     const carDiv = document.querySelector(".car-container");
     carDiv.innerHTML = "";
+    if (cars.length === 0) {
+        carDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga fordon att visa. </h3></div>`;
+        return;
+    }
     cars.forEach(car => {
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
@@ -1439,7 +1479,7 @@ async function fetchCars() {
         const response = await fetch(url, { method: 'GET' })
 
         if (!response.ok) {
-            if (response.status === 404) { throw new Error(`Inga fordon finns inne för tillfället. Välkommen in för mer exklusiva möjligheter.`); }
+            if (response.status === 404) { throw new Error(`Inga fordon finns inne för tillfället. Välkommen till vår fysiska uthyrning för exklusiva erbjudanden.`); }
             throw new Error(`Något gick fel vid inladdnig av fordon. Prova igen senare. Status: ${response.status}`);
         }
 

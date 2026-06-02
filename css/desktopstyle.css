@@ -73,6 +73,7 @@
  }
 .panel-car{
     font-size: 1.3rem;
+    min-height: 502px;
 }
 .panel-sort{
     width: 100%;
