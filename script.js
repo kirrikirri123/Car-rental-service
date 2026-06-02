@@ -20,26 +20,47 @@ const dataStore = {
 
 /* Spara valet om lediga bilar? */
 const userSortChoices = {
-cars:[]
+    cars: []
 };
 
 /* Hjälp för sortering */
-let sortValue = "name";
-let sortDirection = "asc";
 
+let carSortState = [
+    { id: { value: "id", direction: "asc" } },
+    { name: { value: "name", direction: "asc" } },
+    { model: { value: "model", direction: "asc" } },
+    { price: { value: "price", direction: "asc" } }];
+
+let carUserState = [
+    { id: { value: "id", direction: "asc" } },
+    { firstName: { value: "firstName", direction: "asc" } },
+    { lastName: { value: "lastName", direction: "asc" } },
+    { email: { value: "email", direction: "asc" } }];
+
+let carBookingState = [
+    { id: { value: "id", direction: "asc" } },
+    { n: { value: "", direction: "asc" } },
+    { m: { value: "", direction: "asc" } },
+    { p: { value: "", direction: "asc" } }];
 
 function sortCars(cars, sortValue, sortDirection) {
-    /* Vilket värde sorterar den på eg? */
     return [...cars].sort((a, b) => {
-        dir = sortDirection === "asc" ? 1 : -1;  /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
-        return a[sortValue].localCompare(b[sortValue], "sv") * dir;
+        const dir = sortDirection === "asc" ? 1 : -1;  /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
+
+        const valueA = a[sortValue];
+        const valueB = b[sortValue];
+
+        if (typeof valueA === "number" && typeof valueB === "number") {
+            return (valueA - valueB) * dir; /* För nummervärden, skillnaden gångrat med dir ger rätt sorteringsordning. */   
+        }      
+        return valueA.localeCompare(valueB, "sv") * dir;
     });
 }
 
- /* Returnerar tillgängliga bilar */
-function availableCars(){
-  return dataStore.cars.filter(car => {return car.booked === false});
-    } 
+/* Returnerar tillgängliga bilar */
+function availableCars() {
+    return dataStore.cars.filter(car => { return car.booked === false });
+}
 /* Sorterar och displayar */
 function sortByBrand(brand) {
     const sortedCars = dataStore.cars.filter(car => car.name.toLowerCase() === brand.toLowerCase());
@@ -59,16 +80,16 @@ function sortBookings(bookings, sortValue, sortDirection) {
 
 }
 
-function carType(carType){
-    switch(carType.toLowerCase()){
-     case"combi": return "Kombi";
-     case"sedan": return "Sedan";
-     case"cab": return "Cab";
-     case"electric": return "El";
-     case"bus": return "Minibuss";
-     case"sport": return "Sport";
-     default: return "Okänd";
-        }
+function carType(carType) {
+    switch (carType.toLowerCase()) {
+        case "combi": return "Kombi";
+        case "sedan": return "Sedan";
+        case "cab": return "Cab";
+        case "electric": return "El";
+        case "bus": return "Minibuss";
+        case "sport": return "Sport";
+        default: return "Okänd";
+    }
 }
 
 
@@ -359,8 +380,8 @@ function changeMainContent(page) {
 
 /* InnerHTML-funktioner för pages */
 
-function page404(){
-    mainContent.innerHTML =`<div>
+function page404() {
+    mainContent.innerHTML = `<div>
 <h2> Sidan hittades inte !</h2>
 <div><i class="fa-solid fa-slash loading-icon"></i><i class="fa-solid fa-slash loading-icon" id="icon-accent"></i></div>
 </div>`
@@ -394,11 +415,11 @@ function carsPage() {
 
 
     fetchCars();
-    document.querySelector("#reset-sortbtn").addEventListener('click', () => {changeMainContent("cars"); });
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("cars"); });
     document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
         const sortedCars = availableCars();
         displayCars(sortedCars);
-     });
+    });
 }
 
 function newUsersPage() {
@@ -462,13 +483,13 @@ function userCarsPage() {
     <div class="car-container"></div>
     </div>`;
     fetchCars();
-    document.querySelector("#reset-sortbtn").addEventListener('click', () => {changeMainContent("user-cars"); });
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("user-cars"); });
     document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
         const sortedCars = availableCars();
         displayCars(sortedCars);
-     });
+    });
 }
- 
+
 
 
 
@@ -488,7 +509,7 @@ function userInfoPage() {
 
 function userBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Dina bokningar </h2></section>
-    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     <label for="active-bookings"><button type="button" class=" form-margin std-btn pos-btn">Visa aktiva bokningar</button></div>
     </div>`;
     fetchMyBookings();
@@ -496,17 +517,19 @@ function userBookingsPage() {
 
 function admVehiclesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> ADMIN - Bilar som visas och sorteras.</h2></section>
-    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> </div>
+    <div class="panel-sort btn-spacer"> <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga fordon</button>
+    </div>
     <div class="table-div">
     <table class="adm-table" id="carsTable">
     <thead>
        <tr>
             <th>Redigera bil</th>
-            <th>Id</th>
-            <th>Tillverkare</th>
-            <th>Modell</th>
-            <th>Bil-typ</th>
-            <th>Utrustning</th>
+            <th>Id <span><button type="button" class="std-btn" id="carId-sortbtn"><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></button></span></th>
+            <th>Tillverkare <button type="button" class="std-btn" id="brand-sortbtn"><i class="fa-solid fa-arrow-down-a-z" title="A-Ö"></i></button></th>
+            <th>Modell <button type="button" class="std-btn" id="model-sortbtn"><i class="fa-solid fa-arrow-down-a-z"title="A-Ö" ></i></button></th>
+            <th>Bil-typ <button type="button" class="std-btn" id="type-sortbtn"><i class="fa-solid fa-arrow-down-a-z" title="A-Ö" ></i></button></th>
+            <th>Utrustning </th>
             <th>Bokad</th>
             
         </tr>
@@ -518,9 +541,56 @@ function admVehiclesPage() {
     `;
     fetchAdmCars();
 
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-vehicles"); });
+    document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
+        const sortedCars = availableCars();
+        displayCarsTable(sortedCars);
+    });
+    /* Sorterings knapparna i tabell */
+    document.querySelector("#carId-sortbtn").addEventListener('click', () => {
+        sortCars(dataStore.cars, "id", sortDirection);
+        changeDirectionIcon("carId", sortDirection);
+
+    });
+    document.querySelector("#brand-sortbtn").addEventListener('click', () => {
+        sortCars(dataStore.cars, "name", sortDirection);
+        changeDirectionIcon("brand", sortDirection);
+    });
+    document.querySelector("#model-sortbtn").addEventListener('click', () => {
+        sortCars(dataStore.cars, "model", sortDirection);
+        changeDirectionIcon("model", sortDirection);
+    });
+    document.querySelector("#type-sortbtn").addEventListener('click', () => {
+        sortCars(dataStore.cars, "type", sortDirection);
+        changeDirectionIcon("type", sortDirection);
+    });
 }
+
+function changeDirectionIcon(sortValue, sortDirection) {
+    const icon = document.querySelector(`#${sortValue}-sortbtn i`);
+    dir = sortDirection === "asc" ? "desc" : "asc";
+    switch (sortValue) {
+        case "carId": 
+            if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i>`; }
+            if (dir === "desc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-wide-short" title="Fallande"></i>`}
+            break;
+        case "brand":
+            if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-a-z" title="A-Ö"></i>`; }
+            if (dir === "desc") {icon.innerHTML = `<i class="fa-solid fa-arrow-down-z-a" title="Ö-A"></i>`}
+            break;
+        case "model": 
+            if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-a-z" title="A-Ö"></i>`; }
+            if (dir === "desc") {icon.innerHTML = `<i class="fa-solid fa-arrow-down-z-a" title="Ö-A"></i>`;}
+            break;
+        case "type":
+            if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-a-z" title="A-Ö"></i>`; }
+            if (dir === "desc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-z-a" title="Ö-A"></i>`;}
+            break;
+    }
+}
+
 function admChangeVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>ADMIN - Lägg till bil i flottan. </h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2></h2></section>
     <div class="panel">            
     <h3>Addera nytt fordon</h3>
     <form>
@@ -562,7 +632,7 @@ function admChangeVehiclesPage() {
 
 function admBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
-        <div class="panel-sort btn-spacer"><button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+        <div class="panel-sort btn-spacer"><button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     <button type="button" class=" form-margin std-btn pos-btn">Visa aktiva bokningar</button></div>
     <table class="adm-table" id="activeBookingsTable">
     <thead>
@@ -958,8 +1028,8 @@ function displayCarsTable(cars) {
     tbody.innerHTML = "";
     cars.forEach(car => {
         let booked;
-    if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
-    const type = carType(car.type);
+        if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
+        const type = carType(car.type);
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
@@ -1557,6 +1627,7 @@ async function fetchAdmCars() {
         }
 
         const data = await response.json();
+        dataStore.cars = data;
         displayCarsTable(data);
 
     } catch (error) {
@@ -1676,6 +1747,7 @@ async function fetchActiveBookings() {
         }
 
         const data = await response.json();
+        dataStore.bookingsActive = data;
         displayActiveBookingsTable(data);
 
     } catch (error) {
@@ -1700,6 +1772,7 @@ async function fetchAllBookings() {
             throw new Error(`Problem vid inladdning. Status: ${response.status}`);
         }
         const data = await response.json();
+        dataStore.bookings = data;
         displayBookingsTable(data);
 
     } catch (error) {
@@ -1902,9 +1975,6 @@ async function deleteBooking(id) {
 }
 
 
-
-
-
 /* Hämta användare */
 async function fetchUsers() {
     const url = 'http://localhost:8080/api/v1/users';
@@ -1924,6 +1994,7 @@ async function fetchUsers() {
         }
 
         const data = await response.json();
+        dataStore.users = data;
         displayAllUsers(data);
 
     } catch (error) {
