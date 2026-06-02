@@ -22,11 +22,18 @@ let sortValue = "name";
 let sortDirection = "asc";
 
 function sortCars(cars, sortValue, sortDirection) {
+    /* Vilket värde sorterar den på eg? */
     return [...cars].sort((a, b) => {
         dir = sortDirection === "asc" ? 1 : -1;  /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
         return a[sortValue].localCompare(b[sortValue], "sv") * dir;
     });
 }
+
+ /* Returnerar tillgängliga bilar */
+function availableCars(){
+  return dataStore.cars.filter(car => {return car.booked === false});
+    } 
+
 
 function sortUsers(users, sortValue, sortDirection) {
 
@@ -36,13 +43,14 @@ function sortBookings(bookings, sortValue, sortDirection) {
 }
 
 function carType(carType){
-    switch(carType){
+    switch(carType.toLowerCase()){
      case"combi": return "Kombi";
      case"sedan": return "Sedan";
      case"cab": return "Cab";
      case"electric": return "El";
-     case"bus": return "Familjebuss";
+     case"bus": return "Minibuss";
      case"sport": return "Sport";
+     default: return "Okänd";
         }
 }
 
@@ -352,10 +360,19 @@ function homePage() {
 
 function carsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
-    <div class="panel-sort btn-spacer "><button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
-    <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button></div>
-    </div>`;
+    <div class="panel-sort btn-spacer "> 
+    <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn"> Visa lediga bilar</button>  
+    <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    </div>
+    <div class="car-container"></div></div>`;
+
+
     fetchCars();
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => {changeMainContent("cars"); });
+    document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
+        const sortedCars = availableCars();
+        displayCars(sortedCars);
+     });
 }
 
 function newUsersPage() {
@@ -385,30 +402,42 @@ function newUsersPage() {
 
 function userCarsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra exklusiva fordon.</h2></section>
-    <div class="panel-sort btn-spacer "> <button type="button" class=" form-margin std-btn pos-btn" id="sort-btn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
-    <button type="button" class=" form-margin std-btn pos-btn">Alla lediga bilar</button>  
-    <div><label for="sort-brand" class="info-headline">Tillverkare</label><select name="CarName" id="sort-brand" class="form-margin">
-     option value="Corvette">
+    <div class="panel-sort btn-spacer "> 
+    <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga bilar</button>  
+    <label for="sort-brand" class="info-headline">Tillverkare</label>
+    <select name="sort-brand" id="sort-brand" class="form-margin">
+    <option value="Corvette">
     <option value="Kalles">
     <option value="Skoda">
-    <option value="Wolgswagen">
+    <option value="Wolkswagen">
     <option value="Ford">
     <option value="Porsche">
     <option value="Volvo">
     <option value="Farsans">
     <option value="Okänd">
-    </select></div>
-    <div><label for="sort-car" class="info-headline">Välj bil-typ</label>
-    <select name="car-type" id="sort-car">
+    </select>
+    <label for="sort-type" class="info-headline">Välj bil-typ</label>
+    <select name="sort-type" id="sort-type">
     <option value="Sport">
     <option value="Kombi">
-    <option value="Buss">
+    <option value="Cab">
+    <option value="Minibuss">
     <option value="El">
     <option value="Sedan">
-    </select></div></div>
+    </select>
+    <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    </div>
+    <div class="car-container"></div>
     </div>`;
     fetchCars();
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => {changeMainContent("user-cars"); });
+    document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
+        const sortedCars = availableCars();
+        displayCars(sortedCars);
+     });
 }
+ 
+
 
 
 function userPagesPage() {
@@ -811,10 +840,13 @@ function createPanelWrapper() {
 /* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.*/
 function displayCars(cars) {
     const wrapper = createPanelWrapper();
+    const carDiv = document.querySelector(".car-container");
+    carDiv.innerHTML = "";
     cars.forEach(car => {
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
+        const type = carType(car.type);
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
             <div id="car-img"><img src= ${imgSrc} onerror ="this.onerror=null; this.src='${defaultSrc}'" alt="Exempel bild av hyrbil" class="img-car"><div>
@@ -822,18 +854,20 @@ function displayCars(cars) {
         <dd><b>Tillverkare:</b> ${car.name}</dd>
         <dd><b>Modell:</b> ${car.model}</dd>
         <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
-        <dd><b>Bil-typ:</b> ${car.type} </dd>
+        <dd><b>Bil-typ:</b> ${type} </dd>
         </dl>
         <div class="btn-spacer">
         <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
-        <span id="icon-holder" class="icon-larger"></span>
-        </div></div> `
+        </div>
+        <div id="icon-holder" class="icon-larger"></div>
+        </div> `
         if (car.booked) {
             innerDiv.querySelector('div .panel-car').classList.add('car-booked');
             innerDiv.querySelector('#icon-holder').innerHTML = `<i class="fa-solid fa-road-lock" title="Bil ej tillgänglig"></i>`;
 
         }
         wrapper.appendChild(innerDiv);
+        carDiv.appendChild(wrapper);
     });
 }
 
@@ -1410,6 +1444,7 @@ async function fetchCars() {
         }
 
         const data = await response.json();
+        dataStore.cars = data;
         displayCars(data);
 
     } catch (error) {

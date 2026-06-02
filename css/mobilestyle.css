@@ -195,7 +195,7 @@
  }
 
  .icon-larger {
-     font-size: x-large;
+     font-size:xx-large;
      text-align: right;
  }
 
@@ -218,9 +218,6 @@
 }
 #icon-accent {
     color: var(--color-primary-hover);
-}
-#icon-holder {
-    text-align: right;
 }
 
  @keyframes carTilt {
@@ -469,7 +466,7 @@
  /*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
  .table-div {
      overflow-x: auto;
-     -webkit-overflow-scrolling: touch;
+     /* -webkit-overflow-scrolling: touch; */
      /* Debr? */
  }
 
@@ -477,7 +474,7 @@
      background-color: var(--color-bg);
      color: var(--color-text);
      overflow-x: auto;
-     -webkit-overflow-scrolling: touch;
+     /* -webkit-overflow-scrolling: touch; */
 
  }
 
