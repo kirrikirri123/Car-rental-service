@@ -12,29 +12,30 @@ const escapeBtn = document.querySelector("#escape-btn");
 const newUserBtn = document.querySelector("#new-user-btn");
 
 /* Data hämtad från databasen för och sortering */
-const dataStore ={
+const dataStore = {
     cars: [],
     users: [],
     bookings: []
 };
 /* Hjälp för sortering */
-let sortValue="name";
+let sortValue = "name";
 let sortDirection = "asc";
 
-function sortCars(cars,sortValue,sortDirection){
-    return [...cars].sort((a,b) => {
-    dir =sortDirection ==="asc" ? 1 : -1; /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
-        return a[sortValue].localCompare(b[sortValue],"sv") * dir;
-    });}
-
-function sortUsers(users,sortValue,sortDirection){
-    
-}
-function sortBookings(bookings,sortValue,sortDirection){
-    
+function sortCars(cars, sortValue, sortDirection) {
+    return [...cars].sort((a, b) => {
+        dir = sortDirection === "asc" ? 1 : -1;  /* Om sortDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
+        return a[sortValue].localCompare(b[sortValue], "sv") * dir;
+    });
 }
 
-/* Informations popup----------------------------------------------------------Informations poup----------------- */
+function sortUsers(users, sortValue, sortDirection) {
+
+}
+function sortBookings(bookings, sortValue, sortDirection) {
+
+}
+
+/* Informations popup----------------------------------------------------------Informations poup--------------------- */
 function dialogCloseNClear() {
     infoDialog.close();
     infoDialog.querySelector('p').innerText = '';
@@ -336,7 +337,6 @@ function homePage() {
                 </div>
     </div>`
 }
-
 
 function carsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
@@ -816,11 +816,11 @@ function displayCars(cars) {
         <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
         <span id="icon-holder" class="icon-larger"></span>
         </div></div> `
-         if (car.booked) {
+        if (car.booked) {
             innerDiv.querySelector('div .panel-car').classList.add('car-booked');
             innerDiv.querySelector('#icon-holder').innerHTML = `<i class="fa-solid fa-road-lock" title="Bil ej tillgänglig"></i>`;
 
-            }
+        }
         wrapper.appendChild(innerDiv);
     });
 }
@@ -947,7 +947,9 @@ function displayUser(user) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
     innerDiv.innerHTML =
-        ` <div class="panel panel-important">
+        `
+    <!--<div class="panel-wrapper">-->
+     <div class="panel panel-important">
     <dl>
   <div>
     <dt><b>Medlemsnr:</b></dt>
@@ -969,12 +971,13 @@ function displayUser(user) {
     <dt><b> Användarnamn:</b></dt>
     <dd>${user.username}</dd>
   </div>
-  <div>
     </dl>
-        </div> 
-         <div class="btn-spacer">      
+    </div>
+     
+        <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
-        </div>
+        <!--</div>-->
+        </div>    
         `
     wrapper.appendChild(innerDiv);
     innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });
@@ -988,7 +991,7 @@ function displayUpdateUser(user) {
     if (user.role === "ROLE_USER") { role = "Kund" } else { role = "Administratör" };
     innerDiv.innerHTML =
         ` 
-        <div class="panel-wrapper">
+        <div class="panel-wrapper"><!--Dubbel wrappas för att hålla responsiviteten på mobil-->
         <div class="panel panel-important">
 
       <dl>
@@ -997,11 +1000,11 @@ function displayUpdateUser(user) {
     <dd>${user.id}</dd>
   </div>
   <div>
-    <dt><b> Namn :</b></dt>
+    <dt><b> Förnamn :</b></dt>
     <dd>${user.firstName}</dd>
   </div>
   <div>
-    <dt><b> Namn :</b></dt>
+    <dt><b> Efternamn :</b></dt>
     <dd>${user.lastName}</dd>
   </div>
   <div>
@@ -1020,14 +1023,14 @@ function displayUpdateUser(user) {
     <dt><b>Roll:</b></dt>
     <dd>${role}</dd>
   </div>
-  <div>
-    </dl>
-        </div> 
-        <div class="btn-spacer">      
+   </dl>
+   </div>
+            <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera kundinfo" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
         <button id="delete-btn" class="std-btn neg-btn" alt="Knapp för att radera kund" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
         </div>
-        </div>`
+        
+    </div> `
     wrapper.appendChild(innerDiv);
 
     innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });
