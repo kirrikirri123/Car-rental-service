@@ -35,6 +35,18 @@ function sortBookings(bookings, sortValue, sortDirection) {
 
 }
 
+function carType(carType){
+    switch(carType){
+     case"combi": return "Kombi";
+     case"sedan": return "Sedan";
+     case"cab": return "Cab";
+     case"electric": return "El";
+     case"bus": return "Familjebuss";
+     case"sport": return "Sport";
+        }
+}
+
+
 /* Informations popup----------------------------------------------------------Informations poup--------------------- */
 function dialogCloseNClear() {
     infoDialog.close();
@@ -428,7 +440,7 @@ function admVehiclesPage() {
             <th>Id</th>
             <th>Tillverkare</th>
             <th>Modell</th>
-            <th>Typ</th>
+            <th>Bil-typ</th>
             <th>Utrustning</th>
             <th>Bokad</th>
             
@@ -465,9 +477,9 @@ function admChangeVehiclesPage() {
         <label for="feature3" class="form-margin">Utrustning ex.3:</label><br>
             <input id="feature3" class="input-fields form-margin form-text"></input><br>
             
-        <label for="carType" class="form-margin">Klass: </label><br>
+        <label for="carType" class="form-margin">Bil-typ: </label><br>
         <select id="carType" name="carType" class="form-margin input-fields">
-        <option value="combi">Komib</option>
+        <option value="combi">Kombi</option>
         <option value="sedan">Sedan</option>
         <option value="cab">Cab</option>
         <option value="electric">El</option>
@@ -810,7 +822,7 @@ function displayCars(cars) {
         <dd><b>Tillverkare:</b> ${car.name}</dd>
         <dd><b>Modell:</b> ${car.model}</dd>
         <dd><b>Pris:</b> ${car.price} kr/dygn</dd>
-        <dd> <i class="fa-solid fa-road"></i> ${car.type} </dd>
+        <dd><b>Bil-typ:</b> ${car.type} </dd>
         </dl>
         <div class="btn-spacer">
         <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
@@ -871,6 +883,9 @@ function displayCarsTable(cars) {
     const tbody = document.querySelector('#carsTable tbody');
     tbody.innerHTML = "";
     cars.forEach(car => {
+        let booked;
+    if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
+    const type = carType(car.type);
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
@@ -880,12 +895,12 @@ function displayCarsTable(cars) {
       <td>${car.id}</td>
       <td>${car.name}</td>
       <td>${car.model}</td>
-      <td>${car.type}</td>
+      <td>${type}</td>
       <td><ul>
       <li>${car.feature1}</li>
       <li>${car.feature2}</li>
       <li>${car.feature3}</li></ul></td>
-      <td>${car.booked}</td>
+      <td>${booked}</td>
         `
         tbody.appendChild(tr);
     });
@@ -915,7 +930,7 @@ function displayUpdateCar(car) {
     <dd>${car.model}</dd>
   </div>
   <div>
-    <dt><b> Typ :</b></dt>
+    <dt><b> Bil-typ :</b></dt>
     <dd>${car.type}</dd>
   </div>
   <div>
@@ -1074,7 +1089,7 @@ function displayActiveBookingsTable(bookings) {
         tr.innerHTML =
             ` 
        <td>
-     <button class="std-btn return-car-btn"> Återlämna fordon </button>
+     <button class="std-btn return-car-btn btn-spacer">Återlämna fordon</button>
       </td>
       <td>${booking.id}</td>
       <td>${booking.userId}</td>
@@ -1224,7 +1239,7 @@ async function displayUpdateBookingDialog(booking) {
         <p>
         <b>Tillverkare:</b><br> ${car.name}<br>
         <b>Modell:</b><br> ${car.model}<br>
-        <b>Pris ber dygn:</b><br> ${car.price}<br>
+        <b>Pris ber dygn:</b><br> ${car.price} SEK <br>
         <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
         <b>Status:</b><br> ${returnerd}.<br>
         </p></div>
