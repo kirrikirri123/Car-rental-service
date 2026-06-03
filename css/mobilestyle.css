@@ -4,26 +4,9 @@
      box-sizing: border-box;
  }
 
- /* AAA — Ljust tema */
- /* .light-theme { */
- /* Bakgrund */
- /* --color-bg:              #D0C5BA;  
-  -color-surface:         #302822;   */
+ /* * { -webkit-tap-highlight-color: transparent; } */
 
- /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
- /* --color-text-primary:   #181717;  
-  --color-text-secondary: #302822;   */
-
- /* --color-primary:         #712B0D;   */
- /* Primär — AAA för stor text (≥18px), AA annars */
-
- /* Dekoration — INTE för text */
- /* --color-accent:          #944017;  
-  --color-accent-warm:     #AC5327;   */
-
- /* Kanter */
- /* --color-border:          #444347;   */
- /* }  */
+ 
 
  /* Mörkt tema */
  :root {
@@ -51,6 +34,24 @@
      /* Font */
      --big-headlines: "BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
+     /* AAA — Ljust tema */
+ /* Bakgrund */
+ --color-bg-l: #D0C5BA;
+ -color-surface-l: #302822;
+
+ /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
+ --color-text-primary-l: #181717;
+ --color-text-secondary-l: #302822;
+
+/* Primär — AAA för stor text (≥18px), AA annars */
+ --color-primary-l: #712B0D;
+ 
+ /* Dekoration — INTE för text */
+ --color-accent-l: #944017;
+ --color-accent-warm-l: #AC5327;
+
+ /* Kanter */
+ --color-border-l: #444347;
 
  }
 
@@ -107,11 +108,13 @@
  p {
      font-size: 1rem;
  }
- .panel-font{
-    font-size: 1.3rem;
+
+ .panel-font {
+     font-size: 1.3rem;
  }
- .info-headline{
-    font-size: 1.2rem;
+
+ .info-headline {
+     font-size: 1.2rem;
      font-family: var(--small-headlines);
      text-transform: uppercase;
      text-align: center;
@@ -124,7 +127,6 @@
      grid-area: header;
      padding: 1em;
      background-color: var(--color-bg);
-     /* font-family: "Racing Sans One", sans-serif; */
      letter-spacing: 0.05em;
      text-transform: uppercase;
      overflow-wrap: anywhere;
@@ -155,12 +157,14 @@
  }
 
  .headline-contentpage {
-     /* BYTNAMN */
      padding: var(--padding);
 
  }
 
  .content-page {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
      color: var(--color-bg);
      background-color: var(--color-text);
      text-align: center;
@@ -182,7 +186,7 @@
  }
 
  footer span {
-    padding:0.3rem;
+     padding: 0.3rem;
  }
 
  #w-icon {
@@ -195,20 +199,31 @@
  }
 
  .icon-larger {
-     font-size: x-large;
+     font-size: xx-large;
      text-align: right;
  }
 
+
  .icon-car {
      transform-origin: bottom left;
-     animation-iteration-count:infinite;
+     animation-iteration-count: infinite;
      animation: carTilt 2s;
  }
 
  .icon-swoosh {
-    animation-iteration-count: 1;
-    animation: swoosh 4s;
+     animation-iteration-count: 1;
+     animation: swoosh 4s;
 
+ }
+
+ .loading-icon {
+     animation: spin 5s linear infinite;
+     display: inline-block;
+     color: var(--color-primary);
+ }
+
+ #icon-accent {
+     color: var(--color-primary-hover);
  }
 
  @keyframes carTilt {
@@ -234,9 +249,9 @@
 
 
  @keyframes swoosh {
-    80% { 
+     80% {
          transform: translateX(230px);
-         }
+     }
 
  }
 
@@ -304,16 +319,8 @@
      padding: 2rem;
  }
 
- /* #booking-dialog {
+ .form-dialog {
      text-align: center;
-     background-color: var(--color-surface-raised);
-     border: 0.17em solid var(--color-dec-accent);
-     color: var(--color-text);
-     border-radius: 2em;
-     padding: 2rem;
- } */
- .form-dialog{
-    text-align: center;
      background-color: var(--color-surface-raised);
      border: 0.17em solid var(--color-dec-accent);
      color: var(--color-text);
@@ -327,13 +334,15 @@
      left: 15%;
      translate: -8.5% -20%;
  }
- .dialog-big{
-    width:75%;
-    
+
+ .dialog-big {
+     width: 75%;
+
  }
- #view-dialog p{
-    text-align: left;
-    margin: 0.5rem;
+
+ #view-dialog p {
+     text-align: left;
+     margin: 0.5rem;
  }
 
 
@@ -347,6 +356,12 @@
      top: 55%;
      translate: -10% -10%;
  }
+
+ ul {
+     text-align: left;
+     margin-left: 1rem;
+ }
+
 
  /*Knappar--------------------------------------------------------------------------Knappar----------------------------------*/
  .std-btn {
@@ -383,8 +398,9 @@
      margin: 1em;
      font-size: 1.5rem;
  }
- .admin-btn {
-    display: none;
+
+ .table-link-btn {
+     cursor: pointer;
  }
 
  /* Placering av  en eller flera knappar */
@@ -450,27 +466,27 @@
 
 
  /*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
- .table-div {
-     overflow-x: auto;
-     -webkit-overflow-scrolling: touch;
-     /* Debr? */
+ .table {
+     flex-wrap: wrap;
+     overflow: auto;
  }
 
  .adm-table {
      background-color: var(--color-bg);
      color: var(--color-text);
-     overflow-x: auto;
-     -webkit-overflow-scrolling: touch;
+     overflow: auto;
+
 
  }
 
  th {
      font-family: var(--info-text);
-     background-color: var(--color-primary);
+     background-color: var(--color-bg-l);
      border: 2.5px solid var(--color-dec-accent);
      font-size: clamp(20px, 1.1rem, 30px);
-     color: var(--color-text);
+     color: var(--color-text-primary-l);    
      padding: 1em;
+     cursor: pointer;
  }
 
  .adm-table,
@@ -496,7 +512,7 @@
 
  .panel {
      border: 0.13rem solid var(--color-dec-accent);
-     border-radius: 1em;
+     /* border-radius: 1em; */
      margin: 1em;
      padding: 1em;
      display: flex;
@@ -517,35 +533,41 @@
 
  .panel-car {
      background-color: var(--color-surface-raised);
-     border: 0.3rem solid var(--color-border);
+     border: 0.3rem solid var(--color-primary-hover);
      max-width: 536px;
      text-align: start;
  }
 
- .panel-sort{
-    max-width: 85%;
-     text-align: center;
-     border: 0.02rem solid var(--color-dec-accent);
-     border-radius: 0rem;
+ .panel-car img {
+     border: 0.1rem solid var(--color-border);
+     border-radius: 1em;
+ }
+
+ .car-booked {
+     border: 0.3rem solid var(--color-surface);
+ }
+
+ .panel-sort {
+     max-width: 85%;
      background-color: var(--color-text);
-     color: var(--color-text-primary-l);
      font-size: 1.3rem;
-     padding: 1em;
- }
- .panel-sort datalist{
-    padding:0.5rem;
  }
 
-/* Tydliga vyer  */
-dl {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.25rem 1rem;
-}
+ /* Tydliga vyer  */
+ dl {
+     display: grid;
+     grid-template-columns: max-content 1fr;
+     gap: 0.25rem 1rem;
+ }
 
-dl div {
-  display: contents;
-}
+ dd {
+     font-size: 1rem;
+     overflow: scroll;
+ }
+
+ dl div {
+     display: contents;
+ }
 
  @media (orientation: landscape) {
 

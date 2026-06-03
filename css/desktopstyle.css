@@ -73,12 +73,13 @@
  }
 .panel-car{
     font-size: 1.3rem;
+    min-height: 502px;
 }
 .panel-sort{
     width: 100%;
 }
 
- /* Navigering----------------------------------------------------------------------Navigering------------------------------- */
+ /* Navigering----------------------------------------------------------------------Navigering------------------------- */
  .desktop-menu {
      grid-area: sidebar;
      font-family: "Racing Sans One", sans-serif;
@@ -99,6 +100,13 @@
      justify-content: space-around;
      
  }
+
+
+ /* Tabell / Panel relaterat */
+ dd{ 
+    font-size: 1.2rem;
+    overflow:auto;
+}
 
  /* DIALOGRUTOR-----------------------------------------------------------DIALOGRUTOR---------------------------------- */
  dialog {
