@@ -39,10 +39,13 @@ let carSortState = {
 }
 let userSortState = {
      id: { direction: "asc" } ,
+     email: { direction: "asc" },
+     noOfOrders: { direction: "asc" },
      firstName: { direction: "asc" },
      lastName: { direction: "asc" },
-     email: { direction: "asc" } 
-
+     phone: { direction: "asc" },
+     role: { direction: "asc" },
+     username: { direction: "asc" }
     }
 let bookingSortState = {
     id: { direction: "asc" } ,
@@ -325,7 +328,7 @@ document.querySelector("#adm-bookings-link").addEventListener('click', () => {
 });
 
 document.querySelector("#adm-history-link").addEventListener('click', () => {
-    changeMainContent("adm-history");
+    changeMainContent("adm-all-bookings");
     closeMobileMenu();
 });
 document.querySelector("#adm-users-link").addEventListener('click', () => {
@@ -356,7 +359,6 @@ function changeMainContent(page) {
             break;
         case "new-user":
             newUsersPage();
-
             break;
 
         case "user-cars":
@@ -391,8 +393,8 @@ function changeMainContent(page) {
             admChangeBookingsPage();
             break;
 
-        case "adm-history":
-            admHistoryPage();
+        case "adm-all-bookings":
+            admAllBookingsPage();
             break;
 
         case "adm-users":
@@ -700,7 +702,7 @@ function admBookingsPage() {
 }
 
 
-function admHistoryPage() {
+function admAllBookingsPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2> Alla nuvarande och tidigare bokningar - All info. </H2></section>
     <div class="panel-sort btn-spacer">
     <button type="button" class=" form-margin std-btn pos-btn"id="activeBookings-sortbtn" >Visa aktiva bokningar</button>
@@ -723,7 +725,7 @@ function admHistoryPage() {
     </div>
     `;
     fetchAllBookings();
-    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-history"); });
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-all-bookings"); });
     document.querySelector("#activeBookings-sortbtn").addEventListener('click', () => {
         const sortedBookings = activeBookings();
         displayBookingsTable(sortedBookings);
@@ -757,20 +759,21 @@ function admHistoryPage() {
 
 function admUsersPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Kundinformation - Funktioner att uppdatera och radera.</h2></section>
+    <div class="panel-sort btn-spacer">
+    <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
+    </div>
     <table class="adm-table" id="usersTable">
     <thead>
        <tr>
-            <th id="id-sortbtn"> Id <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
-            <th id="name-sortbtn"> Tillverkare <span><i class="fa-solid fa-arrow-down-a-z " title="A-Ö"></i></span> </th>
             <th>Redigera kund</th>
-            <th>Kund-id</th>
-            <th>Email</th>
-            <th>Förnamn</th>
-            <th>Efternamn</th>
-            <th>Antal hyresordrar</th>
-            <th>Telefonnummer</th>
-            <th>Roll</th>
-            <th>Ev. användarnamn</th>
+            <th id="id-sortbtn">Kund-id <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="email-sortbtn">Email <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="firstName-sortbtn" >Förnamn <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="lastName-sortbtn">Efternamn <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="noOfOrders-sortbtn">Antal hyresordrar <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="phone-sortbtn">Telefonnummer <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="role-sortbtn">Roll <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
+            <th id="username-sortbtn">Användarnamn <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
         </tr>
     </thead>
     <tbody><td> Inga användare att visa</td></tbody>
@@ -779,6 +782,42 @@ function admUsersPage() {
     </div>   
     `;
     fetchUsers();
+   document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-users"); });
+    
+      /* Sorterings knapparna i tabell */
+    document.querySelector("#id-sortbtn").addEventListener('click', () => {
+       const sortedUsers = sortTableList(dataStore.users,"users", "id");
+       displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#email-sortbtn").addEventListener('click', () => {
+         const sortedUsers = sortTableList(dataStore.users,"users", "email");
+         displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#firstName-sortbtn").addEventListener('click', () => {
+        const sortedUsers = sortTableList(dataStore.users,"users", "firstName");
+         displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#lastName-sortbtn").addEventListener('click', () => {
+         const sortedUsers = sortTableList(dataStore.users,"users", "lastName");
+        displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#noOfOrders-sortbtn").addEventListener('click', () => {
+        const sortedUsers = sortTableList(dataStore.users,"users", "noOfOrders");
+        displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#phone-sortbtn").addEventListener('click', () => {
+        const sortedUsers = sortTableList(dataStore.users,"users", "phone");
+        displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#role-sortbtn").addEventListener('click', () => {
+        const sortedUsers = sortTableList(dataStore.users,"users", "role");
+        displayUsersTable(sortedUsers);
+    });
+    document.querySelector("#username-sortbtn").addEventListener('click', () => {
+        const sortedUsers = sortTableList(dataStore.users,"users", "username");
+        displayUsersTable(sortedUsers);
+    });
+
 }
 
 function admChangeUserPage() {
@@ -1280,7 +1319,7 @@ function displayUpdateUser(user) {
 }
 
 
-function displayAllUsers(users) {
+function displayUsersTable(users) {
     const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
     users.forEach(user => {
@@ -1337,7 +1376,7 @@ function displayActiveBookingsTable(bookings) {
         tbody.appendChild(tr);
     });
 }
-/* Byt namn?? inkonsekvent med activ booking history */
+
 function displayBookingsTable(bookings) {
     const tbody = document.querySelector('#bookingsTable tbody');
     let returnerd;
@@ -2087,7 +2126,7 @@ async function fetchUsers() {
 
         const data = await response.json();
         dataStore.users = data;
-        displayAllUsers(data);
+        displayUsersTable(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
