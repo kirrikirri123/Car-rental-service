@@ -389,10 +389,6 @@ function changeMainContent(page) {
             admBookingsPage();
             break;
 
-        case "adm-change-bookings":
-            admChangeBookingsPage();
-            break;
-
         case "adm-all-bookings":
             admAllBookingsPage();
             break;
@@ -828,7 +824,8 @@ function admStyleguidePage() {
     mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
 }
 
-/* UPDATERINGS FUNKTIONER ____________________________________________________________________________________________________________*/
+/* UPDATERINGS FUNKTIONER */
+ 
 
 function deleteUserDialog(user) {
     const dialog = document.querySelector('#update-dialog');
@@ -845,6 +842,7 @@ function deleteUserDialog(user) {
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
         deleteUser(user.id);
+        fetchUsers();
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -885,6 +883,7 @@ function updateUserDialog(user) {
     dialog.showModal();
     dialog.querySelector('#update-btn').addEventListener('click', () => {
         updateUser(user.id);
+        fetchUsers();
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -893,6 +892,7 @@ function updateUserDialog(user) {
 
 function updateCarDialog(car) {
     const dialog = document.querySelector(`#update-dialog`);
+    let booked = car.booked === true ? "Bokad" : "Obokad";
     dialog.innerHTML =
         `<div class="dialog-content">
             <div id="booking-header">
@@ -919,7 +919,7 @@ function updateCarDialog(car) {
             <input id="feature3" class="input-fields form-margin form-text" value="${car.feature3}"><br>
         
         <label for="booked" class="form-margin">Bokad? <i>Går ej uppdatera</i>:</label><br>
-            <p id="booked" class="input-fields form-margin form-text">${car.booked}</p><br>
+            <p id="booked" class="input-fields form-margin form-text">${booked}</p><br>
             
         <label for="carType" class="form-margin">Klass: </label><br>
         <select id="carType" name="carType" class="form-margin input-fields">
@@ -939,9 +939,11 @@ function updateCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#update-btn').addEventListener('click', () => {
         updateCar(car.id);
+        fetchAdmCars();
         dialog.close();
     });
-    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { 
+        dialog.close(); });
 }
 function deleteCarDialog(car) {
     const dialog = document.querySelector('#update-dialog');
@@ -958,6 +960,7 @@ function deleteCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
         deleteCar(car.id);
+        fetchAdmCars();
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -985,6 +988,7 @@ function bookingDialog(car) {
     dialog.showModal();
     dialog.querySelector('#book-btn').addEventListener('click', () => {
         createNewBooking(car);
+        fetchMyBookings();
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -1014,6 +1018,7 @@ function updateBookingDialog(booking) {
         try {
             const updatedBook = getUpdatedBooking(booking);
             updateBooking(booking.id, updatedBook);
+            fetchActiveBookings();
         }
         catch (error) {
             updateInfoDialog(error, `<i class="fa-solid fa-slash loading-icon"></i><i class="fa-solid fa-slashloading-icon" id="icon-accent"></i>`)
@@ -1046,11 +1051,54 @@ function returnCarDialog(booking) {
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
         returnBooking(booking.id);
+        fetchActiveBookings();
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
+async function displayUpdateBookingDialog(booking) {
+    const car = await fetchCarByIdTEST(booking.carId);
+    const user = await fetchUserByIdTEST(booking.userId);
+    let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
+    const dialog = document.querySelector(`#view-dialog`);
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div id="booking-header">
+                <h2>Bokningsinformation</h2>
+                Gällande bokningsnr <b>${booking.id}</b>.<br></div>
+                <div><p>
+                Hyrd av <b>${user.firstName} ${user.lastName}</b>. <br>
+                Medlemsnummer ${user.id}.
+                </p>
+            </div>
+            <div>
+        <p>
+        <b>Tillverkare:</b><br> ${car.name}<br>
+        <b>Modell:</b><br> ${car.model}<br>
+        <b>Pris ber dygn:</b><br> ${car.price} SEK <br>
+        <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
+        <b>Status:</b><br> ${returnerd}.<br>
+        </p></div>
+                <div class="btn-spacer">
+                    <button type="button" class="std-btn pos-btn"id="exit-btn"> Stäng info </button>
+                    <button type="button" class="std-btn hide" id="update-booking-btn"> Uppdatera </button>
+                    <button type="button" class="std-btn neg-btn hide"id="delete-booking-btn"> Radera DIREKT </button>
+                    
+        </div>`;
+    dialog.showModal();
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+    dialog.querySelector('#update-booking-btn').addEventListener('click', () => {
+        updateBookingDialog(booking);
+        dialog.close();
+    });
 
+    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => {
+        deleteBooking(booking.id);
+        fetchActiveBookings();
+        dialog.close();
+    });
+
+}
 
 /* ------------------------------------------------ */
 /* DISPLAY-FUNKTIONER */
@@ -1149,8 +1197,7 @@ function displayCarsTable(cars) {
     const tbody = document.querySelector('#carsTable tbody');
     tbody.innerHTML = "";
     cars.forEach(car => {
-        let booked;
-        if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
+        let booked = car.booked === true ? "Bokad": "Obokad";
         const type = carType(car.type);
         const tr = document.createElement("tr");
         tr.innerHTML =
@@ -1176,8 +1223,7 @@ function displayCarsTable(cars) {
 function displayUpdateCar(car) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
-    let booked;
-    if (car.booked) { booked = "Bokad" } else { booked = "Obokad" };
+    let booked = car.booked === true ? "Bokad": "Obokad";
     innerDiv.innerHTML =
         ` 
         <div class="panel-wrapper">
@@ -1398,7 +1444,6 @@ function displayBookingsTable(bookings) {
     });
 }
 
-/* Fundera på om man ska lägga en logik där man lägger i listor och hämtar, storterar därifrån istället för att fetcha? */
 async function displayMyBookings(bookings) {
     const wrapper = createPanelWrapper();
     for (const booking of bookings) {
@@ -1406,9 +1451,7 @@ async function displayMyBookings(bookings) {
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
-        const book = booking;
-        let returnerd;
-        if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
+       let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
             <h3>${car.name} - ${car.model}</h3>
@@ -1436,8 +1479,7 @@ async function displayBookingsByUserId(id) {
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
         const book = booking;
-        let returnerd;
-        if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
+        let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
             <h3>${car.name} - ${car.model}</h3>
@@ -1460,8 +1502,7 @@ async function displayBookingsByUserId(id) {
 async function displayABookingDialog(booking) {
     const car = await fetchCarByIdTEST(booking.carId);
     const user = await fetchUserByIdTEST(booking.userId);
-    let returnerd;
-    if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
+    let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -1489,53 +1530,7 @@ async function displayABookingDialog(booking) {
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 
-async function displayUpdateBookingDialog(booking) {
-    const car = await fetchCarByIdTEST(booking.carId);
-    const user = await fetchUserByIdTEST(booking.userId);
-    if(user===null){user= {
-        firstName: "Anonym",
-        lastName: "Användare",
-        id: "?" }};
-    let returnerd;
-    if (booking.active) { returnerd = "OBS! Aktiv uthyrning" } else { returnerd = "Återlämnad" };
-    const dialog = document.querySelector(`#view-dialog`);
-    dialog.innerHTML =
-        `<div class="dialog-content">
-            <div id="booking-header">
-                <h2>Bokningsinformation</h2>
-                Gällande bokningsnr <b>${booking.id}</b>.<br></div>
-                <div><p>
-                Hyrd av <b>${user.firstName} ${user.lastName}</b>. <br>
-                Medlemsnummer ${user.id}.
-                </p>
-            </div>
-            <div>
-        <p>
-        <b>Tillverkare:</b><br> ${car.name}<br>
-        <b>Modell:</b><br> ${car.model}<br>
-        <b>Pris ber dygn:</b><br> ${car.price} SEK <br>
-        <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
-        <b>Status:</b><br> ${returnerd}.<br>
-        </p></div>
-                <div class="btn-spacer">
-                    <button type="button" class="std-btn pos-btn"id="exit-btn"> Stäng info </button>
-                    <button type="button" class="std-btn hide" id="update-booking-btn"> Uppdatera </button>
-                    <button type="button" class="std-btn neg-btn hide"id="delete-booking-btn"> Radera DIREKT </button>
-                    
-        </div>`;
-    dialog.showModal();
-    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
-    dialog.querySelector('#update-booking-btn').addEventListener('click', () => {
-        updateBookingDialog(booking);
-        dialog.close();
-    });
 
-    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => {
-        deleteBooking(booking.id);
-        dialog.close();
-    });
-
-}
 
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
