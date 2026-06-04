@@ -658,9 +658,12 @@ function admChangeVehiclesPage() {
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
-        <div class="panel-sort btn-spacer"><button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> </div>
-    <table class="adm-table" id="activeBookingsTable">
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Aktivabokningar - filtrera och avsluta bokningar.</section>
+        <div class="panel-sort btn-spacer">
+        <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button>
+         </div>
+         <div id="active-bookings-gallery-container"></div>
+    <table class="adm-table" id="active-bookings-table">
     <thead>
        <tr>
        
@@ -951,12 +954,11 @@ function updateCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#update-btn').addEventListener('click', () => {
         updateCar(car.id);
-        fetchAdmCars();
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { 
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close(); });
 }
 function deleteCarDialog(car) {
@@ -974,12 +976,11 @@ function deleteCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
         deleteCar(car.id);
-        fetchAdmCars();
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { 
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close(); });
 }
 
@@ -1292,7 +1293,7 @@ function displayUpdateCar(car) {
     let booked = car.booked === true ? "Bokad": "Obokad";
     innerDiv.innerHTML =
         ` 
-        <div class="panel-wrapper"id="showCarDetails">
+        <div class="panel-wrapper">
         <div class="panel panel-important">
             <dl>
   <div>
@@ -1530,6 +1531,52 @@ function displayUsersTable(users) {
 
 /*Bokningar --------------------------------------------------------------------------------Bokningar----------*/
 
+function displayActiveBookingsData(bookings) {
+  if (mql.matches) {
+    displayActiveBookingsTable(bookings);   // Data
+  } else {
+    displayActiveBookingsGallery(bookings);   // Mindre skärm
+  }
+}
+
+function displayActiveBookingsGallery(bookings) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#active-bookings-table')
+    const tbody = document.querySelector('#active-bookings-table tbody');
+    tbody.innerHTML = "";
+    table.innerHTML= "";
+    const galleryDiv = document.querySelector("#active-bookings-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (bookings.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga bokningar att visa. </h3></div>`;
+        return;
+    }
+    bookings.forEach(booking => {
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Boknings-nr:</b><br> ${booking.id}<br>
+        <b>Kund-nr:</b><br> ${booking.userId}<br>
+        <b>Bil-nr:</b><br>${booking.carId}<br>
+        <b>Hyrd från:</b><br> ${booking.fromDate}<br>
+        <b>Hyrd till:</b><br> ${booking.toDate}<br>
+        </p>
+        </ol>
+        <button class="std-btn neg-btn view-booking-btn" alt="Knapp för att redigera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn return-car-btn btn-spacer">Återlämna fordon</button>
+        </div> `
+        wrapper.appendChild(innerDiv);
+
+        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayUpdateBookingDialog(booking);
+        });
+         innerDiv.querySelector('.return-car-btn').addEventListener('click', () => {
+            returnCarDialog(booking);
+        });   
+});
+ galleryDiv.appendChild(wrapper);
+}
 
 
 function displayActiveBookingsTable(bookings) {
@@ -1562,6 +1609,7 @@ function displayActiveBookingsTable(bookings) {
     });
 }
 
+
 function displayBookingsTable(bookings) {
     const tbody = document.querySelector('#bookingsTable tbody');
     tbody.innerHTML = "";
@@ -1579,6 +1627,45 @@ function displayBookingsTable(bookings) {
         `
         tbody.appendChild(tr);
     });
+}
+
+function displayBookingsGallery(bookings) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#bookingsTable')
+    const tbody = document.querySelector('#bookingsTable tbody');
+    tbody.innerHTML = "";
+    table.innerHTML= "";
+    const galleryDiv = document.querySelector("#Abookings-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (bookings.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga bokningar att visa. </h3></div>`;
+        return;
+    }
+    bookings.forEach(booking => {
+        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Boknings-nr:</b><br> ${booking.id}<br>
+        <b>Kund-nr:</b><br> ${booking.userId}<br>
+        <b>Bil-nr:</b><br>${booking.carId}<br>
+        <b>Hyrd från:</b><br> ${booking.fromDate}<br>
+        <b>Hyrd till:</b><br> ${booking.toDate}<br>
+        </p>
+        </ol>
+        <button class="std-btn neg-btn view-booking-btn" alt="Knapp för att redigera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+        </div> `
+        wrapper.appendChild(innerDiv);
+
+        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayUpdateBookingDialog(booking);
+        });
+         innerDiv.querySelector('').addEventListener('click', () => {
+    
+        });   
+});
+ galleryDiv.appendChild(wrapper);
 }
 
 async function displayMyBookings(bookings) {
@@ -2023,7 +2110,7 @@ async function fetchActiveBookings() {
 
         const data = await response.json();
         dataStore.bookingsActive = data;
-        displayActiveBookingsTable(data);
+        displayActiveBookingsData(data);
 
     } catch (error) {
         console.error('Error:' + error.message, ` `);
