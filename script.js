@@ -718,7 +718,8 @@ function admAllBookingsPage() {
     <button type="button" class=" form-margin std-btn pos-btn"id="activeBookings-sortbtn" >Visa aktiva bokningar</button>
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <table class="adm-table" id="bookingsTable">
+    <div id="bookings-gallery-container"></div>
+    <table class="adm-table" id="bookings-table">
     <thead>
        <tr>
             <th id="id-sortbtn">Boknings-id <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande / A-Ö"></i></span> </th>
@@ -738,7 +739,7 @@ function admAllBookingsPage() {
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-all-bookings"); });
     document.querySelector("#activeBookings-sortbtn").addEventListener('click', () => {
         const sortedBookings = activeBookings();
-        displayBookingsTable(sortedBookings);
+        displayBookingsData(sortedBookings);
     });
       /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
@@ -1609,9 +1610,18 @@ function displayActiveBookingsTable(bookings) {
     });
 }
 
+function displayBookingsData(bookings) {
+  if (mql.matches) {
+    displayBookingsTable(bookings);   // Data
+  } else {
+    displayBookingsGallery(bookings);   // Mindre skärm
+  }
+}
+
+
 
 function displayBookingsTable(bookings) {
-    const tbody = document.querySelector('#bookingsTable tbody');
+    const tbody = document.querySelector('#bookings-table tbody');
     tbody.innerHTML = "";
     bookings.forEach(booking => {
        let returnerd= booking.active === true ? "Aktiv":"Återlämnad";
@@ -1631,18 +1641,18 @@ function displayBookingsTable(bookings) {
 
 function displayBookingsGallery(bookings) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#bookingsTable')
-    const tbody = document.querySelector('#bookingsTable tbody');
+    const table = document.querySelector('#bookings-table')
+    const tbody = document.querySelector('#bookings-table tbody');
     tbody.innerHTML = "";
     table.innerHTML= "";
-    const galleryDiv = document.querySelector("#Abookings-gallery-container");
+    const galleryDiv = document.querySelector("#bookings-gallery-container");
     galleryDiv.innerHTML = "";
     if (bookings.length === 0) {
         galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga bokningar att visa. </h3></div>`;
         return;
     }
     bookings.forEach(booking => {
-        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
+        let returnerd = booking.active === true ? "Aktiv":"Återlämnad";
         const innerDiv = document.createElement("div");
         innerDiv.innerHTML =
             ` <div class="panel panel-car adm-info">
@@ -1652,18 +1662,11 @@ function displayBookingsGallery(bookings) {
         <b>Bil-nr:</b><br>${booking.carId}<br>
         <b>Hyrd från:</b><br> ${booking.fromDate}<br>
         <b>Hyrd till:</b><br> ${booking.toDate}<br>
+        <b>Hyrd till:</b><br> ${returnerd}<br>
         </p>
         </ol>
-        <button class="std-btn neg-btn view-booking-btn" alt="Knapp för att redigera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
         </div> `
         wrapper.appendChild(innerDiv);
-
-        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
-            displayUpdateBookingDialog(booking);
-        });
-         innerDiv.querySelector('').addEventListener('click', () => {
-    
-        });   
 });
  galleryDiv.appendChild(wrapper);
 }
@@ -2130,16 +2133,15 @@ async function fetchAllBookings() {
                 }
             })
         if (!response.ok) {
-            updateInfoDialog(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
-            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+            console.error('Error while fetching all bookings:' + response.status)
+            throw new Error(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
         }
         const data = await response.json();
         dataStore.bookings = data;
-        displayBookingsTable(data);
+        displayBookingsData(data);
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
