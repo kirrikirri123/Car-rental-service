@@ -589,27 +589,27 @@ function admVehiclesPage() {
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-vehicles"); });
     document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
         const sortedCars = availableCars();
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
     const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive","id");
     /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "id");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
 
     });
     document.querySelector("#name-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "name");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
 
     document.querySelector("#model-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "model");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
     document.querySelector("#type-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "type");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
 }
 
@@ -769,6 +769,7 @@ function admUsersPage() {
     <div class="panel-sort btn-spacer">
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
+    <div id="user-gallery-container"></div>
     <table class="adm-table" id="usersTable">
     <thead>
        <tr>
@@ -783,9 +784,9 @@ function admUsersPage() {
             <th id="username-sortbtn">Användarnamn <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
         </tr>
     </thead>
-    <tbody><td> Inga användare att visa</td></tbody>
-    <table> 
-    <div id="UserBookingsView"></div>
+    <tbody><tr><td> Inga användare att visa</td></tr></tbody>
+    </table> 
+    <div id="userBookingsView"></div>
     </div>   
     `;
     fetchUsers();
@@ -794,35 +795,35 @@ function admUsersPage() {
       /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
        const sortedUsers = sortTableList(dataStore.users,"users", "id");
-       displayUsersTable(sortedUsers);
+       displayUsersData(sortedUsers);
     });
     document.querySelector("#email-sortbtn").addEventListener('click', () => {
          const sortedUsers = sortTableList(dataStore.users,"users", "email");
-         displayUsersTable(sortedUsers);
+         displayUsersData(sortedUsers);
     });
     document.querySelector("#firstName-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "firstName");
-         displayUsersTable(sortedUsers);
+         displayUsersData(sortedUsers);
     });
     document.querySelector("#lastName-sortbtn").addEventListener('click', () => {
          const sortedUsers = sortTableList(dataStore.users,"users", "lastName");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#noOfOrders-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "noOfOrders");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#phone-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "phone");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#role-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "role");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#username-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "username");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
 
 }
@@ -1120,7 +1121,11 @@ function createPanelWrapper() {
     return wrapperDiv;
 
 }
-/* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.*/
+/* ------------------------------------------------ */
+/* BILAR */
+/*------------------------------------------------- */
+
+/* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.-----------------------------------------Bilar----------*/
 function displayCars(cars) {
     const wrapper = createPanelWrapper();
     const carDiv = document.querySelector(".car-container");
@@ -1236,6 +1241,7 @@ function displayCarsTable(cars) {
     wrapper.appendChild(table);
 };
 
+
 function displayCarsGallery(cars) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#carsTable')
@@ -1256,20 +1262,26 @@ function displayCarsGallery(cars) {
         innerDiv.innerHTML =
             ` <div class="panel panel-car ">
         <ol>
-        <p><b>Tillverkare:</dt></b><dd> ${car.name}</dd><br>
-        <b>Modell:</b></dt><dd> ${car.model}</dd><br>
-        <b>Pris:</b></dt><dd>${car.price} kr/dygn</dd><br>
-        <b>Bil-typ:</b></dt><dd> ${type} </dd><br>
-        <b>Tillgänglig:</b></dt><dd> ${booked} </dd><br></p>
+        <p><b>Tillverkare:</b><br> ${car.name}<br>
+        <b>Modell:</b><br> ${car.model}<br>
+        <b>Pris:</b><br>${car.price} kr/dygn<br>
+        <b>Bil-typ:</b><br> ${type}<br>
+        <b>Tillgänglig:</b><br>${booked}<br></p>
         <ul>
       <li>${car.feature1}</li>
       <li>${car.feature2}</li>
       <li>${car.feature3}</li></ul></dd>
         </ol>
-        <button onclick="fetchCarForUpdateView(${car.id})"class="std-btn neg-btn" alt="Knapp för att redigera eller radera bil" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
-        <div id="icon-holder" class="icon-larger"></div>
+        <button class="std-btn neg-btn car-update-btn" alt="Knapp för att redigera fordon" title="Uppdatera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn neg-btn car-delete-btn" alt="Knapp för att radera fordon" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
         </div> `
-        wrapper.appendChild(innerDiv);     
+        wrapper.appendChild(innerDiv);
+        innerDiv.querySelector('.car-update-btn').addEventListener('click', () => {
+             updateCarDialog(car);
+        });
+         innerDiv.querySelector('.car-delete-btn').addEventListener('click', () => {
+             deleteCarDialog(car); 
+        });
 });
  galleryDiv.appendChild(wrapper);
 }
@@ -1320,12 +1332,16 @@ function displayUpdateCar(car) {
     wrapper.appendChild(innerDiv);
     innerDiv.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    innerDiv.querySelector('#update-btn').addEventListener('click', () => { 
-        updateCarDialog(car); });
+    innerDiv.querySelector('#update-btn').addEventListener('click', () => {  updateCarDialog(car); });
     innerDiv.querySelector('#delete-btn').addEventListener('click', () => { deleteCarDialog(car); });
 }
 
-/* Användare  */
+/* ------------------------------------------------ */
+/* ANVÄNDARE */
+/*------------------------------------------------- */
+
+/*/* Användare ---- -----------------------------------------------------------------------------Användare----------*/
+
 function displayUser(user) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
@@ -1422,12 +1438,69 @@ function displayUpdateUser(user) {
 }
 
 
+function displayUsersData(users) {
+  if (mql.matches) {
+    displayUsersTable(users);   // Data
+  } else {
+    displayUsersGallery(users);   // Mindre skärm
+  }
+}
+
+
+function displayUsersGallery(users) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#usersTable')
+    const tbody = document.querySelector('#usersTable tbody');
+    tbody.innerHTML = "";
+    table.innerHTML= "";
+    const galleryDiv = document.querySelector("#user-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (users.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga användare att visa. </h3></div>`;
+        return;
+    }
+    users.forEach(user => {
+        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Kund-nr:</b><br> ${user.id}<br>
+        <b>Email:</b><br> ${user.email}<br>
+        <b>Namn:</b><br>${user.firstName} ${user.lastName}<br>
+        <b> Antal bokningar:</b><br><span class="show-book-btn table-link-btn" title="Klicka för att se bokningar.">${user.noOfOrders} </span><br>
+        <b>Telefon:</b><br> ${user.phone}<br>
+        <b>Roll:</b><br>${role}<br>
+        <b>Användarnamn:</b><br> ${user.username} <br>
+        </p>
+        </ol>
+        <button class="std-btn neg-btn user-update-btn" alt="Knapp för att redigera kund" title="Uppdatera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn neg-btn user-delete-btn" alt="Knapp för att radera kund" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
+        </div> `
+        innerDiv.querySelector('.show-book-btn').addEventListener('click', () => {
+            displayBookingsByUserId(user.id);
+        });
+        wrapper.appendChild(innerDiv);
+        innerDiv.querySelector('.user-update-btn').addEventListener('click', () => {
+             updateUserDialog(user);
+        });
+         innerDiv.querySelector('.user-delete-btn').addEventListener('click', () => {
+             deleteUserDialog(user);
+        });   
+});
+ galleryDiv.appendChild(wrapper);
+}
+
+
+
 function displayUsersTable(users) {
     const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
+    const galleryDiv = document.querySelector("#user-gallery-container");
+    galleryDiv.innerHTML = "";
+
     users.forEach(user => {
-        let role;
-        if (user.role === "ROLE_USER") { role = "Kund" } else { role = "Administratör" };
+        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
         const tr = document.createElement("tr");
         tr.innerHTML =
             `
@@ -1450,6 +1523,15 @@ function displayUsersTable(users) {
         tbody.appendChild(tr);
     });
 }
+
+/* ------------------------------------------------ */
+/* BOKNINGAR */
+/*------------------------------------------------- */
+
+/*Bokningar --------------------------------------------------------------------------------Bokningar----------*/
+
+
+
 function displayActiveBookingsTable(bookings) {
     const tbody = document.querySelector('#activeBookingsTable tbody');
     tbody.innerHTML = "";
@@ -1482,17 +1564,15 @@ function displayActiveBookingsTable(bookings) {
 
 function displayBookingsTable(bookings) {
     const tbody = document.querySelector('#bookingsTable tbody');
-    let returnerd;
     tbody.innerHTML = "";
     bookings.forEach(booking => {
-        if (booking.active) { returnerd = "Aktiv" } else { returnerd = "Återlämnad" };
+       let returnerd= booking.active === true ? "Aktiv":"Återlämnad";
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
       <td>${booking.id}</td>
       <td>${booking.userId}</td>
       <td>${booking.carId}</td>
-      
       <td>${booking.fromDate}</td>
       <td>${booking.toDate} </td>     
       <td>${returnerd}</td>
@@ -1558,6 +1638,7 @@ async function displayBookingsByUserId(id) {
             displayUpdateBookingDialog(booking);
         });
         wrapper.appendChild(innerDiv);
+        innerDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
     bookingsView.appendChild(wrapper);
 }
@@ -2193,7 +2274,7 @@ async function fetchUsers() {
 
         const data = await response.json();
         dataStore.users = data;
-        displayUsersTable(data);
+        displayUsersData(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
