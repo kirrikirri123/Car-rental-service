@@ -566,7 +566,7 @@ function admVehiclesPage() {
     </div>
     <div id="car-gallery-container"></div>
     <div class="table-div">
-    <table class="adm-table" id="carsTable">
+    <table class="adm-table" id="cars-table">
     <thead>
        <tr>
             <th>Redigera bil</th>
@@ -774,7 +774,7 @@ function admUsersPage() {
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
     <div id="user-gallery-container"></div>
-    <table class="adm-table" id="usersTable">
+    <table class="adm-table" id="users-table">
     <thead>
        <tr>
             <th>Redigera kund</th>
@@ -1184,7 +1184,7 @@ function displayACar(car) {
         <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn </dd>
         <dt><b>Utrustning:</b><br></dt>
         <dd><br>
-        <li> ${car.feature1}</li>
+        <li>${car.feature1}</li>
         <li>${car.feature2}</li>
         <li>${car.feature3}</li></dd>
         </dl>
@@ -1214,11 +1214,9 @@ function displayCarData(cars) {
 
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#carsTable')
-    const tbody = document.querySelector('#carsTable tbody');
+    const table = document.querySelector('#cars-table')
+    const tbody = document.querySelector('#cars-table tbody');
     tbody.innerHTML = "";
-    const galleryDiv = document.querySelector("#car-gallery-container");
-    galleryDiv.innerHTML = "";
     cars.forEach(car => {
         let booked = car.booked === true ? "Bokad": "Obokad";
         const type = carType(car.type);
@@ -1246,10 +1244,8 @@ function displayCarsTable(cars) {
 
 function displayCarsGallery(cars) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#carsTable')
-    const tbody = document.querySelector('#carsTable tbody');
-    tbody.innerHTML = "";
-    table.innerHTML= "";
+    const table = document.querySelector('#cars-table')
+    table.innerHTML= ""; 
     const galleryDiv = document.querySelector("#car-gallery-container");
     galleryDiv.innerHTML = "";
 
@@ -1349,7 +1345,6 @@ function displayUser(user) {
     const innerDiv = document.createElement("div");
     innerDiv.innerHTML =
         `
-    <!--<div class="panel-wrapper">-->
      <div class="panel panel-important">
     <dl>
   <div>
@@ -1374,10 +1369,8 @@ function displayUser(user) {
   </div>
     </dl>
     </div>
-     
         <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
-        <!--</div>-->
         </div>    
         `
     wrapper.appendChild(innerDiv);
@@ -1451,9 +1444,7 @@ function displayUsersData(users) {
 
 function displayUsersGallery(users) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#usersTable')
-    const tbody = document.querySelector('#usersTable tbody');
-    tbody.innerHTML = "";
+    const table = document.querySelector('#users-table')
     table.innerHTML= "";
     const galleryDiv = document.querySelector("#user-gallery-container");
     galleryDiv.innerHTML = "";
@@ -1498,9 +1489,7 @@ function displayUsersGallery(users) {
 function displayUsersTable(users) {
     const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
-    const galleryDiv = document.querySelector("#user-gallery-container");
-    galleryDiv.innerHTML = "";
-
+    
     users.forEach(user => {
         let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
         const tr = document.createElement("tr");
@@ -1543,9 +1532,7 @@ function displayActiveBookingsData(bookings) {
 function displayActiveBookingsGallery(bookings) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#active-bookings-table')
-    const tbody = document.querySelector('#active-bookings-table tbody');
-    tbody.innerHTML = "";
-    table.innerHTML= "";
+    table.innerHTML= ""; 
     const galleryDiv = document.querySelector("#active-bookings-gallery-container");
     galleryDiv.innerHTML = "";
     if (bookings.length === 0) {
@@ -1642,9 +1629,7 @@ function displayBookingsTable(bookings) {
 function displayBookingsGallery(bookings) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#bookings-table')
-    const tbody = document.querySelector('#bookings-table tbody');
-    tbody.innerHTML = "";
-    table.innerHTML= "";
+    table.innerHTML= ""; 
     const galleryDiv = document.querySelector("#bookings-gallery-container");
     galleryDiv.innerHTML = "";
     if (bookings.length === 0) {
@@ -1764,8 +1749,6 @@ async function displayABookingDialog(booking) {
     dialog.showModal();
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
-
-
 
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
