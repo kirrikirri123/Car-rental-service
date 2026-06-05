@@ -178,8 +178,8 @@ async function login() {
             body: JSON.stringify({ "username": userInfo.username, "password": userInfo.password })
         })
         if (!response.ok) {
-            updateInfoDialog('Felaktiga inloggningsuppgifter', `<i class="fa-solid fa-car-burst icon-car"></i>`);
-            throw new Error('Felaktigt inlogg. Dubbelkolla dina uppgifter.Status: ' + response.status);
+            console.error('Error in credetials:' + response.status);
+            throw new Error('Felaktiga inloggningsuppgifter, dubbelkolla din info.');
         }
         const data = await response.json();
         loginDialog.close();
@@ -191,7 +191,7 @@ async function login() {
         fetchNSaveUserById();
 
     } catch (error) {
-        console.error('Error:' + error.message);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -913,7 +913,6 @@ function updateCarDialog(car) {
         `<div class="dialog-content">
             <div id="booking-header">
                 <h2>Uppdatera fordon</h2>
-                <p></p>
             </div>
      <form id="update-form">
         <label for="brand" class="form-margin">Tillverkare: </label><br>
@@ -934,7 +933,7 @@ function updateCarDialog(car) {
         <label for="feature3" class="form-margin">Utrustning ex.3:</label><br>
             <input id="feature3" class="input-fields form-margin form-text" value="${car.feature3}"><br>
         
-        <label for="booked" class="form-margin">Bokad? <i>Går ej uppdatera</i>:</label><br>
+        <label for="booked" class="form-margin">Bokad?<br><i>Går ej uppdatera</i>:</label><br>
             <p id="booked" class="input-fields form-margin form-text">${booked}</p><br>
             
         <label for="carType" class="form-margin">Klass: </label><br>
@@ -1012,6 +1011,52 @@ function bookingDialog(car) {
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 
+async function admBookingDialog(car) {
+    
+    const dialog = document.querySelector(`#booking-dialog`);
+    dialog.innerHTML =
+        `<div class="dialog-content">
+            <div id="booking-header">
+                <h2>Boka fordon</h2>
+                <p> Bokas från idag och till ditt valda datum. <br>
+                Välkommen in och hämta nycklarna - Trevlig körning!
+                </p>
+            </div>
+            <form id="booking-form">
+                <label for="to-date">Kund:</label><br>
+                <input id="to-date" type="" class="form-margin"><br>        
+                <label for="to-date">Återlämningsdatum:</label><br>
+                <input id="to-date" type="date" class="form-margin"><br>               
+                <span class="btn-spacer">
+                    <button id="book-btn" type="button" class="std-btn pos-btn book-btn">BOKA</button>
+                    <button id="exit-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
+            </form>
+        </div>`
+         principal = sessionStorage.getItem(principal);
+    if(principal.isAdmin === true){     
+        const users = await fetchUsersForList();
+        dialog.querySelector('#booking-form').innerHTML =`
+        <label for="choose-user" class="info-headline">Kund</label>
+    <select name="choose-user" id="choose-user" class="form-margin input-fields" onchange="(this.value)">
+    <option value="">Välj</option>
+    <option value="sport">Sport</option>
+    
+    </select>
+        `
+    }
+     principal = sessionStorage.getItem(principal);
+    if(principal.isAdmin === true){
+        
+    }
+
+    dialog.showModal();
+    dialog.querySelector('#book-btn').addEventListener('click', () => {
+        createNewBooking(car);
+        dialog.close();
+    });
+    dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
+}
+
 function updateBookingDialog(booking) {
     const dialog = document.querySelector(`#update-dialog`);
     dialog.innerHTML =
@@ -1033,8 +1078,8 @@ function updateBookingDialog(booking) {
 
     dialog.showModal();
     dialog.querySelector('.update-btn').addEventListener('click', () => {
-        const updatedBook = getUpdatedBooking(booking);
-        updateBooking(booking.id, updatedBook);
+        const updated = getUpdatedBooking(booking);
+        updateBooking(booking.id, updated);
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
@@ -1061,7 +1106,8 @@ function returnCarDialog(booking) {
             `
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
-        returnBooking(booking.id);
+        const updated = updateReturningBooking(booking)
+        updateAndReturn(booking.id, updated);
         dialog.close();
         
     });
@@ -1157,8 +1203,8 @@ function displayCars(cars) {
         </div> `
         if (car.booked) {
             innerDiv.querySelector('div .panel-car').classList.add('car-booked');
-            innerDiv.querySelector('#icon-holder').innerHTML = `<i class="fa-solid fa-road-lock" title="Bil ej tillgänglig"></i>`;
-
+            innerDiv.querySelector('#icon-holder').innerHTML =
+             `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
         }
         wrapper.appendChild(innerDiv);
         carDiv.appendChild(wrapper);
@@ -1259,6 +1305,7 @@ function displayCarsGallery(cars) {
         const type = carType(car.type);
         innerDiv.innerHTML =
             ` <div class="panel panel-car ">
+        <div id="icon-holder" class="icon-larger"></div>    
         <ol>
         <p><b>Tillverkare:</b><br> ${car.name}<br>
         <b>Modell:</b><br> ${car.model}<br>
@@ -1273,6 +1320,12 @@ function displayCarsGallery(cars) {
         <button class="std-btn neg-btn car-update-btn" alt="Knapp för att redigera fordon" title="Uppdatera"><i class="fa-solid fa-wrench"></i></button>
         <button class="std-btn neg-btn car-delete-btn" alt="Knapp för att radera fordon" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
         </div> `
+        if (car.booked) {
+            innerDiv.querySelector('div .panel-car').classList.add('car-booked');
+            innerDiv.querySelector('#icon-holder').innerHTML = 
+            `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
+        }
+
         wrapper.appendChild(innerDiv);
         innerDiv.querySelector('.car-update-btn').addEventListener('click', () => {
              updateCarDialog(car);
@@ -1487,7 +1540,7 @@ function displayUsersGallery(users) {
 
 
 function displayUsersTable(users) {
-    const tbody = document.querySelector('#usersTable tbody');
+    const tbody = document.querySelector('#users-table tbody');
     tbody.innerHTML = "";
     
     users.forEach(user => {
@@ -1844,7 +1897,6 @@ function getUpdatedCar() {
         "price": price.value
     }
     return updatedCar;
-
 }
 
 function getUpdatedBooking(booking) {
@@ -1858,8 +1910,20 @@ function getUpdatedBooking(booking) {
         "active": true
     }
     return updatedBooking;
-
 }
+
+/* Uppdaterar till dagens datum vid återlämning. */
+function updateReturningBooking(booking){
+    const toDay = new Date();
+ const updatedBooking = {
+        "fromDate": booking.fromDate,
+        "toDate": toDay.toISOString().split("T")[0],
+        "carId": booking.carId,
+        "active": true
+    }
+    return updatedBooking;
+
+} 
 
 function getUpdatedUser() {
     const dialog = document.querySelector('#update-dialog');
@@ -1882,10 +1946,11 @@ function getUpdatedUser() {
 
 
 /* ------------------------------------------------ */
-/* FETCH-FUNKTIONER - DÖP OM DENNA OCH SORTERA AFTER CRUD??*/
+/* FETCH-FUNKTIONER - */
 /*------------------------------------------------- */
-
-/* Hämta bilar */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* BILAR ----------------- */
+/* ----------------------------------------------------------------------------------------------------------------BILAR-------------------------------- */
 async function fetchCars() {
     const url = 'http://localhost:8080/api/v1/cars';
     try {
@@ -2243,10 +2308,6 @@ async function fetchBookingByUserId(userId) {
     }
 }
 
-
-
-
-
 /* Uppdatera bokning */
 async function updateBooking(id, updatedInfo) {
     const url = `http://localhost:8080/api/v1/bookings/${id}`;
@@ -2266,6 +2327,29 @@ async function updateBooking(id, updatedInfo) {
         updateInfoDialog(`Uppdatering lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
         changeMainContent("adm-bookings");
 
+    } catch (error) {
+        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+    }
+
+}
+/* Uppdatera bokning */
+async function updateAndReturn(id, updatedInfo){
+    const url = `http://localhost:8080/api/v1/bookings/${id}`;
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${credentials}`
+            },
+            body: JSON.stringify(updatedInfo)
+        });
+        if (!response.ok) {
+            throw new Error(`Fel vid updatering av bokning. Status: ${response.status}`);
+        }
+      const data = await response.json();
+        returnBooking(data.id);
     } catch (error) {
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
@@ -2315,12 +2399,12 @@ async function deleteBooking(id) {
         if (!response.status === 204) {
             throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
         }
-        updateInfoDialog(`Bokning raderad!`, `<i class="fa-solid fa-circle-minus" title="Deleted"></i>`);
+        updateInfoDialog(`Bokning raderad!`, `<i aria-hidden="true" class="fa-solid fa-circle-minus" title="Deleted"></i>`);
         changeMainContent("adm-bookings");
 
     } catch (error) {
         console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog("Fel uppstod: " + error, `<i aria-hidden="true" class="fa-solid fa-car-burst icon-car"></i>`);
     }
 
 }
@@ -2352,6 +2436,31 @@ async function fetchUsers() {
         console.error('Error:' + error.message);
     }
 }
+
+async function fetchUsersForList() {
+    const url = 'http://localhost:8080/api/v1/users';
+    const credentials = sessionStorage.getItem("basicAuth");
+    try {
+        const response = await fetch(url,
+            {
+                method: 'GET',
+                headers: {
+                    "Authorization": `${credentials}`
+                }
+            });
+
+        if (!response.ok) {
+            updateInfoDialog(`Något gick fel vid inladdnig av kunder. Prova igen senare.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+    } catch (error) {
+        console.error('Error:' + error.message);
+    }
+}
+
 
 /* Hämtar bara den som är inloggad! */
 async function fetchUserById() {

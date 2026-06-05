@@ -79,6 +79,10 @@
     width: 100%;
 }
 
+.panel-advert{
+  max-width: 45%;
+ }
+
  /* Navigering----------------------------------------------------------------------Navigering------------------------- */
  .desktop-menu {
      grid-area: sidebar;

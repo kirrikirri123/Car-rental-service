@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Wigell hyrbilar,hyrbil, hyrbilar, biluthyrning, hyr bil, hyra bil, hyra fordon, säker biluthyrning ,exklusiv, wigell, wigellkoncernen" />
+    <meta name="keywords"
+        content="Wigell hyrbilar,hyrbil, hyrbilar, biluthyrning, hyr bil, hyra bil, hyra fordon, säker biluthyrning ,exklusiv, wigell, wigellkoncernen" />
     <link rel="stylesheet" href="/css/mobilestyle.css">
     <link rel="stylesheet" href="/css/desktopstyle.css" media="(min-width:768px)">
     <link rel="icon" type="ico" href="/styleguide/img/favicon.ico">
@@ -36,46 +37,86 @@
             <dt><a href="#login" id="login-link" class="menu-link">Logga in</a></dt>
         </dl>
         <dl class="menu" id="user-menu">
-            <dt><a href="#" id="userpages-link" class="menu-link">Mina sidor</a></dt>
-            <dt><a href="#" id="user-info-link" class="menu-link under-link">Min info</a></dt>
-            <dt><a href="#" id="user-bookings-link" class="menu-link under-link">Mina bokningar</a></dt>
-            <dt><a href="#" id="user-cars-link" class="menu-link">Boka bil</a></dt>
-            <dt><a href="#" id="logout-user-link" class="menu-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logga ut</a></dt>
+            <dt><a href="#myPages" id="userpages-link" class="menu-link">Mina sidor</a></dt>
+            <dt><a href="#myInfo" id="user-info-link" class="menu-link under-link">Min info</a></dt>
+            <dt><a href="#myBookings" id="user-bookings-link" class="menu-link under-link">Mina bokningar</a></dt>
+            <dt><a href="#bookACar" id="user-cars-link" class="menu-link">Boka bil</a></dt>
+            <dt><a href="#" id="logout-user-link" class="menu-link"><i aria-hidden="true"
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logga ut</a></dt>
         </dl>
         <dl class="menu" id="admin-menu">
-            <dt><a href="#" id="home-link" class="menu-link"><i class="fa-regular fa-house"></i> Admin </a></dt>
-            <dd><a href="#" id="adm-vehicles-link" class="menu-link">Fordon</a></dd>
-            <dt><a href="#" id="adm-new-vehicles-link" class="menu-link under-link">Lägg till fordon</a></dt>
-            <dt><a href="#" id="adm-cars-link" class="menu-link">Boka fordon</a></dt> <!-- NY LÄNK -->
-            <dd><a href="#" id="adm-bookings-link" class="menu-link">Aktiva bokningar</a></dd>
-            <dt><a href="#" id="adm-history-link" class="menu-link under-link">Bokningshistorik</a></dt>
-            <dd><a href="#" id="adm-users-link" class="menu-link">Kunder</a></dd>
-            <dt><a href="#" id="adm-new-user-link" class="menu-link under-link"> Lägg till användare</a></dt><!-- NY LÄNK -->
-            <dt><a href="#" id="adm-styleguide-link" class="menu-link">Webbplatsinfo</a></dt>
-            <!-- Hur länka denna? -->
-            <dt><a href="#" id="logout-admin-link" class="menu-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>  Logga ut</a></dt>
+            <dt><a href="#home" id="home-link" class="menu-link"><i aria-hidden="true"
+                        aria-describedby="Admins första sida" class="fa-regular fa-house"></i> Admin </a></dt>
+            <dd><a href="#vehicles" id="adm-vehicles-link" class="menu-link">Fordon</a></dd>
+            <dt><a href="#addVehicles" id="adm-new-vehicles-link" class="menu-link under-link">Lägg till fordon</a></dt>
+            <dt><a href="#booking" id="adm-cars-link" class="menu-link">Boka fordon</a></dt>
+            <dd><a href="#activeBookings" id="adm-bookings-link" class="menu-link">Aktiva bokningar</a></dd>
+            <dt><a href="#allHistory" id="adm-history-link" class="menu-link under-link">Bokningshistorik</a></dt>
+            <dd><a href="#users" id="adm-users-link" class="menu-link">Kunder</a></dd>
+            <dt><a href="#addUser" id="adm-new-user-link" class="menu-link under-link"> Lägg till användare</a></dt>
+            <dt><a href="#styleGuide" id="adm-styleguide-link" class="menu-link">Webbplatsinfo</a></dt>
+
+            <dt><a href="#logOut" id="logout-admin-link" class="menu-link"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logga ut</a></dt>
         </dl>
         </div>
     </nav>
     <main>
         <div class="main-content">
             <div id="hero">
-                <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
+                <img src="/img/images/corvetteZ06.jpg" alt="Bild av en Corvette Z06 i vacker naturmiljö" width="100%">
                 <h1>service<br>security<br>speed</h1>
             </div>
-            <div class="panel-wrapper">
-                <div class="panel"><p>"Wow! Alltid en bra upplevelse."</p>
+            <section>
+                <h4> Omdömmen från våra trogna kunder.</h4>
+                <div class="panel-wrapper">
+                    <article>
+                        <div class="panel">
+                            <p> &#9733  &#9733  &#9733 
+                                <br>"Wow! Alltid en bra upplevelse."</p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p>  &#9733  &#9733 &#9733  &#9733
+                                <br>"Fantastiskt! Fyra tummar upp!"</p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p>  &#9733 &#9733 &#9733 &#9733 &#9733
+                                <br>"För bra! Överleverar alltid."</p>
+                        </div>
+                    </article>
+            </section>
+            <section aria-label="Annons">
+                <div class="panel-wrapper">
+                <div class="panel panel-advert">
+                    <i class="fa-regular fa-lightbulb " alt="Reklamsammarbete" title="Annons"></i>
+                    <p>"En trygg partner vi litar på!"<br> Som samarbetspartner inom Wigellkoncernen litar
+                        Wigell Travels på Mr. T's fräsha, trygga bilar och snabba service varje gång. Wigell Travels arrangerar resor runt så långt dina drömmar når.<br>
+                    <h4> Boka en din resa idag ! <br> Tel. 0910 911-911</h4>
+                    </p>
                 </div>
-                <div class="panel"><p>"Fantastiskt! Fyra tummar upp!"</p>
+                <div class="panel panel-advert">
+                    <i class="fa-regular fa-lightbulb" alt="Reklamsammarbete" title="Annons"></i>
+                    <p>"Vårt förstahands val !" <br> Alltid en bil ledig inom kort varsel.<br> Perfekt för transport till våra evenemang.
+                        Wigell Cinema club arrangerar högklassiga flimvisningar. Bli en del av vår filmälskande gemenskap du med.
+                    <h4> Bli medlem idag!  <br> Tel. 0950 777 27</h4>
+                    </p>
                 </div>
-                <div class="panel"><p>"För bra! Överleverar alltid."</p>
-                </div>
-            </div>
+             </div>
+            </section>
+
+        </div>
         </div>
         <footer>
             <div>
-                <span><i class="fa-solid fa-phone" alt="Telefonnummer" title="Ring"></i> Tel. 020- 912 912 </span><span> <i class="fa-regular fa-message" alt="Mobilnnummer" title="Smsa"></i> Tel. 071-01 02 345 </span> <span> <i class="fa-regular fa-envelope" alt="Mailadress" titel="Maila"></i> car@wigellkon.com </span>
-                <p>&copy; 2025 - Wigellkoncernen. All rights reserved.</p> 
+                <span><i class="fa-solid fa-phone" alt="Telefonnummer-att ringa" title="Ring"></i> Tel. 020- 912 912
+                </span><span> <i class="fa-regular fa-message" alt="Mobilnnummer för sms eller videosamtal"
+                        title="Smsa"></i> Tel. 071-01 02 345 </span> <span> <i class="fa-regular fa-envelope"
+                        alt="Mailadress" titel="Maila"></i> car@wigellkon.com </span>
+                <p>&copy; 2025 - Wigellkoncernen. All rights reserved.</p>
                 <img src="/styleguide/img/logo-white.png" alt="Wigellkoncernen Logo" width="45 px">
             </div>
         </footer>
@@ -88,10 +129,10 @@
                 <p> Logga in för möjlighet att boka fordon och se din historik.</p>
             </div>
             <form id="login-form">
-                <label for="input-username" >Användarnamn / email:</label><br>
-                <input id="input-username"  type="text" maxlength="15" minlength="5" placeholder="Användarnamn"><br>
-                <label for="input-password" >Lösenord:</label><br>
-                <input id="input-password"  type="password" maxlength="20" minlength="5" placeholder="Lösenord"><br>
+                <label for="input-username">Användarnamn (oftast din email) :</label><br>
+                <input id="input-username" type="text" maxlength="15" minlength="5" placeholder="Användarnamn"><br>
+                <label for="input-password">Lösenord:</label><br>
+                <input id="input-password" type="password" maxlength="20" minlength="5" placeholder="Lösenord"><br>
                 <span class="btn-spacer">
                     <button id="login-btn" type="button" class="std-btn pos-btn">Logga in</button>
                     <button id="new-user-btn" type="button" class="std-btn">Nytt konto</button>
@@ -103,7 +144,7 @@
     <dialog class="dialog form-dialog" id="booking-dialog"></dialog>
     <dialog class="dialog form-dialog" id="update-dialog"></dialog>
 
-    <dialog class="dialog" id="info-dialog">
+    <dialog class="dialog" id="info-dialog" aria-roledescription="alert">
         <div class="dialog-content">
             <div id="info-header">
                 <h2> Info</h2>
@@ -111,7 +152,7 @@
             </div>
             <button id="escape-btn" type="button" class="std-btn "> OK </button>
         </div>
- 
+
 
     </dialog>
 </body>
