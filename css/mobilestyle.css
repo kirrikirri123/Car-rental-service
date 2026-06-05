@@ -542,6 +542,11 @@
      border: 0.1rem solid var(--color-border);
      border-radius: 1em;
  }
+ .panel-car ol{
+    text-align: start;
+    min-width: 255px;
+
+ }
 
  .car-booked {
      border: 0.3rem solid var(--color-surface);
