@@ -566,7 +566,7 @@ function admVehiclesPage() {
     </div>
     <div id="car-gallery-container"></div>
     <div class="table-div">
-    <table class="adm-table" id="carsTable">
+    <table class="adm-table" id="cars-table">
     <thead>
        <tr>
             <th>Redigera bil</th>
@@ -589,27 +589,27 @@ function admVehiclesPage() {
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-vehicles"); });
     document.querySelector("#availableCars-sortbtn").addEventListener('click', () => {
         const sortedCars = availableCars();
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
     const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive","id");
     /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "id");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
 
     });
     document.querySelector("#name-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "name");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
 
     document.querySelector("#model-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "model");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
     document.querySelector("#type-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars,"cars", "type");
-        displayCarsTable(sortedCars);
+        displayCarData(sortedCars);
     });
 }
 
@@ -658,9 +658,12 @@ function admChangeVehiclesPage() {
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> ADMIN - Bokningar som kan sorteras på aktiva och inte. Samt för specifik kund. Samt AVSLUT.</section>
-        <div class="panel-sort btn-spacer"><button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> </div>
-    <table class="adm-table" id="activeBookingsTable">
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Aktivabokningar - filtrera och avsluta bokningar.</section>
+        <div class="panel-sort btn-spacer">
+        <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button>
+         </div>
+         <div id="active-bookings-gallery-container"></div>
+    <table class="adm-table" id="active-bookings-table">
     <thead>
        <tr>
        
@@ -715,7 +718,8 @@ function admAllBookingsPage() {
     <button type="button" class=" form-margin std-btn pos-btn"id="activeBookings-sortbtn" >Visa aktiva bokningar</button>
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <table class="adm-table" id="bookingsTable">
+    <div id="bookings-gallery-container"></div>
+    <table class="adm-table" id="bookings-table">
     <thead>
        <tr>
             <th id="id-sortbtn">Boknings-id <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande / A-Ö"></i></span> </th>
@@ -735,7 +739,7 @@ function admAllBookingsPage() {
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-all-bookings"); });
     document.querySelector("#activeBookings-sortbtn").addEventListener('click', () => {
         const sortedBookings = activeBookings();
-        displayBookingsTable(sortedBookings);
+        displayBookingsData(sortedBookings);
     });
       /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
@@ -769,7 +773,8 @@ function admUsersPage() {
     <div class="panel-sort btn-spacer">
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <table class="adm-table" id="usersTable">
+    <div id="user-gallery-container"></div>
+    <table class="adm-table" id="users-table">
     <thead>
        <tr>
             <th>Redigera kund</th>
@@ -783,9 +788,9 @@ function admUsersPage() {
             <th id="username-sortbtn">Användarnamn <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande"></i></span> </th>
         </tr>
     </thead>
-    <tbody><td> Inga användare att visa</td></tbody>
-    <table> 
-    <div id="UserBookingsView"></div>
+    <tbody><tr><td> Inga användare att visa</td></tr></tbody>
+    </table> 
+    <div id="userBookingsView"></div>
     </div>   
     `;
     fetchUsers();
@@ -794,35 +799,35 @@ function admUsersPage() {
       /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
        const sortedUsers = sortTableList(dataStore.users,"users", "id");
-       displayUsersTable(sortedUsers);
+       displayUsersData(sortedUsers);
     });
     document.querySelector("#email-sortbtn").addEventListener('click', () => {
          const sortedUsers = sortTableList(dataStore.users,"users", "email");
-         displayUsersTable(sortedUsers);
+         displayUsersData(sortedUsers);
     });
     document.querySelector("#firstName-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "firstName");
-         displayUsersTable(sortedUsers);
+         displayUsersData(sortedUsers);
     });
     document.querySelector("#lastName-sortbtn").addEventListener('click', () => {
          const sortedUsers = sortTableList(dataStore.users,"users", "lastName");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#noOfOrders-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "noOfOrders");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#phone-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "phone");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#role-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "role");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#username-sortbtn").addEventListener('click', () => {
         const sortedUsers = sortTableList(dataStore.users,"users", "username");
-        displayUsersTable(sortedUsers);
+        displayUsersData(sortedUsers);
     });
 
 }
@@ -950,12 +955,11 @@ function updateCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#update-btn').addEventListener('click', () => {
         updateCar(car.id);
-        fetchAdmCars();
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { 
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close(); });
 }
 function deleteCarDialog(car) {
@@ -973,12 +977,11 @@ function deleteCarDialog(car) {
     dialog.showModal();
     dialog.querySelector('#delete-btn').addEventListener('click', () => {
         deleteCar(car.id);
-        fetchAdmCars();
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { 
-        document.querySelector('#showCarDetails').innerHTML ="";
+        /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close(); });
 }
 
@@ -1120,7 +1123,11 @@ function createPanelWrapper() {
     return wrapperDiv;
 
 }
-/* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.*/
+/* ------------------------------------------------ */
+/* BILAR */
+/*------------------------------------------------- */
+
+/* Bilar  - Lägger in bilarna i lista omgärdad av wrapper.-----------------------------------------Bilar----------*/
 function displayCars(cars) {
     const wrapper = createPanelWrapper();
     const carDiv = document.querySelector(".car-container");
@@ -1177,7 +1184,7 @@ function displayACar(car) {
         <dt><b>Pris:</b></dt> <dd> ${car.price} kr/dygn </dd>
         <dt><b>Utrustning:</b><br></dt>
         <dd><br>
-        <li> ${car.feature1}</li>
+        <li>${car.feature1}</li>
         <li>${car.feature2}</li>
         <li>${car.feature3}</li></dd>
         </dl>
@@ -1207,11 +1214,9 @@ function displayCarData(cars) {
 
 function displayCarsTable(cars) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#carsTable')
-    const tbody = document.querySelector('#carsTable tbody');
+    const table = document.querySelector('#cars-table')
+    const tbody = document.querySelector('#cars-table tbody');
     tbody.innerHTML = "";
-    const galleryDiv = document.querySelector("#car-gallery-container");
-    galleryDiv.innerHTML = "";
     cars.forEach(car => {
         let booked = car.booked === true ? "Bokad": "Obokad";
         const type = carType(car.type);
@@ -1236,12 +1241,11 @@ function displayCarsTable(cars) {
     wrapper.appendChild(table);
 };
 
+
 function displayCarsGallery(cars) {
     const wrapper = createPanelWrapper();
-    const table = document.querySelector('#carsTable')
-    const tbody = document.querySelector('#carsTable tbody');
-    tbody.innerHTML = "";
-    table.innerHTML= "";
+    const table = document.querySelector('#cars-table')
+    table.innerHTML= ""; 
     const galleryDiv = document.querySelector("#car-gallery-container");
     galleryDiv.innerHTML = "";
 
@@ -1256,20 +1260,26 @@ function displayCarsGallery(cars) {
         innerDiv.innerHTML =
             ` <div class="panel panel-car ">
         <ol>
-        <p><b>Tillverkare:</dt></b><dd> ${car.name}</dd><br>
-        <b>Modell:</b></dt><dd> ${car.model}</dd><br>
-        <b>Pris:</b></dt><dd>${car.price} kr/dygn</dd><br>
-        <b>Bil-typ:</b></dt><dd> ${type} </dd><br>
-        <b>Tillgänglig:</b></dt><dd> ${booked} </dd><br></p>
+        <p><b>Tillverkare:</b><br> ${car.name}<br>
+        <b>Modell:</b><br> ${car.model}<br>
+        <b>Pris:</b><br>${car.price} kr/dygn<br>
+        <b>Bil-typ:</b><br> ${type}<br>
+        <b>Tillgänglig:</b><br>${booked}<br></p>
         <ul>
       <li>${car.feature1}</li>
       <li>${car.feature2}</li>
       <li>${car.feature3}</li></ul></dd>
         </ol>
-        <button onclick="fetchCarForUpdateView(${car.id})"class="std-btn neg-btn" alt="Knapp för att redigera eller radera bil" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
-        <div id="icon-holder" class="icon-larger"></div>
+        <button class="std-btn neg-btn car-update-btn" alt="Knapp för att redigera fordon" title="Uppdatera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn neg-btn car-delete-btn" alt="Knapp för att radera fordon" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
         </div> `
-        wrapper.appendChild(innerDiv);     
+        wrapper.appendChild(innerDiv);
+        innerDiv.querySelector('.car-update-btn').addEventListener('click', () => {
+             updateCarDialog(car);
+        });
+         innerDiv.querySelector('.car-delete-btn').addEventListener('click', () => {
+             deleteCarDialog(car); 
+        });
 });
  galleryDiv.appendChild(wrapper);
 }
@@ -1280,7 +1290,7 @@ function displayUpdateCar(car) {
     let booked = car.booked === true ? "Bokad": "Obokad";
     innerDiv.innerHTML =
         ` 
-        <div class="panel-wrapper"id="showCarDetails">
+        <div class="panel-wrapper">
         <div class="panel panel-important">
             <dl>
   <div>
@@ -1320,18 +1330,21 @@ function displayUpdateCar(car) {
     wrapper.appendChild(innerDiv);
     innerDiv.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    innerDiv.querySelector('#update-btn').addEventListener('click', () => { 
-        updateCarDialog(car); });
+    innerDiv.querySelector('#update-btn').addEventListener('click', () => {  updateCarDialog(car); });
     innerDiv.querySelector('#delete-btn').addEventListener('click', () => { deleteCarDialog(car); });
 }
 
-/* Användare  */
+/* ------------------------------------------------ */
+/* ANVÄNDARE */
+/*------------------------------------------------- */
+
+/*/* Användare ---- -----------------------------------------------------------------------------Användare----------*/
+
 function displayUser(user) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
     innerDiv.innerHTML =
         `
-    <!--<div class="panel-wrapper">-->
      <div class="panel panel-important">
     <dl>
   <div>
@@ -1356,10 +1369,8 @@ function displayUser(user) {
   </div>
     </dl>
     </div>
-     
         <div class="btn-spacer">      
         <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
-        <!--</div>-->
         </div>    
         `
     wrapper.appendChild(innerDiv);
@@ -1422,12 +1433,65 @@ function displayUpdateUser(user) {
 }
 
 
+function displayUsersData(users) {
+  if (mql.matches) {
+    displayUsersTable(users);   // Data
+  } else {
+    displayUsersGallery(users);   // Mindre skärm
+  }
+}
+
+
+function displayUsersGallery(users) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#users-table')
+    table.innerHTML= "";
+    const galleryDiv = document.querySelector("#user-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (users.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga användare att visa. </h3></div>`;
+        return;
+    }
+    users.forEach(user => {
+        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Kund-nr:</b><br> ${user.id}<br>
+        <b>Email:</b><br> ${user.email}<br>
+        <b>Namn:</b><br>${user.firstName} ${user.lastName}<br>
+        <b> Antal bokningar:</b><br><span class="show-book-btn table-link-btn" title="Klicka för att se bokningar.">${user.noOfOrders} </span><br>
+        <b>Telefon:</b><br> ${user.phone}<br>
+        <b>Roll:</b><br>${role}<br>
+        <b>Användarnamn:</b><br> ${user.username} <br>
+        </p>
+        </ol>
+        <button class="std-btn neg-btn user-update-btn" alt="Knapp för att redigera kund" title="Uppdatera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn neg-btn user-delete-btn" alt="Knapp för att radera kund" title="Radera"><i class="fa-regular fa-trash-can"></i></button>
+        </div> `
+        innerDiv.querySelector('.show-book-btn').addEventListener('click', () => {
+            displayBookingsByUserId(user.id);
+        });
+        wrapper.appendChild(innerDiv);
+        innerDiv.querySelector('.user-update-btn').addEventListener('click', () => {
+             updateUserDialog(user);
+        });
+         innerDiv.querySelector('.user-delete-btn').addEventListener('click', () => {
+             deleteUserDialog(user);
+        });   
+});
+ galleryDiv.appendChild(wrapper);
+}
+
+
+
 function displayUsersTable(users) {
     const tbody = document.querySelector('#usersTable tbody');
     tbody.innerHTML = "";
+    
     users.forEach(user => {
-        let role;
-        if (user.role === "ROLE_USER") { role = "Kund" } else { role = "Administratör" };
+        let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
         const tr = document.createElement("tr");
         tr.innerHTML =
             `
@@ -1450,6 +1514,59 @@ function displayUsersTable(users) {
         tbody.appendChild(tr);
     });
 }
+
+/* ------------------------------------------------ */
+/* BOKNINGAR */
+/*------------------------------------------------- */
+
+/*Bokningar --------------------------------------------------------------------------------Bokningar----------*/
+
+function displayActiveBookingsData(bookings) {
+  if (mql.matches) {
+    displayActiveBookingsTable(bookings);   // Data
+  } else {
+    displayActiveBookingsGallery(bookings);   // Mindre skärm
+  }
+}
+
+function displayActiveBookingsGallery(bookings) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#active-bookings-table')
+    table.innerHTML= ""; 
+    const galleryDiv = document.querySelector("#active-bookings-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (bookings.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga bokningar att visa. </h3></div>`;
+        return;
+    }
+    bookings.forEach(booking => {
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Boknings-nr:</b><br> ${booking.id}<br>
+        <b>Kund-nr:</b><br> ${booking.userId}<br>
+        <b>Bil-nr:</b><br>${booking.carId}<br>
+        <b>Hyrd från:</b><br> ${booking.fromDate}<br>
+        <b>Hyrd till:</b><br> ${booking.toDate}<br>
+        </p>
+        </ol>
+        <button class="std-btn neg-btn view-booking-btn" alt="Knapp för att redigera bokning" title="Uppdatera / Radera"><i class="fa-solid fa-wrench"></i></button>
+        <button class="std-btn return-car-btn btn-spacer">Återlämna fordon</button>
+        </div> `
+        wrapper.appendChild(innerDiv);
+
+        innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
+            displayUpdateBookingDialog(booking);
+        });
+         innerDiv.querySelector('.return-car-btn').addEventListener('click', () => {
+            returnCarDialog(booking);
+        });   
+});
+ galleryDiv.appendChild(wrapper);
+}
+
+
 function displayActiveBookingsTable(bookings) {
     const tbody = document.querySelector('#activeBookingsTable tbody');
     tbody.innerHTML = "";
@@ -1480,25 +1597,63 @@ function displayActiveBookingsTable(bookings) {
     });
 }
 
+function displayBookingsData(bookings) {
+  if (mql.matches) {
+    displayBookingsTable(bookings);   // Data
+  } else {
+    displayBookingsGallery(bookings);   // Mindre skärm
+  }
+}
+
+
+
 function displayBookingsTable(bookings) {
-    const tbody = document.querySelector('#bookingsTable tbody');
-    let returnerd;
+    const tbody = document.querySelector('#bookings-table tbody');
     tbody.innerHTML = "";
     bookings.forEach(booking => {
-        if (booking.active) { returnerd = "Aktiv" } else { returnerd = "Återlämnad" };
+       let returnerd= booking.active === true ? "Aktiv":"Återlämnad";
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
       <td>${booking.id}</td>
       <td>${booking.userId}</td>
       <td>${booking.carId}</td>
-      
       <td>${booking.fromDate}</td>
       <td>${booking.toDate} </td>     
       <td>${returnerd}</td>
         `
         tbody.appendChild(tr);
     });
+}
+
+function displayBookingsGallery(bookings) {
+    const wrapper = createPanelWrapper();
+    const table = document.querySelector('#bookings-table')
+    table.innerHTML= ""; 
+    const galleryDiv = document.querySelector("#bookings-gallery-container");
+    galleryDiv.innerHTML = "";
+    if (bookings.length === 0) {
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga bokningar att visa. </h3></div>`;
+        return;
+    }
+    bookings.forEach(booking => {
+        let returnerd = booking.active === true ? "Aktiv":"Återlämnad";
+        const innerDiv = document.createElement("div");
+        innerDiv.innerHTML =
+            ` <div class="panel panel-car adm-info">
+        <ol>      
+        <p><b>Boknings-nr:</b><br> ${booking.id}<br>
+        <b>Kund-nr:</b><br> ${booking.userId}<br>
+        <b>Bil-nr:</b><br>${booking.carId}<br>
+        <b>Hyrd från:</b><br> ${booking.fromDate}<br>
+        <b>Hyrd till:</b><br> ${booking.toDate}<br>
+        <b>Hyrd till:</b><br> ${returnerd}<br>
+        </p>
+        </ol>
+        </div> `
+        wrapper.appendChild(innerDiv);
+});
+ galleryDiv.appendChild(wrapper);
 }
 
 async function displayMyBookings(bookings) {
@@ -1558,6 +1713,7 @@ async function displayBookingsByUserId(id) {
             displayUpdateBookingDialog(booking);
         });
         wrapper.appendChild(innerDiv);
+        innerDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
     bookingsView.appendChild(wrapper);
 }
@@ -1593,8 +1749,6 @@ async function displayABookingDialog(booking) {
     dialog.showModal();
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
-
-
 
 /* ------------------------------------------------ */
 /* HÄMTA -INPUT */
@@ -1942,7 +2096,7 @@ async function fetchActiveBookings() {
 
         const data = await response.json();
         dataStore.bookingsActive = data;
-        displayActiveBookingsTable(data);
+        displayActiveBookingsData(data);
 
     } catch (error) {
         console.error('Error:' + error.message, ` `);
@@ -1962,16 +2116,15 @@ async function fetchAllBookings() {
                 }
             })
         if (!response.ok) {
-            updateInfoDialog(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
-            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+            console.error('Error while fetching all bookings:' + response.status)
+            throw new Error(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
         }
         const data = await response.json();
         dataStore.bookings = data;
-        displayBookingsTable(data);
+        displayBookingsData(data);
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -2193,7 +2346,7 @@ async function fetchUsers() {
 
         const data = await response.json();
         dataStore.users = data;
-        displayUsersTable(data);
+        displayUsersData(data);
 
     } catch (error) {
         console.error('Error:' + error.message);
