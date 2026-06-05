@@ -328,17 +328,19 @@
      padding: 2rem;
  }
 
- dialog {
+ .dialog {
      position: fixed;
      top: 30%;
      left: 15%;
      translate: -8.5% -20%;
  }
 
- .dialog-big {
-     width: 75%;
-
+ .big-dialog {
+    position: fixed;
+    top: 5%;
+ 
  }
+
 
  #view-dialog p {
      text-align: left;

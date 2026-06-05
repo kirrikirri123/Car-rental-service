@@ -547,7 +547,7 @@ function userPagesPage() {
 
 function userInfoPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section></div>`;
-    fetchUserById();
+    fetchUserByIdDisplay();
 }
 
 function userBookingsPage() {
@@ -1131,8 +1131,8 @@ function returnCarDialog(booking) {
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 async function displayUpdateBookingDialog(booking) {
-    const car = await fetchCarByIdTEST(booking.carId);
-    const user = await fetchUserByIdTEST(booking.userId);
+    const car = await fetchCarById(booking.carId);
+    const user = await fetchUserById(booking.userId);
     let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
@@ -1222,7 +1222,7 @@ function displayCars(cars) {
         <dd><b>Bil-typ:</b> ${type} </dd>
         </dl>
         <div class="btn-spacer">
-        <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
+        <button onclick="fetchCarByIdDisplay(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
         </div>
         <div id="icon-holder" class="icon-larger"></div>
         </div> `
@@ -1267,7 +1267,6 @@ function displayACar(car) {
     updateBookingBtn(bookBtn, car);
     bookBtn.addEventListener('click', () => {
         admBookingDialog(car);
-        /* bookingDialog(car); */
     });
     wrapper.appendChild(innerDiv);
 
@@ -1744,7 +1743,7 @@ async function displayMyBookings(bookings) {
         return;
     }
     for (const booking of bookings) {
-        const car = await fetchCarByIdTEST(booking.carId);
+        const car = await fetchCarById(booking.carId);
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
@@ -1772,7 +1771,7 @@ async function displayBookingsByUserId(id) {
     const bookingsView = document.querySelector('#usersBookingView');
     const wrapper = createPanelWrapper();
     for (const booking of bookings) {
-        const car = await fetchCarByIdTEST(booking.carId);
+        const car = await fetchCarById(booking.carId);
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
@@ -1799,8 +1798,8 @@ async function displayBookingsByUserId(id) {
 
 
 async function displayABookingDialog(booking) {
-    const car = await fetchCarByIdTEST(booking.carId);
-    const user = await fetchUserByIdTEST(booking.userId);
+    const car = await fetchCarById(booking.carId);
+    const user = await fetchUserById(booking.userId);
     let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
@@ -1844,18 +1843,17 @@ function getLogInInfo() {
 
 function getNewUserInfo() {
     const principal = JSON.parse(sessionStorage.getItem('principal'));
-
     const fname = document.querySelector('#fname');
     const lname = document.querySelector(`form #lname`);
     const phoneNr = document.querySelector("form #phoneNr");
     const email = document.querySelector("form #email");
     const password = document.querySelector("form #password");
-    if (principal.isAdmin) {
+    if(principal=== null){
+        const role = "ROLE_USER";
+    }else if (principal.isAdmin) {
         const role = document.querySelector("form #role");
         if (role === null) { role = "ROLE_USER" };
-    } else {
-        const role = "ROLE_USER";
-    }
+
     const newUser = {
         firstName: fname.value,
         lastName: lname.value,
@@ -1867,6 +1865,7 @@ function getNewUserInfo() {
         role: role
     }
     return newUser;
+}
 }
 
 function getNewBookingInfo(car) {
@@ -2006,7 +2005,7 @@ async function fetchCars() {
     }
 }
 
-async function fetchCarById(id) {
+async function fetchCarByIdDisplay(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
     const credentials = sessionStorage.getItem("basicAuth");
     try {
@@ -2030,7 +2029,7 @@ async function fetchCarById(id) {
     }
 }
 /* Test attt bara returnera datan som hämtas och lägga den i valfri metod sen. */
-async function fetchCarByIdTEST(id) {
+async function fetchCarById(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
     const credentials = sessionStorage.getItem("basicAuth");
     try {
@@ -2498,7 +2497,7 @@ async function fetchUsersForList() {
 
 
 /* Hämtar bara den som är inloggad! */
-async function fetchUserById() {
+async function fetchUserByIdDisplay() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     const id = principal.userId;
     const credentials = sessionStorage.getItem("basicAuth");
@@ -2583,7 +2582,7 @@ async function fetchUserForUpdateView(id) {
 
 
 /* Hämtar bara användar info ingen displau!!TEST */
-async function fetchUserByIdTEST(id) {
+async function fetchUserById(id) {
     const credentials = sessionStorage.getItem("basicAuth");
     const url = `http://localhost:8080/api/v1/users/${id}`;
     try {
