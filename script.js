@@ -267,7 +267,7 @@ function checkRole() {
         showUserMenu();
     } else if (principal.isAdmin === true) {
         showAdminMenu();
-        
+
     }
 }
 /* returnerar true om man är admin */
@@ -344,7 +344,7 @@ document.querySelector("#adm-users-link").addEventListener('click', () => {
     closeMobileMenu();
 });
 document.querySelector("#adm-new-user-link").addEventListener('click', () => {
-    changeMainContent("adm-new-user"); 
+    changeMainContent("adm-new-user");
     closeMobileMenu();
 });
 document.querySelector("#adm-styleguide-link").addEventListener('click', () => {
@@ -406,11 +406,11 @@ function changeMainContent(page) {
             break;
 
         case "adm-new-user":
-            newUsersPage();   
+            newUsersPage();
             const selectRole = mainContent.querySelector('#selectRole');
             const principal = JSON.parse(sessionStorage.getItem('principal'));
-            if(principal.isAdmin){ selectRole.classList.remove('user');}
-             break;
+            if (principal.isAdmin) { selectRole.classList.remove('user'); }
+            break;
 
         case "adm-styleguide":
             admStyleguidePage();
@@ -485,9 +485,9 @@ function newUsersPage() {
             <option value="">Välj användarroll</option>
             <option value="ROLE_USER">Kund</option>
             <option value="ROLE_ADMIN">Administratör</option>
-            </select><div><br>
+            </select></div><br>
     
-        <button type="button" class=" form-margin std-btn pos-btn" id="reg-user-btn"> Registrera </button>
+        <button type="button" class="form-margin std-btn pos-btn" id="reg-user-btn"> Registrera </button>
     </form>    
     </div></div>`;
     document.querySelector("#reg-user-btn").addEventListener('click', () => { createNewUser(); });
@@ -1155,24 +1155,32 @@ async function displayUpdateBookingDialog(booking) {
         </p></div>
                 <div class="btn-spacer">
                     <button type="button" class="std-btn pos-btn"id="exit-btn"> Stäng info </button>
-                    <button type="button" class="std-btn hide" id="update-booking-btn"> Uppdatera </button>
-                    <button type="button" class="std-btn neg-btn hide"id="delete-booking-btn"> Radera DIREKT </button>
+                    <button type="button" class="std-btn hide" id="update-booking-btn"disabled> Uppdatera </button>
+                    <button type="button" class="std-btn neg-btn hide"id="delete-booking-btn" disabled> Radera DIREKT </button>
                     
         </div>`;
     dialog.showModal();
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
-    dialog.querySelector('#update-booking-btn').addEventListener('click', () => {
+    const updateBtn = dialog.querySelector('#update-booking-btn');
+    updateBtn.addEventListener('click', () => {
         updateBookingDialog(booking);
         dialog.close();
     });
-
-    dialog.querySelector('#delete-booking-btn').addEventListener('click', () => {
+    const deleteBtn = dialog.querySelector('#delete-booking-btn');
+    deleteBtn.addEventListener('click', () => {
         deleteBooking(booking.id);
         dialog.close();
     });
 
-}
+    if (booking.active === false) {
+        updateBtn.disabled = true;
+        deleteBtn.disabled = true;
+    } else if (booking.active === true) {
+        updateBtn.disabled = false;
+        deleteBtn.disabled = false;
+    }
 
+}
 /* ------------------------------------------------ */
 /* DISPLAY-FUNKTIONER */
 /*------------------------------------------------- */
@@ -1260,7 +1268,7 @@ function displayACar(car) {
     bookBtn.addEventListener('click', () => {
         admBookingDialog(car);
         /* bookingDialog(car); */
-});
+    });
     wrapper.appendChild(innerDiv);
 
 }
@@ -1844,7 +1852,7 @@ function getNewUserInfo() {
     const password = document.querySelector("form #password");
     if (principal.isAdmin) {
         const role = document.querySelector("form #role");
-        if(role===null){role ="ROLE_USER"};
+        if (role === null) { role = "ROLE_USER" };
     } else {
         const role = "ROLE_USER";
     }
