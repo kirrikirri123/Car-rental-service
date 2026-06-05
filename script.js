@@ -28,9 +28,9 @@ const mql = window.matchMedia("(min-width: 768px)");
 const dataStore = {
     cars: [],
     users: [],
-    myActiveBookings:[],
+    myActiveBookings: [],
     bookings: [],
-    bookingsActive:[]
+    bookingsActive: []
 }
 
 /* Listor med riktningar för sortering, hämtas med rätt nyckel. */
@@ -41,33 +41,33 @@ let carSortState = {
     type: { direction: "asc" }
 }
 let userSortState = {
-     id: { direction: "asc" } ,
-     email: { direction: "asc" },
-     noOfOrders: { direction: "asc" },
-     firstName: { direction: "asc" },
-     lastName: { direction: "asc" },
-     phone: { direction: "asc" },
-     role: { direction: "asc" },
-     username: { direction: "asc" }
-    }
+    id: { direction: "asc" },
+    email: { direction: "asc" },
+    noOfOrders: { direction: "asc" },
+    firstName: { direction: "asc" },
+    lastName: { direction: "asc" },
+    phone: { direction: "asc" },
+    role: { direction: "asc" },
+    username: { direction: "asc" }
+}
 let bookingSortState = {
-    id: { direction: "asc" } ,
+    id: { direction: "asc" },
     userId: { direction: "asc" },
-    carId: {  direction: "asc" },
-    fromDate: {  direction: "asc" } ,
-    toDate: {  direction: "asc" } 
-    }; 
+    carId: { direction: "asc" },
+    fromDate: { direction: "asc" },
+    toDate: { direction: "asc" }
+};
 /* Nycklar för sortering sortKeys*/
 const sortKeys = {
-    cars:   carSortState,
-    users:  userSortState,
+    cars: carSortState,
+    users: userSortState,
     bookings: bookingSortState,
     bookingsActive: bookingSortState
 }
 /* Tar nuvarande sorteringshåll och byter håll inför nästa klick. */
-function saveDir(listName, sortValue){
+function saveDir(listName, sortValue) {
     const currentDir = sortKeys[listName][sortValue].direction;
-   sortKeys[listName][sortValue].direction = currentDir === "asc" ? "desc" : "asc";
+    sortKeys[listName][sortValue].direction = currentDir === "asc" ? "desc" : "asc";
 }
 
 /* Returnerar tillgängliga bilar*/
@@ -75,11 +75,11 @@ function availableCars() {
     return dataStore.cars.filter(car => { return car.booked === false });
 }
 /* Returnerar aktiva boknignar */
-function activeBookings(){
+function activeBookings() {
     return dataStore.bookings.filter(booking => { return booking.active === true });
 }
 /* Returnerar -användarens- aktiva boknignar */
-function myActiveBookings(){
+function myActiveBookings() {
     return dataStore.myActiveBookings.filter(booking => { return booking.active === true });
 }
 
@@ -93,11 +93,11 @@ function sortByType(type) {
     const sortedCars = dataStore.cars.filter(car => car.type.toLowerCase() === type.toLowerCase());
     displayCars(sortedCars);
 }
- /* Allmänn sorterare */
+/* Allmänn sorterare */
 function sortTableList(datalist, listName, sortValue) {
     const sortState = sortKeys[listName]; /* Hämtar rätt sortering ur rätt lista */
     const valueDirection = sortState[sortValue].direction;/* Vilket håll ska datan sorteras. */
-        const sortedList = [...datalist].sort((a, b) => {
+    const sortedList = [...datalist].sort((a, b) => {
         const dir = valueDirection === "asc" ? 1 : -1;  /* Om valueDirection är  asc blir dir 1 annars -1 . -1 sorterar åt andra hållet från slutet. */
 
         const valueA = a[sortValue];
@@ -106,21 +106,22 @@ function sortTableList(datalist, listName, sortValue) {
         if (typeof valueA === "number" && typeof valueB === "number") {
             return (valueA - valueB) * dir; /* För nummervärden, skillnaden gångrat med dir ger rätt sorteringsordning. */
         }
-        else{
-        return valueA.localeCompare(valueB, "sv") * dir;}
+        else {
+            return valueA.localeCompare(valueB, "sv") * dir;
+        }
     });
-    saveDir(listName,sortValue);
-    changeDirectionIcon(valueDirection,sortValue);
+    saveDir(listName, sortValue);
+    changeDirectionIcon(valueDirection, sortValue);
     return sortedList;
 }
 
-function changeDirectionIcon(valueDirection,sortValue) {
+function changeDirectionIcon(valueDirection, sortValue) {
     const icon = document.querySelector(`#${sortValue}-sortbtn span`);
     icon.innerHTML = "";
-            dir = valueDirection === "asc" ? "desc" : "asc";
-            if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-short-wide " title="Stigande / A-Ö"></i>`; }
-            if (dir === "desc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-wide-short " title="Fallande / Ö-A"></i>`; }
-            }
+    dir = valueDirection === "asc" ? "desc" : "asc";
+    if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-short-wide " title="Stigande / A-Ö"></i>`; }
+    if (dir === "desc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-wide-short " title="Fallande / Ö-A"></i>`; }
+}
 
 
 
@@ -266,6 +267,7 @@ function checkRole() {
         showUserMenu();
     } else if (principal.isAdmin === true) {
         showAdminMenu();
+        
     }
 }
 /* returnerar true om man är admin */
@@ -342,7 +344,7 @@ document.querySelector("#adm-users-link").addEventListener('click', () => {
     closeMobileMenu();
 });
 document.querySelector("#adm-new-user-link").addEventListener('click', () => {
-    changeMainContent("new-user"); /* egen för admin som det går att välja roll på! */
+    changeMainContent("adm-new-user"); 
     closeMobileMenu();
 });
 document.querySelector("#adm-styleguide-link").addEventListener('click', () => {
@@ -403,9 +405,12 @@ function changeMainContent(page) {
             admUsersPage();
             break;
 
-        case "adm-change-user":
-            admChangeUserPage();
-            break;
+        case "adm-new-user":
+            newUsersPage();   
+            const selectRole = mainContent.querySelector('#selectRole');
+            const principal = JSON.parse(sessionStorage.getItem('principal'));
+            if(principal.isAdmin){ selectRole.classList.remove('user');}
+             break;
 
         case "adm-styleguide":
             admStyleguidePage();
@@ -457,7 +462,7 @@ function carsPage() {
 }
 
 function newUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Välkommen, registrera dig nedan.</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Registrera ny kund</h2></section>
     <div class="panel">            
     <form>
         <label for="fname" class="form-margin">Förnamn: </label><br>
@@ -474,6 +479,13 @@ function newUsersPage() {
 
         <label for="password" class="form-margin">Lösenord: </label><br>
             <input id="password" type="password" placeholder="*****" class="input-fields form-margin form-text"></input><br>
+
+        <div id="selectRole" class="user"><label for="role" class="form-margin"> Nivå: </label><br>
+            <select id="role" class="input-fields form-margin">
+            <option value="">Välj användarroll</option>
+            <option value="ROLE_USER">Kund</option>
+            <option value="ROLE_ADMIN">Administratör</option>
+            </select><div><br>
     
         <button type="button" class=" form-margin std-btn pos-btn" id="reg-user-btn"> Registrera </button>
     </form>    
@@ -552,7 +564,7 @@ function userBookingsPage() {
     document.querySelector("#activeBookings-sortbtn").addEventListener('click', () => {
         const sortedBookings = myActiveBookings();
         displayMyBookings(sortedBookings);
-   });
+    });
 
 }
 
@@ -575,7 +587,7 @@ function admVehiclesPage() {
             <th id="model-sortbtn"> Modell <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande / A-Ö"></i></span></th>
             <th id="type-sortbtn"> Bil-typ <span><i class="fa-solid fa-arrow-down-short-wide" title="Stigande / A-Ö"></i></span></th>
             <th>Utrustning </th>
-            <th>Bokad</th>
+            <th>Bokad ? </th>
             
         </tr>
     </thead>
@@ -591,24 +603,24 @@ function admVehiclesPage() {
         const sortedCars = availableCars();
         displayCarData(sortedCars);
     });
-    const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive","id");
+    const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "id");
     /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
-        const sortedCars = sortTableList(dataStore.cars,"cars", "id");
+        const sortedCars = sortTableList(dataStore.cars, "cars", "id");
         displayCarData(sortedCars);
 
     });
     document.querySelector("#name-sortbtn").addEventListener('click', () => {
-        const sortedCars = sortTableList(dataStore.cars,"cars", "name");
+        const sortedCars = sortTableList(dataStore.cars, "cars", "name");
         displayCarData(sortedCars);
     });
 
     document.querySelector("#model-sortbtn").addEventListener('click', () => {
-        const sortedCars = sortTableList(dataStore.cars,"cars", "model");
+        const sortedCars = sortTableList(dataStore.cars, "cars", "model");
         displayCarData(sortedCars);
     });
     document.querySelector("#type-sortbtn").addEventListener('click', () => {
-        const sortedCars = sortTableList(dataStore.cars,"cars", "type");
+        const sortedCars = sortTableList(dataStore.cars, "cars", "type");
         displayCarData(sortedCars);
     });
 }
@@ -653,8 +665,9 @@ function admChangeVehiclesPage() {
     </form>    
     </div>
     </div>`;
-    document.querySelector("#reg-car-btn").addEventListener('click', () => { 
-        createNewCar(); });
+    document.querySelector("#reg-car-btn").addEventListener('click', () => {
+        createNewCar();
+    });
 }
 
 function admBookingsPage() {
@@ -687,25 +700,25 @@ function admBookingsPage() {
 
     /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive","id");
+        const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "id");
         displayActiveBookingsTable(sortedBookings);
 
     });
     document.querySelector("#userId-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive", "userId");
+        const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "userId");
         displayActiveBookingsTable(sortedBookings);
     });
 
     document.querySelector("#carId-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive", "carId");
+        const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "carId");
         displayActiveBookingsTable(sortedBookings);
     });
     document.querySelector("#fromDate-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive", "fromDate");
+        const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "fromDate");
         displayActiveBookingsTable(sortedBookings);
     });
     document.querySelector("#toDate-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookingsActive,"bookingsActive", "toDate");
+        const sortedBookings = sortTableList(dataStore.bookingsActive, "bookingsActive", "toDate");
         displayActiveBookingsTable(sortedBookings);
     });
 
@@ -741,27 +754,27 @@ function admAllBookingsPage() {
         const sortedBookings = activeBookings();
         displayBookingsData(sortedBookings);
     });
-      /* Sorterings knapparna i tabell */
+    /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookings,"bookings","id");
+        const sortedBookings = sortTableList(dataStore.bookings, "bookings", "id");
         displayBookingsTable(sortedBookings);
 
     });
     document.querySelector("#userId-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookings,"bookings", "userId");
+        const sortedBookings = sortTableList(dataStore.bookings, "bookings", "userId");
         displayBookingsTable(sortedBookings);
     });
 
     document.querySelector("#carId-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookings,"bookings", "carId");
+        const sortedBookings = sortTableList(dataStore.bookings, "bookings", "carId");
         displayBookingsTable(sortedBookings);
     });
     document.querySelector("#fromDate-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookings,"bookings", "fromDate");
+        const sortedBookings = sortTableList(dataStore.bookings, "bookings", "fromDate");
         displayBookingsTable(sortedBookings);
     });
     document.querySelector("#toDate-sortbtn").addEventListener('click', () => {
-        const sortedBookings = sortTableList(dataStore.bookings,"bookings", "toDate");
+        const sortedBookings = sortTableList(dataStore.bookings, "bookings", "toDate");
         displayBookingsTable(sortedBookings);
     });
 
@@ -794,39 +807,39 @@ function admUsersPage() {
     </div>   
     `;
     fetchUsers();
-   document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-users"); });
-    
-      /* Sorterings knapparna i tabell */
+    document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("adm-users"); });
+
+    /* Sorterings knapparna i tabell */
     document.querySelector("#id-sortbtn").addEventListener('click', () => {
-       const sortedUsers = sortTableList(dataStore.users,"users", "id");
-       displayUsersData(sortedUsers);
+        const sortedUsers = sortTableList(dataStore.users, "users", "id");
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#email-sortbtn").addEventListener('click', () => {
-         const sortedUsers = sortTableList(dataStore.users,"users", "email");
-         displayUsersData(sortedUsers);
+        const sortedUsers = sortTableList(dataStore.users, "users", "email");
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#firstName-sortbtn").addEventListener('click', () => {
-        const sortedUsers = sortTableList(dataStore.users,"users", "firstName");
-         displayUsersData(sortedUsers);
+        const sortedUsers = sortTableList(dataStore.users, "users", "firstName");
+        displayUsersData(sortedUsers);
     });
     document.querySelector("#lastName-sortbtn").addEventListener('click', () => {
-         const sortedUsers = sortTableList(dataStore.users,"users", "lastName");
+        const sortedUsers = sortTableList(dataStore.users, "users", "lastName");
         displayUsersData(sortedUsers);
     });
     document.querySelector("#noOfOrders-sortbtn").addEventListener('click', () => {
-        const sortedUsers = sortTableList(dataStore.users,"users", "noOfOrders");
+        const sortedUsers = sortTableList(dataStore.users, "users", "noOfOrders");
         displayUsersData(sortedUsers);
     });
     document.querySelector("#phone-sortbtn").addEventListener('click', () => {
-        const sortedUsers = sortTableList(dataStore.users,"users", "phone");
+        const sortedUsers = sortTableList(dataStore.users, "users", "phone");
         displayUsersData(sortedUsers);
     });
     document.querySelector("#role-sortbtn").addEventListener('click', () => {
-        const sortedUsers = sortTableList(dataStore.users,"users", "role");
+        const sortedUsers = sortTableList(dataStore.users, "users", "role");
         displayUsersData(sortedUsers);
     });
     document.querySelector("#username-sortbtn").addEventListener('click', () => {
-        const sortedUsers = sortTableList(dataStore.users,"users", "username");
+        const sortedUsers = sortTableList(dataStore.users, "users", "username");
         displayUsersData(sortedUsers);
     });
 
@@ -841,7 +854,7 @@ function admStyleguidePage() {
 }
 
 /* UPDATERINGS FUNKTIONER */
- 
+
 
 function deleteUserDialog(user) {
     const dialog = document.querySelector('#update-dialog');
@@ -957,9 +970,10 @@ function updateCarDialog(car) {
         /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
-    dialog.querySelector('#exit-btn').addEventListener('click', () => { 
+    dialog.querySelector('#exit-btn').addEventListener('click', () => {
         /* document.querySelector('#showCarDetails').innerHTML =""; */
-        dialog.close(); });
+        dialog.close();
+    });
 }
 function deleteCarDialog(car) {
     const dialog = document.querySelector('#update-dialog');
@@ -979,10 +993,12 @@ function deleteCarDialog(car) {
         /* document.querySelector('#showCarDetails').innerHTML =""; */
         dialog.close();
     });
-    dialog.querySelector('#exit-btn').addEventListener('click', () => { 
+    dialog.querySelector('#exit-btn').addEventListener('click', () => {
         /* document.querySelector('#showCarDetails').innerHTML =""; */
-        dialog.close(); });
+        dialog.close();
+    });
 }
+
 
 function bookingDialog(car) {
     const dialog = document.querySelector(`#booking-dialog`);
@@ -1012,7 +1028,6 @@ function bookingDialog(car) {
 }
 
 async function admBookingDialog(car) {
-    
     const dialog = document.querySelector(`#booking-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -1023,8 +1038,10 @@ async function admBookingDialog(car) {
                 </p>
             </div>
             <form id="booking-form">
-                <label for="to-date">Kund:</label><br>
-                <input id="to-date" type="" class="form-margin"><br>        
+                <label for="choose-user">Kund:</label><br>
+                 <select name="choose-user" id="choose-user" class="form-margin input-fields"><br>        
+                 <option value="">Välj kund</option>
+                 </select>
                 <label for="to-date">Återlämningsdatum:</label><br>
                 <input id="to-date" type="date" class="form-margin"><br>               
                 <span class="btn-spacer">
@@ -1032,23 +1049,23 @@ async function admBookingDialog(car) {
                     <button id="exit-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
             </form>
         </div>`
-         principal = sessionStorage.getItem(principal);
-    if(principal.isAdmin === true){     
+    const principal = JSON.parse(sessionStorage.getItem('principal'));
+    const select = dialog.querySelector('#choose-user');
+    if (principal.isAdmin === true) {
         const users = await fetchUsersForList();
-        dialog.querySelector('#booking-form').innerHTML =`
-        <label for="choose-user" class="info-headline">Kund</label>
-    <select name="choose-user" id="choose-user" class="form-margin input-fields" onchange="(this.value)">
-    <option value="">Välj</option>
-    <option value="sport">Sport</option>
-    
-    </select>
-        `
-    }
-     principal = sessionStorage.getItem(principal);
-    if(principal.isAdmin === true){
-        
-    }
+        const optionsOfUsers = users.map(user =>
+            `<option value="${user.id}">${user.firstName} ${user.lastName} </option>`
+        ).join('');
 
+        select.innerHTML = `<option value="">Välj kund</option>${optionsOfUsers}`;
+
+
+    } if (principal.isAdmin === false) {
+        const user = JSON.parse(sessionStorage.getItem('user_principal'));
+        select.innerHTML = `<option value="">Välj kund</option>
+        <option value="${user.id}">${user.firstName} ${user.lastName} </option>`;
+
+    }
     dialog.showModal();
     dialog.querySelector('#book-btn').addEventListener('click', () => {
         createNewBooking(car);
@@ -1109,14 +1126,14 @@ function returnCarDialog(booking) {
         const updated = updateReturningBooking(booking)
         updateAndReturn(booking.id, updated);
         dialog.close();
-        
+
     });
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 async function displayUpdateBookingDialog(booking) {
     const car = await fetchCarByIdTEST(booking.carId);
     const user = await fetchUserByIdTEST(booking.userId);
-    let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
+    let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -1204,7 +1221,7 @@ function displayCars(cars) {
         if (car.booked) {
             innerDiv.querySelector('div .panel-car').classList.add('car-booked');
             innerDiv.querySelector('#icon-holder').innerHTML =
-             `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
+                `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
         }
         wrapper.appendChild(innerDiv);
         carDiv.appendChild(wrapper);
@@ -1240,7 +1257,10 @@ function displayACar(car) {
 
     let bookBtn = innerDiv.querySelector('#book-car-btn');
     updateBookingBtn(bookBtn, car);
-    bookBtn.addEventListener('click', () => { bookingDialog(car); });
+    bookBtn.addEventListener('click', () => {
+        admBookingDialog(car);
+        /* bookingDialog(car); */
+});
     wrapper.appendChild(innerDiv);
 
 }
@@ -1251,11 +1271,11 @@ function updateBookingBtn(bookBtn, car) {
     }
 }
 function displayCarData(cars) {
-  if (mql.matches) {
-    displayCarsTable(cars);   // Data
-  } else {
-    displayCarsGallery(cars);   // Mindre skärm
-  }
+    if (mql.matches) {
+        displayCarsTable(cars);   // Data
+    } else {
+        displayCarsGallery(cars);   // Mindre skärm
+    }
 }
 
 function displayCarsTable(cars) {
@@ -1264,7 +1284,7 @@ function displayCarsTable(cars) {
     const tbody = document.querySelector('#cars-table tbody');
     tbody.innerHTML = "";
     cars.forEach(car => {
-        let booked = car.booked === true ? "Bokad": "Obokad";
+        let booked = car.booked === true ? "Bokad" : "Obokad";
         const type = carType(car.type);
         const tr = document.createElement("tr");
         tr.innerHTML =
@@ -1291,7 +1311,7 @@ function displayCarsTable(cars) {
 function displayCarsGallery(cars) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#cars-table')
-    table.innerHTML= ""; 
+    table.innerHTML = "";
     const galleryDiv = document.querySelector("#car-gallery-container");
     galleryDiv.innerHTML = "";
 
@@ -1300,7 +1320,7 @@ function displayCarsGallery(cars) {
         return;
     }
     cars.forEach(car => {
-        let booked = car.booked === true ? "Bokad": "Obokad";
+        let booked = car.booked === true ? "Bokad" : "Obokad";
         const innerDiv = document.createElement("div");
         const type = carType(car.type);
         innerDiv.innerHTML =
@@ -1322,25 +1342,25 @@ function displayCarsGallery(cars) {
         </div> `
         if (car.booked) {
             innerDiv.querySelector('div .panel-car').classList.add('car-booked');
-            innerDiv.querySelector('#icon-holder').innerHTML = 
-            `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
+            innerDiv.querySelector('#icon-holder').innerHTML =
+                `<i class="fa-solid fa-road-lock" alt="Symbol av väg med ett lås. Fordon låst för bokning. Ej tillgänglig." title="Bil ej tillgänglig"></i>`;
         }
 
         wrapper.appendChild(innerDiv);
         innerDiv.querySelector('.car-update-btn').addEventListener('click', () => {
-             updateCarDialog(car);
+            updateCarDialog(car);
         });
-         innerDiv.querySelector('.car-delete-btn').addEventListener('click', () => {
-             deleteCarDialog(car); 
+        innerDiv.querySelector('.car-delete-btn').addEventListener('click', () => {
+            deleteCarDialog(car);
         });
-});
- galleryDiv.appendChild(wrapper);
+    });
+    galleryDiv.appendChild(wrapper);
 }
 
 function displayUpdateCar(car) {
     const wrapper = createPanelWrapper();
     const innerDiv = document.createElement("div");
-    let booked = car.booked === true ? "Bokad": "Obokad";
+    let booked = car.booked === true ? "Bokad" : "Obokad";
     innerDiv.innerHTML =
         ` 
         <div class="panel-wrapper">
@@ -1383,7 +1403,7 @@ function displayUpdateCar(car) {
     wrapper.appendChild(innerDiv);
     innerDiv.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    innerDiv.querySelector('#update-btn').addEventListener('click', () => {  updateCarDialog(car); });
+    innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateCarDialog(car); });
     innerDiv.querySelector('#delete-btn').addEventListener('click', () => { deleteCarDialog(car); });
 }
 
@@ -1423,7 +1443,7 @@ function displayUser(user) {
     </dl>
     </div>
         <div class="btn-spacer">      
-        <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> <i class="fa-solid fa-wrench"></i> </button>
+        <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> Uppdatera <i aria-hidden="true" class="fa-solid fa-wrench"></i> </button>
         </div>    
         `
     wrapper.appendChild(innerDiv);
@@ -1487,18 +1507,18 @@ function displayUpdateUser(user) {
 
 
 function displayUsersData(users) {
-  if (mql.matches) {
-    displayUsersTable(users);   // Data
-  } else {
-    displayUsersGallery(users);   // Mindre skärm
-  }
+    if (mql.matches) {
+        displayUsersTable(users);   // Data
+    } else {
+        displayUsersGallery(users);   // Mindre skärm
+    }
 }
 
 
 function displayUsersGallery(users) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#users-table')
-    table.innerHTML= "";
+    table.innerHTML = "";
     const galleryDiv = document.querySelector("#user-gallery-container");
     galleryDiv.innerHTML = "";
     if (users.length === 0) {
@@ -1528,13 +1548,13 @@ function displayUsersGallery(users) {
         });
         wrapper.appendChild(innerDiv);
         innerDiv.querySelector('.user-update-btn').addEventListener('click', () => {
-             updateUserDialog(user);
+            updateUserDialog(user);
         });
-         innerDiv.querySelector('.user-delete-btn').addEventListener('click', () => {
-             deleteUserDialog(user);
-        });   
-});
- galleryDiv.appendChild(wrapper);
+        innerDiv.querySelector('.user-delete-btn').addEventListener('click', () => {
+            deleteUserDialog(user);
+        });
+    });
+    galleryDiv.appendChild(wrapper);
 }
 
 
@@ -1542,7 +1562,7 @@ function displayUsersGallery(users) {
 function displayUsersTable(users) {
     const tbody = document.querySelector('#users-table tbody');
     tbody.innerHTML = "";
-    
+
     users.forEach(user => {
         let role = user.role === "ROLE_USER" ? "Kund" : "Administratör";
         const tr = document.createElement("tr");
@@ -1575,17 +1595,17 @@ function displayUsersTable(users) {
 /*Bokningar --------------------------------------------------------------------------------Bokningar----------*/
 
 function displayActiveBookingsData(bookings) {
-  if (mql.matches) {
-    displayActiveBookingsTable(bookings);   // Data
-  } else {
-    displayActiveBookingsGallery(bookings);   // Mindre skärm
-  }
+    if (mql.matches) {
+        displayActiveBookingsTable(bookings);   // Data
+    } else {
+        displayActiveBookingsGallery(bookings);   // Mindre skärm
+    }
 }
 
 function displayActiveBookingsGallery(bookings) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#active-bookings-table')
-    table.innerHTML= ""; 
+    table.innerHTML = "";
     const galleryDiv = document.querySelector("#active-bookings-gallery-container");
     galleryDiv.innerHTML = "";
     if (bookings.length === 0) {
@@ -1612,18 +1632,18 @@ function displayActiveBookingsGallery(bookings) {
         innerDiv.querySelector('.view-booking-btn').addEventListener('click', () => {
             displayUpdateBookingDialog(booking);
         });
-         innerDiv.querySelector('.return-car-btn').addEventListener('click', () => {
+        innerDiv.querySelector('.return-car-btn').addEventListener('click', () => {
             returnCarDialog(booking);
-        });   
-});
- galleryDiv.appendChild(wrapper);
+        });
+    });
+    galleryDiv.appendChild(wrapper);
 }
 
 
 function displayActiveBookingsTable(bookings) {
     const tbody = document.querySelector('#activeBookingsTable tbody');
     tbody.innerHTML = "";
-    
+
     bookings.forEach(booking => {
         const tr = document.createElement("tr");
         tr.innerHTML =
@@ -1651,20 +1671,18 @@ function displayActiveBookingsTable(bookings) {
 }
 
 function displayBookingsData(bookings) {
-  if (mql.matches) {
-    displayBookingsTable(bookings);   // Data
-  } else {
-    displayBookingsGallery(bookings);   // Mindre skärm
-  }
+    if (mql.matches) {
+        displayBookingsTable(bookings);   // Data
+    } else {
+        displayBookingsGallery(bookings);   // Mindre skärm
+    }
 }
-
-
 
 function displayBookingsTable(bookings) {
     const tbody = document.querySelector('#bookings-table tbody');
     tbody.innerHTML = "";
     bookings.forEach(booking => {
-       let returnerd= booking.active === true ? "Aktiv":"Återlämnad";
+        let returnerd = booking.active === true ? "Aktiv" : "Återlämnad";
         const tr = document.createElement("tr");
         tr.innerHTML =
             ` 
@@ -1682,7 +1700,7 @@ function displayBookingsTable(bookings) {
 function displayBookingsGallery(bookings) {
     const wrapper = createPanelWrapper();
     const table = document.querySelector('#bookings-table')
-    table.innerHTML= ""; 
+    table.innerHTML = "";
     const galleryDiv = document.querySelector("#bookings-gallery-container");
     galleryDiv.innerHTML = "";
     if (bookings.length === 0) {
@@ -1690,7 +1708,7 @@ function displayBookingsGallery(bookings) {
         return;
     }
     bookings.forEach(booking => {
-        let returnerd = booking.active === true ? "Aktiv":"Återlämnad";
+        let returnerd = booking.active === true ? "Aktiv" : "Återlämnad";
         const innerDiv = document.createElement("div");
         innerDiv.innerHTML =
             ` <div class="panel panel-car adm-info">
@@ -1705,8 +1723,8 @@ function displayBookingsGallery(bookings) {
         </ol>
         </div> `
         wrapper.appendChild(innerDiv);
-});
- galleryDiv.appendChild(wrapper);
+    });
+    galleryDiv.appendChild(wrapper);
 }
 
 async function displayMyBookings(bookings) {
@@ -1722,7 +1740,7 @@ async function displayMyBookings(bookings) {
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
-       let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
+        let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
             <h3>${car.name} - ${car.model}</h3>
@@ -1751,7 +1769,7 @@ async function displayBookingsByUserId(id) {
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
         const book = booking;
-        let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
+        let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
         innerDiv.innerHTML =
             ` <div class="panel panel-car">
             <h3>${car.name} - ${car.model}</h3>
@@ -1775,7 +1793,7 @@ async function displayBookingsByUserId(id) {
 async function displayABookingDialog(booking) {
     const car = await fetchCarByIdTEST(booking.carId);
     const user = await fetchUserByIdTEST(booking.userId);
-    let returnerd = booking.active === true ?"OBS! Aktiv uthyrning": "Återlämnad";
+    let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
         `<div class="dialog-content">
@@ -1817,11 +1835,19 @@ function getLogInInfo() {
 }
 
 function getNewUserInfo() {
+    const principal = JSON.parse(sessionStorage.getItem('principal'));
+
     const fname = document.querySelector('#fname');
     const lname = document.querySelector(`form #lname`);
     const phoneNr = document.querySelector("form #phoneNr");
     const email = document.querySelector("form #email");
     const password = document.querySelector("form #password");
+    if (principal.isAdmin) {
+        const role = document.querySelector("form #role");
+        if(role===null){role ="ROLE_USER"};
+    } else {
+        const role = "ROLE_USER";
+    }
     const newUser = {
         firstName: fname.value,
         lastName: lname.value,
@@ -1829,7 +1855,8 @@ function getNewUserInfo() {
         phone: phoneNr.value,
         email: email.value,
         password: password.value,
-        "noOfOrders": 0
+        "noOfOrders": 0,
+        role: role
     }
     return newUser;
 }
@@ -1913,9 +1940,9 @@ function getUpdatedBooking(booking) {
 }
 
 /* Uppdaterar till dagens datum vid återlämning. */
-function updateReturningBooking(booking){
+function updateReturningBooking(booking) {
     const toDay = new Date();
- const updatedBooking = {
+    const updatedBooking = {
         "fromDate": booking.fromDate,
         "toDate": toDay.toISOString().split("T")[0],
         "carId": booking.carId,
@@ -1923,7 +1950,7 @@ function updateReturningBooking(booking){
     }
     return updatedBooking;
 
-} 
+}
 
 function getUpdatedUser() {
     const dialog = document.querySelector('#update-dialog');
@@ -1982,7 +2009,7 @@ async function fetchCarById(id) {
             }
         })
         if (!response.ok) {
-            if (response.status === 401) { throw new Error(`Logga in för att boka och se mer info kring våra fordon.`); }
+            if (response.status === 401) { throw new Error(`Logga in för att boka och se mer om kring våra fordon.`); }
             throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
         }
 
@@ -2006,16 +2033,15 @@ async function fetchCarByIdTEST(id) {
             }
         })
         if (!response.ok) {
-            if (response.status === 401) { throw new Error(`Logga in för att boka och se mer info kring våra fordon.`); }
-            throw new Error(`Något gick fel vid inladdning av valt fordon. Status: ${response.status}`);
+            console.error(`Error when fetching specific vehicle. Status: ${response.status}`);
+            throw new Error(`Något gick fel vid inladdning av valt fordon. `);
         }
 
         const data = await response.json();
         return data;
 
     } catch (error) {
-        console.error(`Fel vid inladdning av specifikt fordon. Error: ${error.message}`);
-        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -2208,11 +2234,12 @@ async function createNewBooking(car) {
             body: JSON.stringify(newBooking)
         });
         if (!response.ok) {
+            console.log(`Error when creating booking: ${response.status}`);
             if (response.status === 403) {
-                updateInfoDialog(`Tyvärr, endast uthyrning via kundkonto. Logga in på ditt privatakonto och utnyttja personalrabatten.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+                throw new Error(`Tyvärr, endast uthyrning via kundkonto.<br> Logga in på ditt privatakonto och utnyttja personalrabatten.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
-            throw new Error(`Fel vid skapade av uthyrning. Status: ${response.status}`);
         }
+
         updateInfoDialog(`Uthyrning lyckades!`, `<i class="fa-regular fa-circle-check"></i>`);
         changeMainContent("user-bookings");
     } catch (error) {
@@ -2333,7 +2360,7 @@ async function updateBooking(id, updatedInfo) {
 
 }
 /* Uppdatera bokning */
-async function updateAndReturn(id, updatedInfo){
+async function updateAndReturn(id, updatedInfo) {
     const url = `http://localhost:8080/api/v1/bookings/${id}`;
     const credentials = sessionStorage.getItem("basicAuth");
     try {
@@ -2348,7 +2375,7 @@ async function updateAndReturn(id, updatedInfo){
         if (!response.ok) {
             throw new Error(`Fel vid updatering av bokning. Status: ${response.status}`);
         }
-      const data = await response.json();
+        const data = await response.json();
         returnBooking(data.id);
     } catch (error) {
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -2453,8 +2480,8 @@ async function fetchUsersForList() {
             updateInfoDialog(`Något gick fel vid inladdnig av kunder. Prova igen senare.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             throw new Error(`Problem vid inladdning. Status: ${response.status}`);
         }
-
         const data = await response.json();
+        return data;
 
     } catch (error) {
         console.error('Error:' + error.message);
@@ -2561,12 +2588,13 @@ async function fetchUserByIdTEST(id) {
         });
         if (!response.ok) {
             if (response.status === 403) {
-                console.error("User-related error: "+ response.status);
+                console.error("User-related error: " + response.status);
                 throw new Error(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             } if (response.status === 404) {
-                console.error("User-related error:" +response.status);
-                throw new Error(`Användare är borttagen.<br> Se bokningsliggare för anonyma medlemmar.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);}
-            
+                console.error("User-related error:" + response.status);
+                throw new Error(`Användare är borttagen.<br> Se bokningsliggare för anonyma medlemmar.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+            }
+
         }
 
         const data = await response.json();
