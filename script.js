@@ -145,7 +145,6 @@ function dialogCloseNClear() {
 }
 
 function updateInfoDialog(message, i) {
-    /* Uppdatera här så man kan välja icon eller meddelande. Info behöver ju inte stå i text. Kan vara en alt ellet title text på icon blir det bra tillgänglighet?? */
     infoDialog.querySelector('p').innerHTML = `${message}`;
     infoDialog.querySelector('H2').innerHTML = `${i}`;
     infoDialog.showModal();
@@ -195,14 +194,14 @@ async function login() {
         if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
         }
-        console.log(error+ "i login");
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
-
 function clearInputFields() {
+    let inputFields = querySelectAll()
     /* Ta bort data från inloggningsfälten */
+
 }
 /* Logga ut -----------------------------------------------------------------------------Logga ut------------------ */
 
@@ -576,7 +575,7 @@ function userBookingsPage() {
 }
 
 function admVehiclesPage() {
-    /* mql.addEventListener("change", () => displayData()); kör displayData i fetch metoden */
+    mql.addEventListener("change", () => displayData());
 
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon - sortera och uppdatera</h2></section>
     <div class="panel-sort btn-spacer"> 
@@ -1345,7 +1344,8 @@ function displayCarsGallery(cars) {
         <b>Modell:</b><br> ${car.model}<br>
         <b>Pris:</b><br>${car.price} kr/dygn<br>
         <b>Bil-typ:</b><br> ${type}<br>
-        <b>Tillgänglig:</b><br>${booked}<br></p>
+        <b>Tillgänglig:</b><br>${booked}<br>
+        <b>Tillbehör:</b><br></p>
         <ul>
       <li>${car.feature1}</li>
       <li>${car.feature2}</li>
@@ -1462,13 +1462,14 @@ function displayUser(user) {
     </dl>
     </section>
     <article id="update-desc">
-        <h4 id="update-headline">Uppdatera din personliga information genom att klicka på knappen nedan märkt Uppdatera.</h4><br>
-        <p>
-        <ul><li>Alla fält förrutom lösenord är förifyllt. Lösenord måste alltid anges vid uppdatering.</li>
-        <li>Vill du uppdatera <br> - Skriv in nya infon i det fältet.</li>
+        <h4 id="update-headline">Uppdatera din personliga information genom att klicka på knappen märkt UPPDATERA.</h4><br>
+        <p> Ett formulär öppnas i en ny ruta.
+        Alla fält förrutom lösenord är förifyllt. Lösenord måste alltid anges vid uppdatering.
+        <ul>
+        <li>Vill du uppdatera något <br> &#9658 Skriv in nya infon i det fältet.</li>
         <li>Lämna dem andra fälten.</li>
         <li>Fyll i ditt lösenord.</li>
-        <li>Vill du byta lösenord?<br> - Skriv in det nya lösenordet istället.</li>
+        <li>Vill du byta lösenord?<br> &#9658 Skriv in det nya lösenordet istället.</li>
         </ul></p>  
         </article>
         <div class="btn-spacer">      
@@ -1861,14 +1862,18 @@ function getLogInInfo() {
     const pswrd = document.getElementById("input-password");
 
     if (!pswrd.value && !usern.value) {
+        pswrd.setAttribute("aria-invalid", true);
+        usern.setAttribute("aria-invalid", true);
         throw new ValidationError(`Hoppsan! <br> Ange inloggningsinformation för att loggas in.`);
         return;
     }
     if (!usern.value) {
+        usern.setAttribute("aria-invalid", true);
         throw new ValidationError(`Glömde du användarnamnet? Tips! Testa din mailadress.`);
         return;
     }
     if (!pswrd.value) {
+        pswrd.setAttribute("aria-invalid", true);
         throw new ValidationError(`Lösenordsfält lämnades tomt. Prova igen.`);
         return;
     }
@@ -1887,25 +1892,32 @@ function getNewUserInfo() {
     const phoneNr = document.querySelector("form #phoneNr");
     const email = document.querySelector("form #email");
     const password = document.querySelector("form #password");
-    if (principal === null) {
-        const role = "ROLE_USER";
-    } else if (principal.isAdmin) {
-        const role = document.querySelector("form #role");
-        if (role === null) { role = "ROLE_USER" };
-
-        const newUser = {
-            firstName: fname.value,
-            lastName: lname.value,
-            username: email.value,
-            phone: phoneNr.value,
-            email: email.value,
-            password: password.value,
-            "noOfOrders": 0,
-            role: role
-        }
-        return newUser;
+    const role = "ROLE_USER";
+    /* Stoppar inte tom fyllning av formulär. */
+    if (!fname || !lname || !phoneNr || !email || !password) {
+        throw new ValidationError(`Dubbelkolla att alla fält är ifyllda. Alla fält måste fyllas i för att registreras som medlem.`);
+        return;
     }
+    if (principal === !null) {
+        if (principal.isAdmin) {
+            const roleInput = document.querySelector("form #role");
+            if (roleInput === null) { role = "ROLE_USER" }
+        }
+    };
+
+    const newUser = {
+        "firstName": fname.value,
+        "lastName": lname.value,
+        "username": email.value,
+        "phone": phoneNr.value,
+        "email": email.value,
+        "password": password.value,
+        "noOfOrders": 0,
+        "role": role
+    }
+    return newUser;
 }
+
 
 function getNewBookingInfo(car) {
     const dialog = document.querySelector('#booking-dialog');
@@ -2119,7 +2131,7 @@ async function fetchAdmCars() {
         const data = await response.json();
         dataStore.cars = data;
         displayCarData(data);
-        /* displayCarsTable(data); */
+
 
     } catch (error) {
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -2614,18 +2626,16 @@ async function fetchUserForUpdateView(id) {
             }
         });
         if (!response.ok) {
+            console.error('Error when fetching user before update' + response.status);
             if (response.status === 403) {
-                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+                throw new Error(`Tyvärr, din behörighet når inte hit.`);
             }
-            throw new Error(`Något gick fel vid hämtning av specifik användare. Status: ${response.status}`);
-
         }
         const data = await response.json();
         displayUpdateUser(data);
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
@@ -2650,22 +2660,19 @@ async function fetchUserById(id) {
                 console.error("User-related error:" + response.status);
                 throw new Error(`Användare är borttagen.<br> Se bokningsliggare för anonyma medlemmar.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
-
         }
-
         const data = await response.json();
         return data;
-
-
     } catch (error) {
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
 async function createNewUser() {
-    const newUser = getNewUserInfo();
     const url = `http://localhost:8080/api/v1/users`;
     try {
+        const newUser = getNewUserInfo();
+        console.log("newUser:", newUser);
         const responseUser = await fetch(url, {
             method: "POST",
             headers: {
@@ -2679,6 +2686,9 @@ async function createNewUser() {
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
 
     } catch (error) {
+        if (error instanceof ValidationError) {
+            updateInfoDialog(error.message, error.icon);
+        }
         updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
