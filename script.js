@@ -159,7 +159,7 @@ function updateInfoDialog(message, i) {
 /* Logga in -----------------------------------------------------------------------------Logga in------------------ */
 function showLoginDialog() {
     if (sessionStorage.getItem("principal") !== null) {
-        updateInfoDialog("${principal.username}, du är redan inloggad!");
+        updateInfoDialog("Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen.");
         loginDialog.close();
     } else {
         loginDialog.showModal();
@@ -170,9 +170,9 @@ function showLoginDialog() {
 }
 
 async function login() {
-    const userInfo = getLogInInfo();
     const url = 'http://localhost:8080/api/v1/auth/login';
     try {
+        const userInfo = getLogInInfo();
         const response = await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -192,6 +192,10 @@ async function login() {
         fetchNSaveUserById();
 
     } catch (error) {
+        if (error instanceof ValidationError) {
+            updateInfoDialog(error.message, error.icon);
+        }
+        console.log(error+ "i login");
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
@@ -546,7 +550,10 @@ function userPagesPage() {
 }
 
 function userInfoPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section>
+    <div id="user-container">
+    </div>
+    </div>`;
     fetchUserByIdDisplay();
 }
 
@@ -1422,10 +1429,15 @@ function displayUpdateCar(car) {
 
 function displayUser(user) {
     const wrapper = createPanelWrapper();
+    const section = document.querySelector("#user-container");
     const innerDiv = document.createElement("div");
+    const emailfirst = user.email.split('@')[0];
+    const emailslast = user.email.split('@')[1];
+
     innerDiv.innerHTML =
         `
-     <div class="panel panel-important">
+        <div id="user-info-wrapper">
+    <section class="panel panel-important">
     <dl>
   <div>
     <dt><b>Medlemsnr:</b></dt>
@@ -1441,19 +1453,32 @@ function displayUser(user) {
   </div>
   <div>
     <dt><b> Email :</b></dt>
-    <dd>${user.email}</dd>
+    <dd>${emailfirst}<br>@${emailslast}</dd>
   </div>
   <div>
     <dt><b> Användarnamn:</b></dt>
     <dd>${user.username}</dd>
   </div>
     </dl>
-    </div>
+    </section>
+    <article id="update-desc">
+        <h4 id="update-headline">Uppdatera din personliga information genom att klicka på knappen nedan märkt Uppdatera.</h4><br>
+        <p>
+        <ul><li>Alla fält förrutom lösenord är förifyllt. Lösenord måste alltid anges vid uppdatering.</li>
+        <li>Vill du uppdatera <br> - Skriv in nya infon i det fältet.</li>
+        <li>Lämna dem andra fälten.</li>
+        <li>Fyll i ditt lösenord.</li>
+        <li>Vill du byta lösenord?<br> - Skriv in det nya lösenordet istället.</li>
+        </ul></p>  
+        </article>
         <div class="btn-spacer">      
-        <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> Uppdatera <i aria-hidden="true" class="fa-solid fa-wrench"></i> </button>
+        <button aria-labelledby="update-headline" aria-describedby="update-desc" id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> Uppdatera <i aria-hidden="true" class="fa-solid fa-wrench"></i> </button>
         </div>    
+        </div>
         `
     wrapper.appendChild(innerDiv);
+    section.appendChild(wrapper);
+
     innerDiv.scrollIntoView({ behavior: "smooth", block: "center" });
     innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });
 
@@ -1834,6 +1859,20 @@ async function displayABookingDialog(booking) {
 function getLogInInfo() {
     const usern = document.getElementById("input-username");
     const pswrd = document.getElementById("input-password");
+
+    if (!pswrd.value && !usern.value) {
+        throw new ValidationError(`Hoppsan! <br> Ange inloggningsinformation för att loggas in.`);
+        return;
+    }
+    if (!usern.value) {
+        throw new ValidationError(`Glömde du användarnamnet? Tips! Testa din mailadress.`);
+        return;
+    }
+    if (!pswrd.value) {
+        throw new ValidationError(`Lösenordsfält lämnades tomt. Prova igen.`);
+        return;
+    }
+
     const userInfo = {
         username: usern.value,
         password: pswrd.value
@@ -1848,24 +1887,24 @@ function getNewUserInfo() {
     const phoneNr = document.querySelector("form #phoneNr");
     const email = document.querySelector("form #email");
     const password = document.querySelector("form #password");
-    if(principal=== null){
+    if (principal === null) {
         const role = "ROLE_USER";
-    }else if (principal.isAdmin) {
+    } else if (principal.isAdmin) {
         const role = document.querySelector("form #role");
         if (role === null) { role = "ROLE_USER" };
 
-    const newUser = {
-        firstName: fname.value,
-        lastName: lname.value,
-        username: email.value,
-        phone: phoneNr.value,
-        email: email.value,
-        password: password.value,
-        "noOfOrders": 0,
-        role: role
+        const newUser = {
+            firstName: fname.value,
+            lastName: lname.value,
+            username: email.value,
+            phone: phoneNr.value,
+            email: email.value,
+            password: password.value,
+            "noOfOrders": 0,
+            role: role
+        }
+        return newUser;
     }
-    return newUser;
-}
 }
 
 function getNewBookingInfo(car) {
@@ -1977,7 +2016,17 @@ function getUpdatedUser() {
     }
     return updatedUser;
 }
+/* ------------------------------------------------ */
+/* ERROR SUBKLASSER för att hantera fel  */
+/*------------------------------------------------- */
 
+class ValidationError extends Error {
+    constructor(message, icon = '<i class="fa-solid fa-exclamation" alt="!" title="Info"></i>') {
+        super(message);
+        this.name = "ValidationError"; /* Vad erroret heter */
+        this.icon = icon;
+    }
+}
 
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER - */

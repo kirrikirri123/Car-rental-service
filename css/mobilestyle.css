@@ -160,7 +160,7 @@
      padding: var(--padding);
 
  }
-
+/* containers-----------------------------------------------------------------------------------containers-------------------- */
  .content-page {
      display: flex;
      flex-direction: column;
@@ -171,6 +171,7 @@
      padding: var(--padding);
 
  }
+ /* footer ----------------------------------------------------------------------------------footer.------------------------- */
 
  footer {
      grid-area: footer;
@@ -188,7 +189,7 @@
  footer span {
      padding: 0.3rem;
  }
-
+/* ikoner och animationer--------------------------------------------------------------------ikoner och animationer */
  #w-icon {
      justify-self: flex-end;
  }
@@ -350,7 +351,7 @@
 
  #info-dialog {
      background-color: var(--color-surface-raised);
-     border: 0.17em solid var(--color-dec-accent);
+     border: 0.19em solid var(--color-bg-l);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
@@ -506,6 +507,10 @@
  }
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
+ #user-info-wrapper article{
+    padding:2em;
+}
+
  .panel-wrapper {
      display: flex;
      flex-direction: column;
@@ -514,7 +519,7 @@
 
  .panel {
      border: 0.13rem solid var(--color-dec-accent);
-    margin: 1em;
+    margin: 0.5em;
      padding: 1em;
      display: flex;
      flex-direction: column;
@@ -549,7 +554,6 @@
  .panel-car ol{
     text-align: start;
     min-width: 255px;
-
  }
 
  .car-booked {
@@ -573,8 +577,9 @@
   .panel-advert:hover{
     border: 0.2rem solid var(--color-text);
  }
+ /* -----Containers  -------------------------------------------------------------Containers------------------------*/
 
- /* Tydliga vyer  */
+ /* ---- Tydliga vyer  ----------------------------------------------------------vy-struktur------------------------*/
  dl {
      display: grid;
      grid-template-columns: max-content 1fr;
@@ -583,6 +588,7 @@
 
  dd {
      font-size: 1rem;
+     margin-bottom: 0.22rem;
 
  }
 
@@ -594,7 +600,7 @@
     display: none;
 }
 
-
+ /* ----------MediaQuerys----------------------------------------------------MediaQuerys--------------------------- */
  @media (orientation: landscape) {
 
      h1 {
