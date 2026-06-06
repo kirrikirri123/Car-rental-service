@@ -1887,31 +1887,30 @@ function getLogInInfo() {
 
 function getNewUserInfo() {
     const principal = JSON.parse(sessionStorage.getItem('principal'));
-    const fname = document.querySelector('#fname');
-    const lname = document.querySelector(`form #lname`);
-    const phoneNr = document.querySelector("form #phoneNr");
-    const email = document.querySelector("form #email");
-    const password = document.querySelector("form #password");
+    const fname = document.querySelector('#fname').value;
+    const lname = document.querySelector(`form #lname`).value;
+    const phoneNr = document.querySelector("form #phoneNr").value;
+    const email = document.querySelector("form #email").value;
+    const password = document.querySelector("form #password").value;
     const role = "ROLE_USER";
-    /* Stoppar inte tom fyllning av formulär. */
+
     if (!fname || !lname || !phoneNr || !email || !password) {
-        throw new ValidationError(`Dubbelkolla att alla fält är ifyllda. Alla fält måste fyllas i för att registreras som medlem.`);
-        return;
+        throw new ValidationError(`Tomma fält ! Alla fält är obligatoriska för registrering`);
     }
     if (principal === !null) {
         if (principal.isAdmin) {
             const roleInput = document.querySelector("form #role");
-            if (roleInput === null) { role = "ROLE_USER" }
+            if (!roleInput.value) { role = "ROLE_USER" }
         }
     };
 
     const newUser = {
-        "firstName": fname.value,
-        "lastName": lname.value,
-        "username": email.value,
-        "phone": phoneNr.value,
-        "email": email.value,
-        "password": password.value,
+        "firstName": fname,
+        "lastName": lname,
+        "username": email,
+        "phone": phoneNr,
+        "email": email,
+        "password": password,
         "noOfOrders": 0,
         "role": role
     }
@@ -2681,15 +2680,16 @@ async function createNewUser() {
             body: JSON.stringify(newUser)
         });
         if (!responseUser.ok) {
-            throw new Error(`Fel vid skapade av ny användare. Status: ${responseUser.status}`);
+            console.log("Error in creating new user"+ responseUser.status)
+            throw new Error(`Fel vid skapade av ny användare.`);
         }
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
 
     } catch (error) {
-        if (error instanceof ValidationError) {
+         if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
         }
-        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
