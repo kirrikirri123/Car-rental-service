@@ -434,27 +434,76 @@ function page404() {
 
 function homePage() {
     mainContent.innerHTML = `
-            <div id="hero">
-                <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
-                <h1>service<br>security<br>speed</h1>
+    <div id="hero">
+                <div class="hero-front">
+                    <div id="hero-headline-ser">
+                        <h2>SERVICE</h2>
+                    </div>
+                    <div id="hero-headline-sec">
+                        <h2>SECURITY</h2>
+                    </div>
+                    <div id="hero-headline-sp">
+                        <h2>SPEED</h2>
+                    </div>
+                </div>
             </div>
-            <div class="panel-wrapper">
-                <div class="panel"><p>"Wow! Alltid en bra upplevelse." <br>- Kickan K (VD REVENT) </p>
+            <section>
+                <div class="info-headline" id="rec-headline"><h4> Recensioner</h4></div>
+                <div class="panel-wrapper">
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733
+                                <br>"Wow! Alltid en bra upplevelse."
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733 &#9733
+                                <br>"Fantastiskt! Fyra tummar upp!"
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733 &#9733 &#9733
+                                <br>"För bra! Överleverar alltid."
+                            </p>
+                        </div>
+                    </article>
+            </section>
+            <section aria-label="Annons">
+                <div class="panel-wrapper">
+                    <div class="panel panel-advert">
+                        <i class="fa-regular fa-lightbulb " alt="Reklamsammarbete" title="Annons"></i>
+                        <p>"En trygg partner vi litar på!"<br> Som samarbetspartner inom Wigellkoncernen litar
+                            Wigell Travels på Mr. T's fräsha, trygga bilar och snabba service varje gång. Wigell Travels
+                            arrangerar resor runt så långt dina drömmar når.<br>
+                        <h4> Boka en din resa idag ! <br> Tel. 0910 911-911</h4>
+                        </p>
+                    </div>
+                    <div class="panel panel-advert">
+                        <i class="fa-regular fa-lightbulb" alt="Reklamsammarbete" title="Annons"></i>
+                        <p>"Vårt förstahands val !" <br> Alltid en bil ledig inom kort varsel.<br> Perfekt för transport
+                            till våra evenemang.
+                            Wigell Cinema club arrangerar högklassiga flimvisningar. Bli en del av vår filmälskande
+                            gemenskap du med.
+                        <h4> Bli medlem idag! <br> Tel. 0950 777 27</h4>
+                        </p>
+                    </div>
                 </div>
-                <div class="panel"><p>"Fantastiskt! Fyra tummar upp!"</p>
-                </div>
-                <div class="panel"><p>"För bra! Överleverar alltid." <br>- Edström Entreprenad </p>
-                </div>
-    </div>`
+            </section>`
 }
 
 function carsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage" id="our-cars"><h2>Våra bilar</h2></section>
     <div class="panel-sort btn-spacer "> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn"> Visa lediga bilar</button>  
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <div class="car-container"></div></div>`;
+    <div aria-labelledby="our-cars" class="car-container"></div>
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    </div>`;
 
     fetchCars();
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("cars"); });
@@ -462,11 +511,15 @@ function carsPage() {
         const sortedCars = availableCars();
         displayCars(sortedCars);
     });
+
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 function newUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Registrera ny kund</h2></section>
-    <div class="panel">            
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"id="new-customer"><h2>Registrera ny kund</h2></section>
+    <section aria-labelledby="new-customer" class="panel">            
     <form>
         <label for="fname" class="form-margin">Förnamn: </label><br>
             <input id="fname" class="input-fields form-margin" type="text"></input><br>
@@ -497,7 +550,7 @@ function newUsersPage() {
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra utvalda fordon.</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage" id="bookable-cars"><h2> Boka våra utvalda fordon.</h2></section>
     <div class="panel-sort btn-spacer "> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga bilar</button>  
     <div>
@@ -529,7 +582,8 @@ function userCarsPage() {
     </div>
     <button type="button" class="form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <div class="car-container"></div>
+    <div aria-labelledby="bookable-tables" class="car-container"></div>
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchCars();
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("user-cars"); });
@@ -537,14 +591,26 @@ function userCarsPage() {
         const sortedCars = availableCars();
         displayCars(sortedCars);
     });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 function userPagesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section>
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p>
+    <h3> Få tillgång till våra partners erbjudanden? </h3>
     <form>
+    <label for="ad-choice" class="info-headline">Visa rabatter <br><h5> Ja, tack !</h5></label>
+    <input id="ad-choice" type="radio">
+    <label for="ad-send" class="info-headline">Skicka exklusiva erbjudanden <br><h5> Ja, tack !</h5></label>
+    <input id="ad-send"type="radio">
+    <label for="ad-num" class="info-headline">Ange nummer för deals direkt i mobilen:</label>
+    <input id="ad-num" type="tel">
+    <button type="submit" class="std-btn pos-btn">SPARA</button>
     <!-- ON of på Revent, slipsuthyrnings, resebyrån, event, cinema, idrotts-coachning-->
     <form>
+    </section>
     </div>`;
 }
 
@@ -563,6 +629,7 @@ function userBookingsPage() {
     <button type="button" class=" form-margin std-btn pos-btn" id="activeBookings-sortbtn">Visa aktiva bokningar</button>
     </div>
     <div class="bookings-container"></div>
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchMyBookings();
 
@@ -570,6 +637,10 @@ function userBookingsPage() {
     document.querySelector("#activeBookings-sortbtn").addEventListener('click', () => {
         const sortedBookings = myActiveBookings();
         displayMyBookings(sortedBookings);
+    });
+
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
 }
@@ -600,6 +671,7 @@ function admVehiclesPage() {
     <tbody><td> Inga fordon att visa </td></tbody>
     <table>
     </div>
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>
     `;
     fetchAdmCars();
@@ -628,6 +700,9 @@ function admVehiclesPage() {
     document.querySelector("#type-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars, "cars", "type");
         displayCarData(sortedCars);
+    });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
 
@@ -670,9 +745,13 @@ function admChangeVehiclesPage() {
         <button type="button" class="std-btn pos-btn" id="reg-car-btn"> Registrera </button>
     </form>    
     </div>
+        <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     document.querySelector("#reg-car-btn").addEventListener('click', () => {
         createNewCar();
+    });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
 
@@ -698,6 +777,7 @@ function admBookingsPage() {
     </thead>
     <tbody><tr><td> Inga bokningar att visa</td></tr></tbody>
     </table> 
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchActiveBookings();
@@ -728,6 +808,10 @@ function admBookingsPage() {
         displayActiveBookingsTable(sortedBookings);
     });
 
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
 }
 
 
@@ -752,6 +836,7 @@ function admAllBookingsPage() {
     </thead>
     <tbody><tr><td> Ingen bokningshistorik att visa </td></tr></tbody>
     </table>    
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>
     `;
     fetchAllBookings();
@@ -783,6 +868,9 @@ function admAllBookingsPage() {
         const sortedBookings = sortTableList(dataStore.bookings, "bookings", "toDate");
         displayBookingsTable(sortedBookings);
     });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
 
 }
@@ -810,6 +898,7 @@ function admUsersPage() {
     <tbody><tr><td> Inga användare att visa</td></tr></tbody>
     </table> 
     <div id="userBookingsView"></div>
+    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchUsers();
@@ -848,11 +937,11 @@ function admUsersPage() {
         const sortedUsers = sortTableList(dataStore.users, "users", "username");
         displayUsersData(sortedUsers);
     });
+         
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-}
-
-function admChangeUserPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - skapa, updatera och radera.</section></div>`;
 }
 
 function admStyleguidePage() {
@@ -1110,7 +1199,7 @@ function updateBookingDialog(booking) {
 }
 
 function returnCarDialog(booking) {
-    const dialog = document.querySelector('#update-dialog');
+    const dialog = document.querySelector('#view-dialog');
     dialog.innerHTML =
         `<div class="dialog-content">
             <div>
@@ -2680,13 +2769,13 @@ async function createNewUser() {
             body: JSON.stringify(newUser)
         });
         if (!responseUser.ok) {
-            console.log("Error in creating new user"+ responseUser.status)
+            console.log("Error in creating new user" + responseUser.status)
             throw new Error(`Fel vid skapade av ny användare.`);
         }
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
 
     } catch (error) {
-         if (error instanceof ValidationError) {
+        if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
         }
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);

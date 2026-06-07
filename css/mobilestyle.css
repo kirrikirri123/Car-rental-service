@@ -374,7 +374,7 @@
  .form-dialog {
      text-align: center;
      background-color: var(--color-surface-raised);
-     border: 0.17em solid var(--color-dec-accent);
+     border: 0.19em solid var(--color-dec-accent);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
@@ -383,16 +383,16 @@
  .dialog {
      position: fixed;
      top: 30%;
-     left: 15%;
+     left: 17%;
      translate: -8.5% -20%;
  }
 
  .big-dialog {
     position: fixed;
-    top: 5%;
- 
- }
-
+    top: 25%;
+    left: 27%;
+    translate: -25% -25%;
+  } 
 
  #view-dialog p {
      text-align: left;
