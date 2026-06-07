@@ -117,6 +117,9 @@
      justify-content: space-around;
      
  }
+ .mobile-btn{
+    display: none;
+ }
 
 
  /* Tabell / Panel relaterat */

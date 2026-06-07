@@ -482,7 +482,8 @@
 
  /* Formulärets yttreruta */
  form {
-     max-width: 27rem;
+    width: clamp(27rem,55vw);
+     /* max-width: 27rem; */
      height: auto;
      padding: 2rem;
      font-size: 1rem;
@@ -516,6 +517,13 @@
  /* Login-relaterat */
  #login-header {
      margin-bottom: 0.5em;
+ }
+
+ /* wrapper för att få info + knapp på samma rad. */
+ .form-radio{
+    display:flex;
+    flex-direction: row;
+    justify-items: center;
  }
 
 

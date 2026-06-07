@@ -502,7 +502,7 @@ function carsPage() {
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
     <div aria-labelledby="our-cars" class="car-container"></div>
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
 
     fetchCars();
@@ -583,7 +583,7 @@ function userCarsPage() {
     <button type="button" class="form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
     <div aria-labelledby="bookable-tables" class="car-container"></div>
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchCars();
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("user-cars"); });
@@ -599,17 +599,19 @@ function userCarsPage() {
 function userPagesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
     Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p>
+    <article class="panel panel-important">
     <h3> Få tillgång till våra partners erbjudanden? </h3>
     <form>
-    <label for="ad-choice" class="info-headline">Visa rabatter <br><h5> Ja, tack !</h5></label>
-    <input id="ad-choice" type="radio">
-    <label for="ad-send" class="info-headline">Skicka exklusiva erbjudanden <br><h5> Ja, tack !</h5></label>
-    <input id="ad-send"type="radio">
-    <label for="ad-num" class="info-headline">Ange nummer för deals direkt i mobilen:</label>
-    <input id="ad-num" type="tel">
+    <label for="ad-choice"><h4>Visa rabatter</h4></label>
+   <div class="form-radio"> <span><p>Ja, tack !</p></span><input id="ad-choice" type="radio"></div>
+    <label for="ad-send" ><h4>Skicka exklusiva erbjudanden</h4></label>
+    <div class="form-radio"><span><p>Ja, tack !</p></span><input id="ad-send" type="radio"></div>
+    <label for="ad-num"><h4>Ange nummer för deals direkt i mobilen:</h4></label>
+    <input id="ad-num" type="tel" placeholder="070 123 45 67">
     <button type="submit" class="std-btn pos-btn">SPARA</button>
     <!-- ON of på Revent, slipsuthyrnings, resebyrån, event, cinema, idrotts-coachning-->
-    <form>
+    </form>
+    </article>
     </section>
     </div>`;
 }
@@ -629,7 +631,7 @@ function userBookingsPage() {
     <button type="button" class=" form-margin std-btn pos-btn" id="activeBookings-sortbtn">Visa aktiva bokningar</button>
     </div>
     <div class="bookings-container"></div>
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchMyBookings();
 
@@ -646,7 +648,7 @@ function userBookingsPage() {
 }
 
 function admVehiclesPage() {
-    mql.addEventListener("change", () => displayData());
+    mql.addEventListener("change", () => displayData());/* funkar ej */
 
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon - sortera och uppdatera</h2></section>
     <div class="panel-sort btn-spacer"> 
@@ -671,8 +673,8 @@ function admVehiclesPage() {
     <tbody><td> Inga fordon att visa </td></tbody>
     <table>
     </div>
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
     </div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     `;
     fetchAdmCars();
 
@@ -745,13 +747,10 @@ function admChangeVehiclesPage() {
         <button type="button" class="std-btn pos-btn" id="reg-car-btn"> Registrera </button>
     </form>    
     </div>
-        <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+        
     </div>`;
     document.querySelector("#reg-car-btn").addEventListener('click', () => {
         createNewCar();
-    });
-    mainContent.querySelector("#up-btn").addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
 
@@ -777,7 +776,7 @@ function admBookingsPage() {
     </thead>
     <tbody><tr><td> Inga bokningar att visa</td></tr></tbody>
     </table> 
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchActiveBookings();
@@ -836,7 +835,7 @@ function admAllBookingsPage() {
     </thead>
     <tbody><tr><td> Ingen bokningshistorik att visa </td></tr></tbody>
     </table>    
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>
     `;
     fetchAllBookings();
@@ -898,7 +897,7 @@ function admUsersPage() {
     <tbody><tr><td> Inga användare att visa</td></tr></tbody>
     </table> 
     <div id="userBookingsView"></div>
-    <button type="button" class="std-btn" id="up-btn"> TILL TOPPEN </button>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchUsers();
