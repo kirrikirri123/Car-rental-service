@@ -145,7 +145,6 @@ function dialogCloseNClear() {
 }
 
 function updateInfoDialog(message, i) {
-    /* Uppdatera här så man kan välja icon eller meddelande. Info behöver ju inte stå i text. Kan vara en alt ellet title text på icon blir det bra tillgänglighet?? */
     infoDialog.querySelector('p').innerHTML = `${message}`;
     infoDialog.querySelector('H2').innerHTML = `${i}`;
     infoDialog.showModal();
@@ -159,7 +158,7 @@ function updateInfoDialog(message, i) {
 /* Logga in -----------------------------------------------------------------------------Logga in------------------ */
 function showLoginDialog() {
     if (sessionStorage.getItem("principal") !== null) {
-        updateInfoDialog("${principal.username}, du är redan inloggad!");
+        updateInfoDialog("Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen.");
         loginDialog.close();
     } else {
         loginDialog.showModal();
@@ -170,9 +169,9 @@ function showLoginDialog() {
 }
 
 async function login() {
-    const userInfo = getLogInInfo();
     const url = 'http://localhost:8080/api/v1/auth/login';
     try {
+        const userInfo = getLogInInfo();
         const response = await fetch(url, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -192,13 +191,17 @@ async function login() {
         fetchNSaveUserById();
 
     } catch (error) {
+        if (error instanceof ValidationError) {
+            updateInfoDialog(error.message, error.icon);
+        }
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
-
 function clearInputFields() {
+    let inputFields = querySelectAll()
     /* Ta bort data från inloggningsfälten */
+
 }
 /* Logga ut -----------------------------------------------------------------------------Logga ut------------------ */
 
@@ -431,27 +434,76 @@ function page404() {
 
 function homePage() {
     mainContent.innerHTML = `
-            <div id="hero">
-                <img src="/img/images/corvetteZ06.jpg" alt="Corvette Z06" width="100%">
-                <h1>service<br>security<br>speed</h1>
+    <div id="hero">
+                <div class="hero-front">
+                    <div id="hero-headline-ser">
+                        <h2>SERVICE</h2>
+                    </div>
+                    <div id="hero-headline-sec">
+                        <h2>SECURITY</h2>
+                    </div>
+                    <div id="hero-headline-sp">
+                        <h2>SPEED</h2>
+                    </div>
+                </div>
             </div>
-            <div class="panel-wrapper">
-                <div class="panel"><p>"Wow! Alltid en bra upplevelse." <br>- Kickan K (VD REVENT) </p>
+            <section>
+                <div class="info-headline" id="rec-headline"><h4> Recensioner</h4></div>
+                <div class="panel-wrapper">
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733
+                                <br>"Wow! Alltid en bra upplevelse."
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733 &#9733
+                                <br>"Fantastiskt! Fyra tummar upp!"
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="panel">
+                            <p> &#9733 &#9733 &#9733 &#9733 &#9733
+                                <br>"För bra! Överleverar alltid."
+                            </p>
+                        </div>
+                    </article>
+            </section>
+            <section aria-label="Annons">
+                <div class="panel-wrapper">
+                    <div class="panel panel-advert">
+                        <i class="fa-regular fa-lightbulb " alt="Reklamsammarbete" title="Annons"></i>
+                        <p>"En trygg partner vi litar på!"<br> Som samarbetspartner inom Wigellkoncernen litar
+                            Wigell Travels på Mr. T's fräsha, trygga bilar och snabba service varje gång. Wigell Travels
+                            arrangerar resor runt så långt dina drömmar når.<br>
+                        <h4> Boka en din resa idag ! <br> Tel. 0910 911-911</h4>
+                        </p>
+                    </div>
+                    <div class="panel panel-advert">
+                        <i class="fa-regular fa-lightbulb" alt="Reklamsammarbete" title="Annons"></i>
+                        <p>"Vårt förstahands val !" <br> Alltid en bil ledig inom kort varsel.<br> Perfekt för transport
+                            till våra evenemang.
+                            Wigell Cinema club arrangerar högklassiga flimvisningar. Bli en del av vår filmälskande
+                            gemenskap du med.
+                        <h4> Bli medlem idag! <br> Tel. 0950 777 27</h4>
+                        </p>
+                    </div>
                 </div>
-                <div class="panel"><p>"Fantastiskt! Fyra tummar upp!"</p>
-                </div>
-                <div class="panel"><p>"För bra! Överleverar alltid." <br>- Edström Entreprenad </p>
-                </div>
-    </div>`
+            </section>`
 }
 
 function carsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Våra bilar</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage" id="our-cars"><h2>Våra bilar</h2></section>
     <div class="panel-sort btn-spacer "> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn"> Visa lediga bilar</button>  
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <div class="car-container"></div></div>`;
+    <div aria-labelledby="our-cars" class="car-container"></div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
+    </div>`;
 
     fetchCars();
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("cars"); });
@@ -459,11 +511,15 @@ function carsPage() {
         const sortedCars = availableCars();
         displayCars(sortedCars);
     });
+
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 function newUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Registrera ny kund</h2></section>
-    <div class="panel">            
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"id="new-customer"><h2>Registrera ny kund</h2></section>
+    <section aria-labelledby="new-customer" class="panel">            
     <form>
         <label for="fname" class="form-margin">Förnamn: </label><br>
             <input id="fname" class="input-fields form-margin" type="text"></input><br>
@@ -494,7 +550,7 @@ function newUsersPage() {
 }
 
 function userCarsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Boka våra utvalda fordon.</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage" id="bookable-cars"><h2> Boka våra utvalda fordon.</h2></section>
     <div class="panel-sort btn-spacer "> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga bilar</button>  
     <div>
@@ -526,7 +582,8 @@ function userCarsPage() {
     </div>
     <button type="button" class="form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
-    <div class="car-container"></div>
+    <div aria-labelledby="bookable-tables" class="car-container"></div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchCars();
     document.querySelector("#reset-sortbtn").addEventListener('click', () => { changeMainContent("user-cars"); });
@@ -534,20 +591,37 @@ function userCarsPage() {
         const sortedCars = availableCars();
         displayCars(sortedCars);
     });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 }
 
 function userPagesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Hej !</h2><p>
-    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p></section>
+    Här hittar du din historik och din personliga information och dina exklusiva erbjudanden från våra utvalda samarbetspartners.</p>
+    <article class="panel panel-important">
+    <h3> Få tillgång till våra partners erbjudanden? </h3>
     <form>
+    <label for="ad-choice"><h4>Visa rabatter</h4></label>
+   <div class="form-radio"> <span><p>Ja, tack !</p></span><input id="ad-choice" type="radio"></div>
+    <label for="ad-send" ><h4>Skicka exklusiva erbjudanden</h4></label>
+    <div class="form-radio"><span><p>Ja, tack !</p></span><input id="ad-send" type="radio"></div>
+    <label for="ad-num"><h4>Ange nummer för deals direkt i mobilen:</h4></label>
+    <input id="ad-num" type="tel" placeholder="070 123 45 67">
+    <button type="submit" class="std-btn pos-btn">SPARA</button>
     <!-- ON of på Revent, slipsuthyrnings, resebyrån, event, cinema, idrotts-coachning-->
-    <form>
+    </form>
+    </article>
+    </section>
     </div>`;
 }
 
 function userInfoPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section></div>`;
-    fetchUserById();
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Din medlemsinformation </h2> </section>
+    <div id="user-container">
+    </div>
+    </div>`;
+    fetchUserByIdDisplay();
 }
 
 function userBookingsPage() {
@@ -557,6 +631,7 @@ function userBookingsPage() {
     <button type="button" class=" form-margin std-btn pos-btn" id="activeBookings-sortbtn">Visa aktiva bokningar</button>
     </div>
     <div class="bookings-container"></div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>`;
     fetchMyBookings();
 
@@ -566,10 +641,14 @@ function userBookingsPage() {
         displayMyBookings(sortedBookings);
     });
 
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
 }
 
 function admVehiclesPage() {
-    /* mql.addEventListener("change", () => displayData()); kör displayData i fetch metoden */
+    mql.addEventListener("change", () => displayData());/* funkar ej */
 
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon - sortera och uppdatera</h2></section>
     <div class="panel-sort btn-spacer"> 
@@ -595,6 +674,7 @@ function admVehiclesPage() {
     <table>
     </div>
     </div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     `;
     fetchAdmCars();
 
@@ -622,6 +702,9 @@ function admVehiclesPage() {
     document.querySelector("#type-sortbtn").addEventListener('click', () => {
         const sortedCars = sortTableList(dataStore.cars, "cars", "type");
         displayCarData(sortedCars);
+    });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
 
@@ -664,6 +747,7 @@ function admChangeVehiclesPage() {
         <button type="button" class="std-btn pos-btn" id="reg-car-btn"> Registrera </button>
     </form>    
     </div>
+        
     </div>`;
     document.querySelector("#reg-car-btn").addEventListener('click', () => {
         createNewCar();
@@ -692,6 +776,7 @@ function admBookingsPage() {
     </thead>
     <tbody><tr><td> Inga bokningar att visa</td></tr></tbody>
     </table> 
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchActiveBookings();
@@ -722,6 +807,10 @@ function admBookingsPage() {
         displayActiveBookingsTable(sortedBookings);
     });
 
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
 }
 
 
@@ -746,6 +835,7 @@ function admAllBookingsPage() {
     </thead>
     <tbody><tr><td> Ingen bokningshistorik att visa </td></tr></tbody>
     </table>    
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>
     `;
     fetchAllBookings();
@@ -777,6 +867,9 @@ function admAllBookingsPage() {
         const sortedBookings = sortTableList(dataStore.bookings, "bookings", "toDate");
         displayBookingsTable(sortedBookings);
     });
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
 
 }
@@ -804,6 +897,7 @@ function admUsersPage() {
     <tbody><tr><td> Inga användare att visa</td></tr></tbody>
     </table> 
     <div id="userBookingsView"></div>
+    <button type="button" class="std-btn mobile-btn" id="up-btn"> TILL TOPPEN </button>
     </div>   
     `;
     fetchUsers();
@@ -842,11 +936,11 @@ function admUsersPage() {
         const sortedUsers = sortTableList(dataStore.users, "users", "username");
         displayUsersData(sortedUsers);
     });
+         
+    mainContent.querySelector("#up-btn").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-}
-
-function admChangeUserPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage">Kunder - skapa, updatera och radera.</section></div>`;
 }
 
 function admStyleguidePage() {
@@ -1104,7 +1198,7 @@ function updateBookingDialog(booking) {
 }
 
 function returnCarDialog(booking) {
-    const dialog = document.querySelector('#update-dialog');
+    const dialog = document.querySelector('#view-dialog');
     dialog.innerHTML =
         `<div class="dialog-content">
             <div>
@@ -1131,8 +1225,8 @@ function returnCarDialog(booking) {
     dialog.querySelector('#exit-btn').addEventListener('click', () => { dialog.close(); });
 }
 async function displayUpdateBookingDialog(booking) {
-    const car = await fetchCarByIdTEST(booking.carId);
-    const user = await fetchUserByIdTEST(booking.userId);
+    const car = await fetchCarById(booking.carId);
+    const user = await fetchUserById(booking.userId);
     let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
@@ -1222,7 +1316,7 @@ function displayCars(cars) {
         <dd><b>Bil-typ:</b> ${type} </dd>
         </dl>
         <div class="btn-spacer">
-        <button onclick="fetchCarById(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
+        <button onclick="fetchCarByIdDisplay(${car.id})" class="std-btn pos-btn car-info-btn"> Se mer </button> 
         </div>
         <div id="icon-holder" class="icon-larger"></div>
         </div> `
@@ -1267,7 +1361,6 @@ function displayACar(car) {
     updateBookingBtn(bookBtn, car);
     bookBtn.addEventListener('click', () => {
         admBookingDialog(car);
-        /* bookingDialog(car); */
     });
     wrapper.appendChild(innerDiv);
 
@@ -1339,7 +1432,8 @@ function displayCarsGallery(cars) {
         <b>Modell:</b><br> ${car.model}<br>
         <b>Pris:</b><br>${car.price} kr/dygn<br>
         <b>Bil-typ:</b><br> ${type}<br>
-        <b>Tillgänglig:</b><br>${booked}<br></p>
+        <b>Tillgänglig:</b><br>${booked}<br>
+        <b>Tillbehör:</b><br></p>
         <ul>
       <li>${car.feature1}</li>
       <li>${car.feature2}</li>
@@ -1423,10 +1517,15 @@ function displayUpdateCar(car) {
 
 function displayUser(user) {
     const wrapper = createPanelWrapper();
+    const section = document.querySelector("#user-container");
     const innerDiv = document.createElement("div");
+    const emailfirst = user.email.split('@')[0];
+    const emailslast = user.email.split('@')[1];
+
     innerDiv.innerHTML =
         `
-     <div class="panel panel-important">
+        <div id="user-info-wrapper">
+    <section class="panel panel-important">
     <dl>
   <div>
     <dt><b>Medlemsnr:</b></dt>
@@ -1442,19 +1541,33 @@ function displayUser(user) {
   </div>
   <div>
     <dt><b> Email :</b></dt>
-    <dd>${user.email}</dd>
+    <dd>${emailfirst}<br>@${emailslast}</dd>
   </div>
   <div>
     <dt><b> Användarnamn:</b></dt>
     <dd>${user.username}</dd>
   </div>
     </dl>
-    </div>
+    </section>
+    <article id="update-desc">
+        <h4 id="update-headline">Uppdatera din personliga information genom att klicka på knappen märkt UPPDATERA.</h4><br>
+        <p> Ett formulär öppnas i en ny ruta.
+        Alla fält förrutom lösenord är förifyllt. Lösenord måste alltid anges vid uppdatering.
+        <ul>
+        <li>Vill du uppdatera något <br> &#9658 Skriv in nya infon i det fältet.</li>
+        <li>Lämna dem andra fälten.</li>
+        <li>Fyll i ditt lösenord.</li>
+        <li>Vill du byta lösenord?<br> &#9658 Skriv in det nya lösenordet istället.</li>
+        </ul></p>  
+        </article>
         <div class="btn-spacer">      
-        <button id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> Uppdatera <i aria-hidden="true" class="fa-solid fa-wrench"></i> </button>
+        <button aria-labelledby="update-headline" aria-describedby="update-desc" id="update-btn" class="std-btn" alt="Knapp för att redigera din information" title="Uppdatera"> Uppdatera <i aria-hidden="true" class="fa-solid fa-wrench"></i> </button>
         </div>    
+        </div>
         `
     wrapper.appendChild(innerDiv);
+    section.appendChild(wrapper);
+
     innerDiv.scrollIntoView({ behavior: "smooth", block: "center" });
     innerDiv.querySelector('#update-btn').addEventListener('click', () => { updateUserDialog(user); });
 
@@ -1744,7 +1857,7 @@ async function displayMyBookings(bookings) {
         return;
     }
     for (const booking of bookings) {
-        const car = await fetchCarByIdTEST(booking.carId);
+        const car = await fetchCarById(booking.carId);
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
@@ -1772,7 +1885,7 @@ async function displayBookingsByUserId(id) {
     const bookingsView = document.querySelector('#usersBookingView');
     const wrapper = createPanelWrapper();
     for (const booking of bookings) {
-        const car = await fetchCarByIdTEST(booking.carId);
+        const car = await fetchCarById(booking.carId);
         const innerDiv = document.createElement("div");
         const imgSrc = `/img/images/cars/${car.model}.jpg`;
         const defaultSrc = `/img/images/cars/default.png`;
@@ -1799,8 +1912,8 @@ async function displayBookingsByUserId(id) {
 
 
 async function displayABookingDialog(booking) {
-    const car = await fetchCarByIdTEST(booking.carId);
-    const user = await fetchUserByIdTEST(booking.userId);
+    const car = await fetchCarById(booking.carId);
+    const user = await fetchUserById(booking.userId);
     let returnerd = booking.active === true ? "OBS! Aktiv uthyrning" : "Återlämnad";
     const dialog = document.querySelector(`#view-dialog`);
     dialog.innerHTML =
@@ -1835,6 +1948,24 @@ async function displayABookingDialog(booking) {
 function getLogInInfo() {
     const usern = document.getElementById("input-username");
     const pswrd = document.getElementById("input-password");
+
+    if (!pswrd.value && !usern.value) {
+        pswrd.setAttribute("aria-invalid", true);
+        usern.setAttribute("aria-invalid", true);
+        throw new ValidationError(`Hoppsan! <br> Ange inloggningsinformation för att loggas in.`);
+        return;
+    }
+    if (!usern.value) {
+        usern.setAttribute("aria-invalid", true);
+        throw new ValidationError(`Glömde du användarnamnet? Tips! Testa din mailadress.`);
+        return;
+    }
+    if (!pswrd.value) {
+        pswrd.setAttribute("aria-invalid", true);
+        throw new ValidationError(`Lösenordsfält lämnades tomt. Prova igen.`);
+        return;
+    }
+
     const userInfo = {
         username: usern.value,
         password: pswrd.value
@@ -1844,30 +1975,36 @@ function getLogInInfo() {
 
 function getNewUserInfo() {
     const principal = JSON.parse(sessionStorage.getItem('principal'));
+    const fname = document.querySelector('#fname').value;
+    const lname = document.querySelector(`form #lname`).value;
+    const phoneNr = document.querySelector("form #phoneNr").value;
+    const email = document.querySelector("form #email").value;
+    const password = document.querySelector("form #password").value;
+    const role = "ROLE_USER";
 
-    const fname = document.querySelector('#fname');
-    const lname = document.querySelector(`form #lname`);
-    const phoneNr = document.querySelector("form #phoneNr");
-    const email = document.querySelector("form #email");
-    const password = document.querySelector("form #password");
-    if (principal.isAdmin) {
-        const role = document.querySelector("form #role");
-        if (role === null) { role = "ROLE_USER" };
-    } else {
-        const role = "ROLE_USER";
+    if (!fname || !lname || !phoneNr || !email || !password) {
+        throw new ValidationError(`Tomma fält ! Alla fält är obligatoriska för registrering`);
     }
+    if (principal === !null) {
+        if (principal.isAdmin) {
+            const roleInput = document.querySelector("form #role");
+            if (!roleInput.value) { role = "ROLE_USER" }
+        }
+    };
+
     const newUser = {
-        firstName: fname.value,
-        lastName: lname.value,
-        username: email.value,
-        phone: phoneNr.value,
-        email: email.value,
-        password: password.value,
+        "firstName": fname,
+        "lastName": lname,
+        "username": email,
+        "phone": phoneNr,
+        "email": email,
+        "password": password,
         "noOfOrders": 0,
-        role: role
+        "role": role
     }
     return newUser;
 }
+
 
 function getNewBookingInfo(car) {
     const dialog = document.querySelector('#booking-dialog');
@@ -1978,7 +2115,17 @@ function getUpdatedUser() {
     }
     return updatedUser;
 }
+/* ------------------------------------------------ */
+/* ERROR SUBKLASSER för att hantera fel  */
+/*------------------------------------------------- */
 
+class ValidationError extends Error {
+    constructor(message, icon = '<i class="fa-solid fa-exclamation" alt="!" title="Info"></i>') {
+        super(message);
+        this.name = "ValidationError"; /* Vad erroret heter */
+        this.icon = icon;
+    }
+}
 
 /* ------------------------------------------------ */
 /* FETCH-FUNKTIONER - */
@@ -2006,7 +2153,7 @@ async function fetchCars() {
     }
 }
 
-async function fetchCarById(id) {
+async function fetchCarByIdDisplay(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
     const credentials = sessionStorage.getItem("basicAuth");
     try {
@@ -2030,7 +2177,7 @@ async function fetchCarById(id) {
     }
 }
 /* Test attt bara returnera datan som hämtas och lägga den i valfri metod sen. */
-async function fetchCarByIdTEST(id) {
+async function fetchCarById(id) {
     const url = `http://localhost:8080/api/v1/cars/${id}`;
     const credentials = sessionStorage.getItem("basicAuth");
     try {
@@ -2071,7 +2218,7 @@ async function fetchAdmCars() {
         const data = await response.json();
         dataStore.cars = data;
         displayCarData(data);
-        /* displayCarsTable(data); */
+
 
     } catch (error) {
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
@@ -2498,7 +2645,7 @@ async function fetchUsersForList() {
 
 
 /* Hämtar bara den som är inloggad! */
-async function fetchUserById() {
+async function fetchUserByIdDisplay() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     const id = principal.userId;
     const credentials = sessionStorage.getItem("basicAuth");
@@ -2566,24 +2713,22 @@ async function fetchUserForUpdateView(id) {
             }
         });
         if (!response.ok) {
+            console.error('Error when fetching user before update' + response.status);
             if (response.status === 403) {
-                updateInfoDialog(`Tyvärr, din behörighet når inte hit.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+                throw new Error(`Tyvärr, din behörighet når inte hit.`);
             }
-            throw new Error(`Något gick fel vid hämtning av specifik användare. Status: ${response.status}`);
-
         }
         const data = await response.json();
         displayUpdateUser(data);
 
     } catch (error) {
-        console.error('Error:' + error.message);
-        updateInfoDialog("Fel uppstod: " + error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
 
 /* Hämtar bara användar info ingen displau!!TEST */
-async function fetchUserByIdTEST(id) {
+async function fetchUserById(id) {
     const credentials = sessionStorage.getItem("basicAuth");
     const url = `http://localhost:8080/api/v1/users/${id}`;
     try {
@@ -2602,22 +2747,19 @@ async function fetchUserByIdTEST(id) {
                 console.error("User-related error:" + response.status);
                 throw new Error(`Användare är borttagen.<br> Se bokningsliggare för anonyma medlemmar.`, `<i class="fa-solid fa-car-burst icon-car"></i>`);
             }
-
         }
-
         const data = await response.json();
         return data;
-
-
     } catch (error) {
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
 async function createNewUser() {
-    const newUser = getNewUserInfo();
     const url = `http://localhost:8080/api/v1/users`;
     try {
+        const newUser = getNewUserInfo();
+        console.log("newUser:", newUser);
         const responseUser = await fetch(url, {
             method: "POST",
             headers: {
@@ -2626,12 +2768,16 @@ async function createNewUser() {
             body: JSON.stringify(newUser)
         });
         if (!responseUser.ok) {
-            throw new Error(`Fel vid skapade av ny användare. Status: ${responseUser.status}`);
+            console.log("Error in creating new user" + responseUser.status)
+            throw new Error(`Fel vid skapade av ny användare.`);
         }
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
 
     } catch (error) {
-        updateInfoDialog(error, `<i class="fa-solid fa-car-burst icon-car"></i>`);
+        if (error instanceof ValidationError) {
+            updateInfoDialog(error.message, error.icon);
+        }
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 

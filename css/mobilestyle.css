@@ -86,6 +86,50 @@
      color: var(--color-text);
  }
 
+ #hero{ 
+    display: flex;
+    justify-content: center;
+    background-image: url("/img/images/hero-bg.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-bottom: 0.1rem solid rgba(208, 197, 186, 0.59);
+    border-top:0.1rem solid rgba(208, 197, 186, 0.59);
+    padding-bottom:3em;;
+    padding-top: 3em;
+ }
+
+
+ .hero-front{
+    font-family: var(--big-headlines) ;
+    background-color: rgba(208, 197, 186, 0.59);
+     width: fit-content;
+     letter-spacing: 0.2em;
+     font-size:clamp(2rem, 7.7vw, 7rem);
+     color: var(--color-text-primary-l);
+     padding:0.5em;
+     padding-left: 1.5em;
+     padding-right: 1.5em;
+ }
+
+ #hero-headline-ser{
+    display: flex;
+    justify-content:flex-start;
+    }
+
+ #hero-headline-sec{
+     display: flex;
+    justify-content: center;
+ }
+ #hero-headline-sp{
+    display: flex;
+    justify-content: flex-end;
+     }
+
+
+
+
+
  /* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
  h1 {
      font-size: clamp(1rem, 6.7vw, 5rem);
@@ -99,6 +143,7 @@
 
  h3 {
      font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+     letter-spacing: 0.2em;
  }
 
  h4 {
@@ -118,6 +163,12 @@
      font-family: var(--small-headlines);
      text-transform: uppercase;
      text-align: center;
+ }
+ #rec-headline{
+    font-family:var(--small-headlines);
+    letter-spacing: 0.2em;
+    padding:0.2em;
+    margin-top:1.5rem;
  }
 
  header {
@@ -160,7 +211,7 @@
      padding: var(--padding);
 
  }
-
+/* containers-----------------------------------------------------------------------------------containers-------------------- */
  .content-page {
      display: flex;
      flex-direction: column;
@@ -171,6 +222,7 @@
      padding: var(--padding);
 
  }
+ /* footer ----------------------------------------------------------------------------------footer.------------------------- */
 
  footer {
      grid-area: footer;
@@ -188,7 +240,7 @@
  footer span {
      padding: 0.3rem;
  }
-
+/* ikoner och animationer--------------------------------------------------------------------ikoner och animationer */
  #w-icon {
      justify-self: flex-end;
  }
@@ -322,23 +374,25 @@
  .form-dialog {
      text-align: center;
      background-color: var(--color-surface-raised);
-     border: 0.17em solid var(--color-dec-accent);
+     border: 0.19em solid var(--color-dec-accent);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
  }
 
- dialog {
+ .dialog {
      position: fixed;
      top: 30%;
-     left: 15%;
+     left: 17%;
      translate: -8.5% -20%;
  }
 
- .dialog-big {
-     width: 75%;
-
- }
+ .big-dialog {
+    position: fixed;
+    top: 25%;
+    left: 27%;
+    translate: -25% -25%;
+  } 
 
  #view-dialog p {
      text-align: left;
@@ -348,7 +402,7 @@
 
  #info-dialog {
      background-color: var(--color-surface-raised);
-     border: 0.17em solid var(--color-dec-accent);
+     border: 0.19em solid var(--color-bg-l);
      color: var(--color-text);
      border-radius: 2em;
      padding: 2rem;
@@ -428,7 +482,8 @@
 
  /* Formulärets yttreruta */
  form {
-     max-width: 27rem;
+    width: clamp(27rem,55vw);
+     /* max-width: 27rem; */
      height: auto;
      padding: 2rem;
      font-size: 1rem;
@@ -462,6 +517,13 @@
  /* Login-relaterat */
  #login-header {
      margin-bottom: 0.5em;
+ }
+
+ /* wrapper för att få info + knapp på samma rad. */
+ .form-radio{
+    display:flex;
+    flex-direction: row;
+    justify-items: center;
  }
 
 
@@ -504,6 +566,10 @@
  }
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
+ #user-info-wrapper article{
+    padding:2em;
+}
+
  .panel-wrapper {
      display: flex;
      flex-direction: column;
@@ -512,7 +578,7 @@
 
  .panel {
      border: 0.13rem solid var(--color-dec-accent);
-    margin: 1em;
+    margin: 0.5em;
      padding: 1em;
      display: flex;
      flex-direction: column;
@@ -547,7 +613,6 @@
  .panel-car ol{
     text-align: start;
     min-width: 255px;
-
  }
 
  .car-booked {
@@ -571,8 +636,9 @@
   .panel-advert:hover{
     border: 0.2rem solid var(--color-text);
  }
+ /* -----Containers  -------------------------------------------------------------Containers------------------------*/
 
- /* Tydliga vyer  */
+ /* ---- Tydliga vyer  ----------------------------------------------------------vy-struktur------------------------*/
  dl {
      display: grid;
      grid-template-columns: max-content 1fr;
@@ -581,6 +647,7 @@
 
  dd {
      font-size: 1rem;
+     margin-bottom: 0.22rem;
 
  }
 
@@ -592,7 +659,7 @@
     display: none;
 }
 
-
+ /* ----------MediaQuerys----------------------------------------------------MediaQuerys--------------------------- */
  @media (orientation: landscape) {
 
      h1 {
