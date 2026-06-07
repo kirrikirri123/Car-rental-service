@@ -64,6 +64,19 @@
     padding: var(--padding);
     padding: var(--padding);
  }
+  #hero{ 
+    display: flex;
+    justify-content: center;
+    background-image: url("/img/images/hero-bg.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-bottom: 0.1rem solid rgba(208, 197, 186, 0.59);
+    border-top:0.1rem solid rgba(208, 197, 186, 0.59);
+    padding-bottom:8em;;
+    padding-top: 8em;
+ }
+
 
   /* Paneler----------------------------------------------------------------------Paneler------------------------------- */
 .panel-wrapper {

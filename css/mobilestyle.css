@@ -86,6 +86,50 @@
      color: var(--color-text);
  }
 
+ #hero{ 
+    display: flex;
+    justify-content: center;
+    background-image: url("/img/images/hero-bg.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-bottom: 0.1rem solid rgba(208, 197, 186, 0.59);
+    border-top:0.1rem solid rgba(208, 197, 186, 0.59);
+    padding-bottom:3em;;
+    padding-top: 3em;
+ }
+
+
+ .hero-front{
+    font-family: var(--big-headlines) ;
+    background-color: rgba(208, 197, 186, 0.59);
+     width: fit-content;
+     letter-spacing: 0.2em;
+     font-size:clamp(2rem, 7.7vw, 7rem);
+     color: var(--color-text-primary-l);
+     padding:0.5em;
+     padding-left: 1.5em;
+     padding-right: 1.5em;
+ }
+
+ #hero-headline-ser{
+    display: flex;
+    justify-content:flex-start;
+    }
+
+ #hero-headline-sec{
+     display: flex;
+    justify-content: center;
+ }
+ #hero-headline-sp{
+    display: flex;
+    justify-content: flex-end;
+     }
+
+
+
+
+
  /* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
  h1 {
      font-size: clamp(1rem, 6.7vw, 5rem);
@@ -99,6 +143,7 @@
 
  h3 {
      font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+     letter-spacing: 0.2em;
  }
 
  h4 {
@@ -118,6 +163,12 @@
      font-family: var(--small-headlines);
      text-transform: uppercase;
      text-align: center;
+ }
+ #rec-headline{
+    font-family:var(--small-headlines);
+    letter-spacing: 0.2em;
+    padding:0.2em;
+    margin-top:1.5rem;
  }
 
  header {
