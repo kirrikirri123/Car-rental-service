@@ -102,9 +102,7 @@
      font-family: var(--small-headlines);
      background-color: var(--color-primary);
      display: flex;
-     flex-direction: column;
-   
-     
+     flex-direction: column;     
  }
  #hamburger-icon {
      display: none;

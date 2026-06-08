@@ -24,3 +24,24 @@ function closeMobileMenu() {
         document.querySelector("#hamburger-icon").innerHTML = `<i class="fa-solid fa-bars"></i>`;
     }
 }
+function initCopyButtons() {
+    const copyBtns = document.querySelectorAll('.copy-btn');
+
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.parentElement.querySelector('code');
+
+            if (!target) return;
+
+            navigator.clipboard.writeText(target.innerText)
+                .then(() => {
+                    const original = btn.textContent;
+                    btn.textContent = '✓';
+                    setTimeout(() => btn.textContent = original, 1500);
+                })
+                .catch(err => console.error('Kopiering misslyckades:', err));
+        });
+    });
+}
+
+initCopyButtons();

@@ -119,29 +119,7 @@ header {
     flex-direction: row;
     flex-wrap: wrap;
 }
- 
-/* Rubriker */
-h1 {
-    font-size: clamp(1rem, 6.7vw, 5rem);
-    font-family: var(--big-headlines);
-}
- 
-h2 {
-    font-size: clamp(1.52rem, 2.8vw, 4rem);
-}
- 
-h3 {
-    font-size: clamp(1.22rem, 2.24vw, 3.2rem);
-}
- 
-h4 {
-    font-size: 1.2rem;
-}
- 
-p {
-    font-size: 1rem;
-}
- 
+
 footer {
     grid-area: footer;
     padding: 0.5rem;
@@ -184,18 +162,7 @@ pre {
     flex-wrap: wrap;
     align-items: flex-start;
 }
- 
-.panel {
-    border: 0.13rem solid var(--color-dec-accent);
-    margin: 0.5em;
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--color-bg-l);
-    color: var(--color-bg);
-}
- 
+  
 /* Knappar */
 .std-btn {
     width: clamp(48px, 80%, 175px);
@@ -208,13 +175,6 @@ pre {
     border-radius: 1rem;
     padding: 0.8rem;
     margin: 0.5rem;
-    cursor: pointer;
-}
- 
-.icon-btn {
-    text-align: end;
-    background-color: transparent;
-    border: none;
     cursor: pointer;
 }
  
@@ -317,15 +277,4 @@ th {
     width: 60%;
     height: auto;
 }
- 
-/* .img-color {
-    text-align: center;
-} */
-/*  
-/* Teckensnitts-klasser */
-/* .font-ex {
-    border: 0.01rem solid var(--color-border);
-    margin: 0.5rem;
-    padding: 0.25rem;
-} */
  

@@ -749,7 +749,7 @@ function admCreateVehiclesPage() {
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Aktivabokningar </h2> <p>Filtrera, redigera och avsluta bokningar.</p></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Aktiva bokningar </h2> <p>Filtrera, redigera och avsluta bokningar.</p></section>
         <div class="panel-sort btn-spacer">
         <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button>
          </div>

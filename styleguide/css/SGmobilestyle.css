@@ -157,11 +157,13 @@ h1 {
 
 h2 {
     font-size: clamp(1.52rem, 2.8vw, 4rem);
-
+    font-family: var(--small-headlines);
 }
 
 h3 {
     font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+     font-family: var(--small-headlines);
+     text-transform: uppercase;
 }
 
 h4 {
@@ -173,13 +175,22 @@ p {
 
 }
 
-/* h1,
-h2,
-h3,
-h4 {
-    line-height: 1.15;
-} */
+.font-ex h1, h5{
+    color: var(--color-bg-l);
+    background-color: var(--color-bg);
+}
 
+.font-ex h2{
+    color: var(--color-bg);
+    background-color: var(--color-bg-l);
+}
+.font-ex h3 {
+    color: var(--color-bg-l);
+    background-color: var(--color-primary);
+}
+.h2-ex{
+    text-transform: uppercase;
+}
 
 footer {
     grid-area: footer;
@@ -289,11 +300,16 @@ dialog {
     cursor: pointer;
 }
 
-.icon-btn {
+.hamburger-btn {
     text-align: end;
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+.icon-btn i{
+    font-size: 2rem;
+    text-align: center; 
+
 }
 
 .pos-btn {
@@ -305,19 +321,12 @@ dialog {
     border: none;
 }
 
-.radio-chk {
-    display: flex;
-    justify-content: space-between;
-}
-
 /* Placering av  en eller flera knappar */
-
 .btn-spacer {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 
 /*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
 /* Formulärets yttreruta */
@@ -342,10 +351,7 @@ form {
 .form-radio {
     display: flex;
     flex-direction: row;
-    justify-items: center;
 }
-
-
 
 /* Tabeller ----------------------------------------------------------------------------------------------Tabeller------------------------------*/
 .long-table td {
@@ -425,9 +431,7 @@ th {
 /* Övergripande klass för blocken med info, kod osv. */
 .info-box {
     flex-wrap: wrap;
-    background-color: var(--color-surface-raised);
     font-size: 1rem;
-    color: var(--color-bg-l);
     border-radius: 2rem; 
     padding: 1.5rem;
     margin: 0.5rem;
@@ -442,14 +446,20 @@ th {
 }
  
 .explain {
+    text-align:start;
     border:1px solid var(--color-surface);
 }
  
 .code {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align:start;
     border: 1.5px dashed var(--color-surface);
 }
-
-
+.code button{
+    align-self:last baseline;
+}
 
 pre {
     white-space: pre-wrap;
@@ -464,29 +474,17 @@ pre {
     align-items: center;
 }
 
-.panel {
-    border: 0.13rem solid var(--color-dec-accent);
-    margin: 0.5em;
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--color-bg-l);
-    color: var(--color-bg);
-}
+ .panel {
+     border: 0.13rem solid var(--color-dec-accent);
+     margin: 0.5em;
+     padding: 1em;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background-color: var(--color-surface-raised);
+     color: var(--color-text);
+ }
 
-/* .panel {
-    border: 0.13rem solid var(--color-dec-accent);
-    background-color: var(--color-bg-l);
-    color: var(--color-text-primary-l);
-    border-radius: 1em;
-    margin: 1em;
-    padding: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0.5em;
-} */
 
 
 /* Paneler ------------------------------------------------------------------------------------Panel-visnings exempel---------------------------- */
@@ -592,9 +590,10 @@ pre {
     margin-right: 1.2rem;
 }
 
-.icon-ex {
-    font-size: 1.9rem;
+#icon-ex {
+    font-size: 1.8rem;
 }
+
 
 #icon-neg {
     font-size: 2.5rem;

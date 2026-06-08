@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
             <h3 class="racing-sans-one-regular"> Stylefokus: Mr.W's biluthyrning</h3>
         </div>
         <div class="hamburger-div">
-            <button class="icon-btn std-btn" id="hamburger-icon"><i class="fa-solid fa-bars"></i></button>
+            <button class="hamburger-btn std-btn" id="hamburger-icon"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
     <nav class="desktop-menu mobile-menu">
@@ -39,8 +40,7 @@
             <li><a href='#font-size' class="menu-link under-link" data-target="font">Storlekar</a></li>
 
             <li><a href='#table' class="menu-link" data-target="table">Tabeller & Formulär</a></li>
-            <li><a href='#long-table' class="menu-link under-link" data-target="table">Tableller långa</a></li>
-            <li><a href='#wide-table' class="menu-link under-link" data-target="table">Tableller breda</a></li>
+            <li><a href='#wide-table' class="menu-link under-link" data-target="table">Tableller</a></li>
             <li><a href='#text-forms' class="menu-link under-link" data-target="forms">Formulär - standard</a></li>
 
             <li><a href='#panel-content' class='menu-link'>Paneler</a></li>
@@ -91,48 +91,39 @@
                 <img src="img/Carpalette.png" alt="Bilden visar nyanser av orange, beige, brun, grå och svart.">
             </div>
             <div class="guide" id="background-color">
-                <div class='panel'>
+                <div class='explain info-box'>
                     <h4>Bakgrunder:</h4>
-                    <p>Vid mörkttema / WGCA's AA-nivå:<br>
-                        I bakgrunder i header och footer används en nästan helt svart nyans (#181717.)
-                        I navigationsbakgrunden används en roströd nyans (#712B0D).
-                        I panelernas bakgrund används en...
+                    <p>
+                        I bakgrunder i header, footer och mains bakgrund används en nästan helt svart nyans (#181717.)
+                        <br>I navigationsbakgrunden används en roströd nyans (#712B0D).
+                        <br>Där dem huvudsakliga elementen förändras och renderas används en bakgrund används en ljusare
+                        beige nyanns (#DOC5BA).
+                        <br>På denna används paneler med en grå bakgrund (##444347) inramade av en orange kant.
                     </p>
-                    <p>Vid ljusttema / WGCA's AAA-nivå:</p>
                 </div>
-                <!-- <div class="wrapper-block">
-                        <div class='code info-box'>
-                            <pre><code>
-.dark-theme {
-     --color-bg: #181717;
-    --color-surface: #302822;
-    --color-surface-raised: #444347;
-}
-.light-theme{
-     /* Bakgrund */
-    --color-bg: #D0C5BA;
-    -color-surface: #302822;
+                <div class="wrapper-block">
+                    <div class='code info-box'>
+                        <pre><code>
+:root {
+    /*Bakgrunder*/
+     --color-bg: #181717; 
+     --color-surface-raised: #444347; 
+     --color-bg-l: #D0C5BA;
 }
 </pre></code>
-                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                        </div>
-                        <div class='code info-box'><code> header {background-color: var(--bg);}</code>
-                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                        </div>
-                        <div class='code info-box'> <code>body {background-color: var(--bg-behind);}</code>
-                            <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                        </div>
-                    </div> -->
+                        <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    </div>
+                </div>
 
             </div>
             <div class="guide" id="text-color">
-                <h4>Färg exempel i olika textstorlekar mot olika bakgrunder:</h4>
+                <h4>Exempel i olika textstorlekar mot olika bakgrunder:</h4>
                 <div class='panel'>
                     <div class="font-ex">
                         <h1>Rubrik H1</h1>
                     </div>
                     <div class="font-ex">
-                        <h2>Rubrik H2</h2>
+                        <h2 class="h2-ex">Rubrik H2</h2>
                     </div>
                     <div class="font-ex">
                         <h3>Rubrik H3 </h3>
@@ -150,33 +141,39 @@
                 </div>
                 <div class='explain info-box'>
                     <h4>Text:</h4>
-                    <p> All text vid mörkbakgrund är av samma var vita färg.(#DOC5BA)<br>
-
+                    <p> All text vid dem mörka bakgrunderna är av samma var vita färg.(#DOC5BA) och uppfyller på
+                        kontrastkraven för WCAGs AA-nivå.
                         <br>Vid ljus bakgrund och för WGCA's AAA-nivå används en mörk, nästan helt svart nyans
                         (#181717).
                     </p>
                 </div>
                 <div class="wrapper-block">
-                    <div class='code info-box'><code>color: #545333; /* Generellt */</code>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    <div class='code info-box'><code><pre>
+:root{
+     --color-text: #D0C5BA;
+     --color-text-primary-l: #181717;
+    }</pre></code>
+                        <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
-                    <div class='code info-box'><code>color: #292919; /* Extra tydlig */</code>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                    </div>
-                    <div class='code info-box'><code>color: #FDFBD4; /* Mot mörkbakgrund */</code>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                    </div>
+
                 </div>
                 <div class="img-color">
                     <img src="img/small-high-palette.png" id="small-palette" width="80%">
                 </div>
                 <div class='explain info-box'>
                     <h4>Ramar & mindre detaljer</h4>
-                    <p>Färg på ramar, detaljer i scroollbar eller liknande används en
-                        mörkgråfärg.(#878672)</p>
+                    <p>Färg på ramar, detaljer i scroollbar eller liknande används
+                        mörkgrå alternativt orange </p>
                 </div>
-                <div class='code info-box'><code>border-color: #878672;</code>
-                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                <div class="wrapper-block">
+                    <div class='code info-box'><code><pre>
+:root{
+    --color-dec-accent: #AC5327;
+    --color-border: #444347;
+}
+              </pre></code>
+                        <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    </div>
                 </div>
 
             </div>
@@ -184,34 +181,37 @@
                 <button type="button" class="std-btn up-btn ">UPP</button>
             </div>
         </article>
-        <!-- Texter---------------------------------------------------------------------------------------------Texter----------------------------->
+        <!-- Fonter--------------------------------------------------------------------------------------------Fonter----------------------------->
 
         <article class='content-page' id='font'>
             <h3 class="racing-sans-one-regular">Texter </h3>
             <p class='guide' id='style'>
-            <h4>Font:</h4>
-            Profilen innefattar tre olika font-stilar. En för riktigt stora rubriker, en för den mer informativa och
-            en tredje font-stil för mindre rubriker och brödtext.
-            Den för stora rubriker ger ett starkt, kaxigt intryck med font-familjen: "BBH Bartle", sans-serif;<br>
-            För mindre rubriker används font-familjen: "Racing Sans One", sans-serif;
-            Och en för brödtext och dem mindre rubrikerna där används font-familjen:
+            <h4>Font-stilar</h4>
+            Profilen innefattar tre olika font-stilar.
+            <br>En för riktigt stora rubriker, en för den mer informativa men utrycksfulla rubriker och
+            en tredje font-stil för tydligare mindre rubriker och brödtext.
+            <br>Den för stora rubriker ger ett starkt, kaxigt intryck med font-familjen: "BBH Bartle", sans-serif;
+            <br>För mindre rubriker, knappar och länkar i navigations-meny används font-familjen: "Racing Sans One",
+            sans-serif;
+            <br>För brödtext och rubrikerna som ska vara mer informativa där används font-familjen:
             "Noto Serif", serif;
             </p>
             <div class="wrapper-block">
                 <div class='code info-box'><code>font-family:"BBH Bartle", sans-serif; </code> <button
-                        class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
+                        class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
                 <div class='code info-box'><code>font-family: "Racing Sans One", sans-serif; </code> <button
-                        class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
+                        class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
                 <div class='code info-box'><code>font-family: "Noto Serif", serif; </code> <button
-                        class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
+                        class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button></div>
 
             </div>
             <!-- <div class='guide'> -->
             <h4>Storlekar:</h4>
             <div id='font-size'>
-                <div class='panel'>
+                <div class='example info-box'>
                     <h1>Storlek H1</h1>
-                    <h2 class="racing-sans-one-regular">Storlek H2</h2>
+                    <h2 class="h2-ex">Storlek H2</h2>
+                    <h2 class="noto-serif-bodytext">Rubrik H2</h2>
                     <h3 class="racing-sans-one-regular">Storlek H3</h3>
                     <h4>Storlek H4</h4>
                     <h>Storlek H5</h5>
@@ -234,163 +234,91 @@
                             Brödtext menas med tillexempel texten inom en panel.</p>
                     </div>
                 </div>
-                <div class='panel'>
-                    <pre><code> 
-h1{
-     font-size: clamp(1.9rem,5.5vw, 5rem);
-     font-family: "Playfair Display", serif;
+                <div class="wrapper-block">
+                    <div class='info-box code'>
+                        <pre><code> 
+h1 {
+    font-size: clamp(1rem, 6.7vw, 5rem);
 }
+
 h2 {
     font-size: clamp(1.52rem, 2.8vw, 4rem);
-    font-family: "Playfair Display", serif;
 }
+
 h3 {
-    font-size:clamp(1.22rem, 2.24vw, 3.2rem);
-    font-family: "Playfair Display", serif;
+    font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+     text-transform: uppercase;
 }
 
 h4 {
-    font-size: 1.1rem;
-    font-family: "Elms Sans", serif;
+    font-size: 1.2rem;
 }
 
-p{
+p {
     font-size: 1rem;
+
 } </code></pre>
 
-                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                        <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    </div>
                 </div>
-                <!-- </div> -->
             </div>
             <div class="btn-spacer">
                 <button type="button" class="std-btn up-btn">UPP</button>
             </div>
-
             <!-- Tabeller--------------------------------------------------------------------------------------------------Tabeller------------------------------->
         </article>
         <article class='content-page' id='table'>
             <h3>Tabeller & Formulär </h3>
             <div class='example info-box'>
-                <div class='guide' id='long-table'>
-                    <h4>Tabeller - få kolumner:</h4>
-
-                    <table class="long-table">
-                        <thead>
-                            <tr>
-                                <th>Godis-sort</th>
-                                <th>Betyg</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Polly</td>
-                                <td>W-W-W </td>
-                            </tr>
-                            <tr>
-                                <td>Pingvinstång</td>
-                                <td>W-W</td>
-                            </tr>
-                            <tr>
-                                <td>Kexchoklad</td>
-                                <td>W-W-W-W</td>
-                            </tr>
-                            <tr>
-                                <td>Ahlgrens bilar</td>
-                                <td>W-W-W-W</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
                 <div class='guide' id='wide-table'>
-                    <h4>Tabeller - många kolumner:</h4>
+                    <h4>Tabeller - med många kolumner:</h4>
+                    <img src="/styleguide/img/tabel-wide.png" alt="Bild av en bred tabell">
                 </div>
-                <table class="wide-table">
-                    <thead>
-                        <tr>
-                            <th>Snackssort</th>
-                            <th>Inköpt</th>
-                            <th>Mängd kvar</th>
-                            <th>Köp igen</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Nätchips - Sourcream and union</td>
-                            <td>2026-04-01</td>
-                            <td>Lite böss i botten</td>
-                            <td><i class="bi bi-hand-thumbs-up"></i></td>
-                        </tr>
-                        <tr>
-                            <td>Gröna marmeladkulor</td>
-                            <td>2025-12-23 </td>
-                            <td>99%</td>
-                            <td><i class="bi bi-ban"></i></td>
-                        </tr>
-
-                        <tr>
-                            <td>Saltlakrits</td>
-                            <td>2026-04-23 </td>
-                            <td>0%</td>
-                            <td><i class="bi bi-hand-thumbs-up"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
             <div class='explain info-box'>
                 <h4>Tabeller</h4>
                 <p>
-                    Tabellerna har båda en mörkare bakgrund i rubrikerna och använder fonten 'Playfair
-                    Display'.<br>
-                    Datan som visas använder sig av 'Elms Sans'.
-                    <br>I tabellerna med få kolumner alterneras bakgrundsnyanserna på rad-nivå för enklare
-                    läsning.
-                    <br> I tabellerna med fler kolumner alterneras bakgrundsnyansen på kollumn-nivå för att
-                    enklare
-                    kunna följa informationen.
+                    Tabeller rekommenderas endast där behova av många kolumner annars rekomenderar vi kort med listor
+                    för att visa upp data.
+                    Rubrikerna för tabellen är i en tydlig font, samma som i resterande data. <br>
+                    Ljus bakgrund i rubrikerna för tydlighet. Varannan kolumn med bakgrunderna (#181717) och (##302822)
+                    med samma text-färg på kolumnnivå för enklare läsning.
+                    Med ram i en dekorativ orange (#AC5327);
                 </p>
             </div>
             <div class="wrapper-block">
                 <div class='code info-box'>
                     <pre><code>
-.long-table,
-th,
-td {
-    border: 0.02rem solid;
-    border-collapse: collapse;
-    padding-inline: 0.5rem;
-}
+ .wide-table {
+     background-color: var(--color-bg);
+     color: var(--color-text);
+     overflow: auto;
+ }
 
-.long-table tr:nth-child(odd) {
-    background-color: #FDFBD4;
-}
-th {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    background-color: #545333;
-    color: #FDFBD4;
-}
-                </code></pre><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                </div>
-                <div class='code info-box'>
-                    <pre><code>
-.wide-table,
-th,
-td {
-    border: 0.02rem solid;
-    border-collapse: collapse;
-    padding-inline: 0.5rem;
-}
+ th {
+     font-family: var(--info-text);
+     background-color: var(--color-bg-l);
+     border: 2.5px solid var(--color-dec-accent);
+     font-size: clamp(20px, 1.1rem, 30px);
+     color: var(--color-text-primary-l);
+     padding: 1em;
+     cursor: pointer;
+ }
 
-.wide-table td:nth-child(odd) {
-    background-color: #FDFBD4;
-}
+ .wide-table td {
+     border: 0.5px solid var(--color-dec-accent);
+     border-collapse: collapse;
+     padding-inline: 0.5rem;
+     padding: 0.8em;
+ }
 
-th {
-    font-weight: 700;
-    background-color: #545333;
-    color: #FDFBD4;
-}
-                </code></pre><button class="copy-btn std-btn "><i class="fa-brands fa-css"></i></button>
+ .wide-table td:nth-child(odd) {
+     background-color: var(--color-surface);
+     color: var(--color-text);
+
+ }
+                </code></pre><button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
             </div>
             <div class="btn-spacer">
@@ -401,78 +329,65 @@ th {
             <div class="guide" id="text-forms">
                 <h3>Formulär</h3>
             </div>
-            <form class="form-ex panel">
-                <label for="fname" class="form-margin">Förnamn: </label><br>
-                <input id="fname" class="input-fields form-margin" type="text"></input><br>
+            <div class="panel">
+                <form>
+                    <label for="fname" class="form-margin">Förnamn: </label><br>
+                    <input id="fname" class="input-fields form-margin" type="text"></input><br>
 
-                <label for="lname" class="form-margin">Efternamn: </label><br>
-                <input id="lname" class="input-fields form-margin" type="text"></input><br>
+                    <label for="lname" class="form-margin">Efternamn: </label><br>
+                    <input id="lname" class="input-fields form-margin" type="text"></input><br>
 
-                <label for="phoneNr" class="form-margin">Telefonnummer: </label><br>
-                <input id="phoneNr" type="tel" placeholder="070 123 45 78"
-                    class="input-fields form-margin form-text"></input><br>
+                    <label for="phoneNr" class="form-margin">Telefonnummer: </label><br>
+                    <input id="phoneNr" type="tel" placeholder="070 123 45 78"
+                        class="input-fields form-margin form-text"></input><br>
 
-                <label for="email" class="form-margin">Email (obs! Ditt framtida användarnamn): </label><br>
-                <input id="email" type="email" placeholder="namn@mail.com"
-                    class="input-fields form-margin form-text"></input><br>
+                    <label for="email" class="form-margin">Email (obs! Ditt framtida användarnamn): </label><br>
+                    <input id="email" type="email" placeholder="namn@mail.com"
+                        class="input-fields form-margin form-text"></input><br>
 
-                <label for="password" class="form-margin">Lösenord: </label><br>
-                <input id="password" type="password" placeholder="*****"
-                    class="input-fields form-margin form-text"></input><br>
+                    <label for="password" class="form-margin">Lösenord: </label><br>
+                    <input id="password" type="password" placeholder="*****"
+                        class="input-fields form-margin form-text"></input><br>
 
-                <p class="form-margin">Önskas uppringning:</p>
-                <div class="panel-wrapper radio-chk form-margin">
-                    <div>
-                        <label for="yes">Ja</label>
-                        <input type="radio" id="yes" value="yesbox" name="choice" checked>
-                    </div>
-                    <div>
-                        <label for="no">Nej</label>
-                        <input type="radio" id="no" value="nixpix" name="choice">
-                    </div>
-                </div>
-                <br><button type="button" class=" form-margin std-btn pos-btn" id="reg-btn"> Registrera
-                </button>
-            </form>
-
+                    <div id="selectRole" class="user"><label for="role" class="form-margin"> Önskas uppringning:
+                        </label><br>
+                        <select id="role" class="input-fields form-margin">
+                            <option value="">Välj</option>
+                            <option value="yes">JA</option>
+                            <option value="no">NEJ</option>
+                        </select>
+                    </div><br>
+                </form>
+            </div>
+            <button type="button" class="form-margin std-btn pos-btn" id="reg-user-btn"> Registrera </button>
             <div class='explain info-box'>
-                <p>Vid formulär används den primära gröna färgen med en opacitet på 0.62.
-                    Ram runt i den grå standard färgen och tydligt text som ligger snäppet större än brödtexten.
-                    multival görs med radioknapp.</p>
+                <p>Vid formulär används input-fält utan ramar som markeras vid tab som fokus-område. <br>
+                    Formulär läggs i standard panel med grå bakgrund, beigetext och orange ram.</p>
             </div>
-            <div class='code info-box'>
-                <pre><code>  
-             
-                    </pre></code>
-                <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
-            </div>
+            <div class="wrapper-block"></div>
             <div class='code info-box'>
                 <pre><code>
 /* Formulärets yttreruta */
-.bg-form{
-    background-color:rgba(90, 130, 79, 0.62);
-    max-width: 27rem;
-    height: auto;
-    padding:2rem;
-    font-size:1rem;
-    border:0.5px solid var(--border-color);}
+form{
+       width: clamp(27rem, 55vw);
+     height: auto;
+     padding: 2rem;
+     font-size: 1rem;
+ }
 
 /* Fält för användarens input */
-.input-fields{
-    width: 80%;
-    background-color: var(--bg-accent);
-    border: none;
-    padding:0.3em;
-}
-
+ .input-fields {
+     width: 90%;
+     border: none;
+     padding: 0.3em;
+ }
 /* Marginaler mellan formulärets fält*/
 .form-margin{
     margin:0.2em;
 }
-
-
                 </code></pre>
-                <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
+            </div>
             </div>
             <div class="btn-spacer">
                 <button type="button" class="std-btn up-btn">UPP</button>
@@ -485,136 +400,79 @@ th {
         <article class='content-page' id='panel-content'>
             <h3>Paneler </h3>
             <div class='explain info-box'>
-                <p>
-                    För paneler används enkla rektangulära block med standard bakgrundsfärgensnyans med en
-                    opacitet
-                    på 0.89.
-                    <br>Rubriker i storleken h3 och infotext i standard storlek.
-                    <br>Runt panel används en tunn ram av standard grånyans.
-                    <br>Använd en inre div för att skapa en ram-effekt inom panel-elementet.
-                    <br>För dem olika typerna av paneler används olika ramar och hoovrings effekter. På touch
-                    blir
-                    effekten vid tryck.
-                    <br><strong>Neutral</strong> = En dashed ram med standardnyans som ligger endast ovanpå.
-                    Effekten är att ramdelen
-                    blir
-                    även till vänster och solid.
-                    <br><strong>Postiv</strong>= En solid ram med gul nyans som ligger som ligger endast ovanpå.
-                    Effekten är att
-                    ramdelen
-                    även blir nedtill samt dashed.
-                    <br><strong>Negativ</strong> = En solid ram med röd/orange nyans som ligger endast nedtill.
-                    Effekten är att det
-                    blir en full ram runt objektet.
+                <p> <strong>Neutral</strong> - Avskalad tunn kant som avgränsar området Mörk text mot ljusbakgrund
+                    <br><strong>Positiv</strong> - Grå bakgrund, beige text, orange ram.
+                    <br><strong>Negativ</strong> - Grå bakgrund, beige text, mörkgrå ram - Gärna tillägg med en ikon.
                 </p>
             </div>
-
             <div class='guide' id='panel-neutral'>
                 <h4>Neutral</h4>
-
                 <div class="panel-ex">
-                    <div class="box-neutral">
-                        <h3>Opartiska nyheter</h3> Det finns både positiva och negativa effekter av en ökad
-                        sockerkonsumtion.
-                    </div>
+                    <img src="/styleguide/img/neutral-panel.png" alt="Enkel ruta med mörk text mot ljusbakgrund">
                 </div>
             </div>
-
             <div class='guide' id='panel-pos'>
                 <h4>Positiv</h4>
-
                 <div class="panel-ex">
-                    <div class="box-pos">
-                        <h3>Glada Nyheter</h3> Dem senaste prognoserna visar ökat sockerintag.
-                    </div>
+                    <img src="/styleguide/img/pos-panel.png" alt="Grå ruta med orangeram">
                 </div>
             </div>
-
             <div class='guide' id='panel-neg'>
                 <h4>Negativ</h4>
                 <div class="panel-ex">
-                    <div class="box-neg">
-                        <h3>Dåliga Nyheter</h3> Dem senaste prognoserna visar tyvärr minskat välmående vid högt
-                        intag av socker.
-                    </div>
+                    <img src="/styleguide/img/neg-panel.png" alt="Grå ruta med mörkram och ikon med ett hänglås">
+
                 </div>
             </div>
+
             <div class="wrapper-block">
                 <div class='code info-box'>
                     <pre><code>
-&lt;!-- Exempelkod neutral panel --&gt;
-
-&lt;div class="panel"&gt;
-    &lt;div class="box-neutral"&gt;
-        &lt;h3&gt;Panel rubrik&lt;/h3&gt; Brödtext med infomration.
-    &lt;/div&gt;
-&lt;/div&gt;
-
-</code></pre><button class="copy-btn std-btn "><i class="fa-solid fa-file-code"></i></button>
-                </div>
-
-                <div class='code info-box'>
-                    <pre><code>
-
  /* Neutral */
-.box-neutral{
-    border-top: 0.1em dashed var(--border-color);
-    padding: 0.5rem;
-}
-.box-neutral:hover{
-    transition: ease-in-out;
-    border-left:0.17em solid var(--border-color);
-    border-top: 0.17em solid var(--border-color);
-}
-.panel {
-    width:75%;
-    border:0.05em solid var(--border-color);
-    background-color: var(--bg);
-    padding:2em;
-} </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+  .panel-important {
+     text-align: left;
+     border: 0.02rem solid var(--color-border);
+     border-radius: 0rem;
+     background-color: var(--color-text);
+     color: var(--color-bg);
+     font-size: 1.2rem;
+ }
+
+</pre></code><button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
                 <div class='code info-box'>
                     <pre><code>
-
  /* Positiv */
-.box-pos{
-    border-top: 0.1em solid #FFEB3B;
-    padding: 0.5rem;
-}
+ .panel {
+     border: 0.13rem solid var(--color-dec-accent);
+     margin: 0.5em;
+     padding: 1em;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background-color: var(--color-surface-raised);
+     color: var(--color-text);
+ }
 
-.box-pos:hover{
-    transition: ease-in-out;
-    border-top: 0.3em dashed #FFEB3B;
-    border-bottom: 0.3em dashed #FFEB3B;
-}
-.panel {
-    width:75%;
-    border:0.05em solid var(--border-color);
-    background-color: var(--bg);
-    padding:2em;
-}
- </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+ .panel:hover {
+     border: 0.2rem solid var(--color-dec-accent);
+ }
+ </pre></code><button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
                 <div class='code info-box'>
                     <pre><code>
 /* Negativ */
-.box-neg{
-    border-bottom: 0.1em solid #FF5722 ;
-    padding: 0.5rem;
-}
-
-.box-neg:hover{
-    transition: ease-in-out;
-    border:0.1em solid #FF5722;
-    
-}
-
-.panel {
-    width:75%;
-    border:0.05em solid var(--border-color);
-    background-color: var(--bg);
-    padding:2em;
-} </pre></code><button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+ .panel-neg {
+     border: 0.13rem solid var(--color-bg);
+     margin: 0.5em;
+     padding: 1em;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background-color: var(--color-surface-raised);
+     color: var(--color-text);
+ }
+ </pre></code><button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
             </div>
             <div class="btn-spacer">
@@ -636,252 +494,91 @@ th {
                 <div class='explain info-box'>
                     <h4>Knappar</h4>
                     <p>Fyra olika knappar med resposivitet med hjälp av förändring av ram vid
-                        hoovring. Förändringen syns vid tryck på touchskärm.
-                        <br>Positiv-knapp använder ljus-färg och symbol av tummen upp för att singnalera.
-                        <br>Negativ-knapp använder mörkare färg och bredare ram i kombination med symbol för
-                        förbud
-                        för att markera.
+                        hoovring. Förändringen syns vid tryck på touchskärm. Använd gärna med ikon som stöd för
+                        tydlighet. Glöm då ej alt-text på ikon eller aria-hidden="true".
+                        <br>Positiv-knapp har en bred ram i orange.
+                        <br> Standard-knappen och neutral-funktionsknapp är likt den positiva knappen men med smalare
+                        ram.
+                        <br>Negativ-knapp utökar sin grundstorlek till samma som om den hade haft en ram och är
+                        genomgående mörktext mot vit bakgrund.
                     </p>
                 </div>
                 <div class="wrapper-block">
                     <div class='code info-box'>
-                        <pre><code>.std-btn{
-    background-color:#5A824F;
-    color:#FDFBD4;
-    border: solid #FDFBD4;
-    border-width:0.1rem;
-    padding-right:0.7rem;
-    padding-left:0.7rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.3rem;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: 500;
-}</code></pre>
+                        <pre><code> .std-btn {
+     width: clamp(48px, 80%, 175px);
+     height: clamp(48px, 25%, 55px);
+     border: 0.15rem solid var(--color-dec-accent);
+     font-size: 1.2rem;
+     font-family: var(--small-headlines);
+     text-transform: uppercase;
+     text-align: center;
+     border-radius: 1rem;
+     padding: 0.8rem;
+     margin: 0.5rem;
+     cursor: pointer;
+ }</code></pre>
+                        <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    </div>
+                    <div class='code info-box'>
                         <pre><code>
-        .std-btn:hover{
-        border: solid #5A824F;
-        border-width:0.15rem;
-        }</code></pre>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+/*Används tillsammans med std.btn*/                            
 
+.pos-btn {
+     border: 0.25rem solid var(--color-dec-accent);
+ }
+</code></pre> <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                     <div class='code info-box'>
-                        <pre><code>.func-btn{
-    background-color:#FDFBD4;
-    color:#545333;
-    border: solid#5A824F;
-    border-width:0.15rem;
-    padding-right:0.65rem;
-    padding-left:0.65rem;
-    padding-top: 0.15rem;
-    padding-bottom: 0.25rem;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: 600;
-}</code></pre>
                         <pre><code>
-        .func-btn:hover{
-        border: solid #FDFBD4;
-        border-width:0.15rem;
-        }</code></pre>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                    </div>
-                    <div class='code info-box'>
-                        <pre><code>.pos-btn{
-    background-color:#FDFBD4;
-    color:#545333;
-    border: solid #5A824F;
-    border-width:0.1rem;
-    padding-right:0.7rem;
-    padding-left:0.7rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.3rem;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: 600;
-}</code></pre>
-                        <pre><code>
-        .pos-btn:hover{
-        border: solid #FDFBD4;
-        border-width:0.15rem;
-        }</code></pre>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                    </div>
-                    <div class='code info-box'>
-                        <pre><code>.neg-btn{
-    background-color:#FDFBD4;
-    color:#545333;
-    border: solid #878672;
-    border-width:0.1rem;
-    padding-right:0.7rem;
-    padding-left:0.7rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.3rem;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: 600;
-}</code></pre>
-                        <pre><code>
-        .neg-btn:hover{
-        border-width:0.2rem;  
-        }</code></pre>
-                        <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+/*Används tillsammans med std.btn*/
+
+.neg-btn {
+     padding: 1rem;
+     border: none;
+ }</code></pre>
+                     <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                     </div>
                 </div>
             </div>
             <div class="btn-spacer">
                 <button type="button" class="std-btn up-btn">UPP</button>
             </div>
-
         </article>
         <!-- Meddelanden--------------------------------------------------------------------------------------------------Meddelanden------------------------------->
         <article class='content-page' id='message'>
             <h3>Meddelanden & Varningar </h3>
-
             <div class="guide" id='confirm'>
-
                 <h4>Bekräftande</h4>
-
                 <div class="message-ex">
-                    <div class="message-pos">
-                        <div class="message-text">
-                            <h3>Lyckad åtgärd!</h3>
-                            Info om det positiva som lyckades!
-                        </div>
-                        <div id="icon-pos"><i class="bi bi-hand-thumbs-up"></i></div>
-                    </div>
+                    <img src="/styleguide/img/pos-med.png" alt="Bild på popruta med bekräftande text." >
                 </div>
-
-
                 <div class='explain info-box'>
                     <h4>Bekräftande meddelande</h4>
-                    <p>
-                        Vid lyckad sparning eller annan icke negativ händelse används en enkel meddelanderuta
-                        som
-                        bekräftelse för att visa händelsen. Meddelanderutan visas antingen genom förändring i
-                        ett
-                        fast element eller som popup.
-                        Bakgrunden är neutral men markerar sitt positiva budskap med text,symbol och färgen gul.
+                    <p> Vid lyckad sparning eller annan icke negativ händelse används en enkel meddelanderuta
+                        som bekräftelse för att visa händelsen. Meddelanderutan visas antingen genom förändring i
+                        ett fast element eller som dialogruta. Ex. som dialogruta.
+                       <br>Bakgrunden är neutral men markerar sitt positiva budskap med text och symbol.
+                       <br> Se avsnittet om paneler för färgsättning och symboler/ikoner för exempel på symbol.
                     </p>
                 </div>
-                <div class='code info-box'>
-                    <pre><code>
-&lt;div class="message"&gt;
-    &lt;div class="message-pos"&gt;
-        &lt;div class="message-text"&gt;
-            &lt;h3&gt;Beskrivande rubrik&lt;/h3&gt;
-            Info om vad som lyckades.
-        &lt;/div&gt;
-        &lt;div id="icon-pos"&gt;&lt;i class="bi bi-hand-thumbs-up"&gt;&lt;/i&gt;&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-            </code></pre>
-                    <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
                 </div>
-                <div class='code info-box'>
-                    <pre><code>
-                            
-/* Yttre meddelande-rutans div */
-.message{
-    width:clamp(20rem,55%,34rem);
-    border:0.05em solid var(--border-color);
-    background-color: var(--bg);
-    padding:1em;
-}
-/* Textens div */
-.message-pos{ 
-    display: flex;
-    flex-direction: row;
-    justify-content:space-evenly;
-    border-bottom:0.2rem dashed #FFEB3B;
-    padding:0.5em;
-}
-/* Ikonens div */
-#icon-pos{
-    color:#FFEB3B;
-    font-size:2.5rem;
-    font-weight:bolder;
-    align-content:flex-start;    
-}
-/* Klass för marginaler mellan text och ikon. */
-.message-text{
-    margin-right: 1.2rem;
-}
-
-            </code></pre>
-                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                </div>
-            </div>
             <div class="guide" id='warn'>
                 <h4>Varnande</h4>
                 <div class="message-ex">
-                    <div class="message-neg">
-                        <div class="message-text">
-                            <h3>Åtgärd avbruten!</h3>
-                            Info om vad som inte lyckades.
-                        </div>
-                        <div id="icon-neg"><i class="bi bi-exclamation-circle"></i></div>
-                    </div>
+                    <img src="/styleguide/img/neg-med.png" alt="Bild på popruta med varnande text." >
                 </div>
                 <div class='explain info-box'>
                     <h4>Varnande meddelande</h4>
                     <p>
                         Vid misslyckad sparning eller annat negativt event används en enkel meddelanderuta som
                         varning att visa att något inte gick enligt plan. Visas genom förändring antingen i ett
-                        fast
-                        element eller popup.
-                        Bakgrunden är neutral men markerar sitt varnande budskap med text,symbol och en rödaktig
-                        färg.</p>
+                        fast element eller popup. Exempel som popup.
+                        <br>Bakgrunden är neutral men markerar sitt varnande budskap med text,symbol.
+                        <br> Se avsnittet om paneler för färgsättning och symboler/ikoner för exempel på symbol.
+                    </p>
                 </div>
-                <div class='code info-box'>
-                    <pre><code>
-&lt;!-- Exempelkod positivt meddelande --&gt;
-
-&lt;div class="message-ex"&gt;
-    &lt;div class="message-neg"&gt;
-        &lt;div class="message-text"&gt;
-            &lt;h3&gt;Beskrivande rubrik &lt;/h3&gt;
-            Info om vad som inte lyckades.
-        &lt;/div&gt;
-        &lt;div id="icon-neg"&gt;&lt;i class="bi bi-exclamation-circle"&gt;&lt;/i&gt;&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-            </code></pre>
-                    <button class="copy-btn std-btn"><i class="fa-solid fa-file-code"></i></button>
                 </div>
-                <div class='code info-box'>
-                    <pre><code>
-
-/* Yttre meddelande-rutans div */
-.message-ex{
-    width:clamp(20rem,55%,34rem);
-    border:0.05em solid var(--border-color);
-    background-color: var(--bg);
-    padding:1em;
-}
- /* Textens div */
-.message-neg{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-evenly;
-    border-bottom:0.2rem solid #FF5722;
-    padding:0.5em;
-}
-/* Ikonens div */
-#icon-neg{
-    color: #FF5722;
-    font-size:2.5rem;
-    align-content:flex-start;  
-}
-/* Klass för marginaler mellan text och ikon. */
-.message-text{
-    margin-right: 1.2rem;
-}              
-            </code></pre>
-                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
-                </div>
-            </div>
             <div class="guide" id='loading'>
                 <div class='example info-box'>
                     <span class="loading-icon">
@@ -915,7 +612,7 @@ th {
 }
 
 </code></pre>
-                    <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+                    <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
                 </div>
             </div>
             <div class="btn-spacer">
@@ -926,69 +623,110 @@ th {
         <article class='content-page' id='menu'>
             <h3>Meny</h3>
             <div class='example info-box'>
-                <div class="menu-ex">
-                    <a href='#' class="menu-link-ex">Huvudsida</a>
-                    <a href='#background-color' class="under-link-ex">Undersida 1</a>
-                    <a href='#text-color' class="under-link-ex">Undersida 2</a>
-                </div>
+                <p> Se exempel till vänster på meny eller som hamburgarmeny vid mindre skärm.</p>
             </div>
             <div class='explain info-box'>
                 <h4>Meny-länkar</h4>
-
                 Underrubriken ligger inputtad
                 1.5 rem från vänster för att skilja ur sig från huvudrubriken.<br>
-                Vid hoovring.
-                Är em meny-länk vald ska den markeras med hoovringsfärgen för att enkelt kunna följa sin egen
-                placering på webbplatsen.
+                Vid hoovring eller tabb-ning är länken markerad för att enkelt kunna följa sin placering i navigationen.
             </div>
             <div class='code info-box'>
                 <pre><code>
-                    
-nav a {
-    display: block;
-    text-decoration: none;
-    padding: 0.09em;
-}
-
-nav a:hover {
-    transform: translateX(7px);
-}
+/*Skapar med hamburgarikon och Javascript en dynamsik meny.*/
+  .mobile-menu {
+     display: none;
+     grid-area: nav;
+     font-family: var(--small-headlines);
+     background-color: var(--color-primary);
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+ }
+ /*Använder grid för att sätta navigationen till vänster*/
+.desktop-menu {
+     grid-area: sidebar;
+     font-family: var(--small-headlines);
+     background-color: var(--color-primary);
+     display: flex;
+     flex-direction: column;     
+ }
 
 /* Klass för överrubrik */
-.head-link {
-    font-family: "Playfair Display", serif;
-    font-size: 1.5rem;
-    color: var(--font-color-dark);
-}
+ .menu-link {
+     display: block;
+     text-decoration: none;
+     text-transform: uppercase;
+     color: var(--color-text);
+     background-color: var(--color-primary);
+     padding: 0.7em;
+ }
+ .menu-link:hover {
+     background-color: var(--color-primary-hover);
+     transition: background 0.2s, color 0.2s;
 
+ }
 /* Klass för underrubrik */
-.under-link {
-    font-family: "Elms Sans", sans-serif;
-    padding-left: 1.5em;
-    font-size: 1rem;
-    color: var(--font-color-dark);
-}</code></pre>
-                <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button>
+ .under-link {
+     font-size: 0.8rem;
+     padding-left: 1.5em;
+ }
+
+ .mobile-menu a:focus {
+     background-color: var(--color-primary-hover);
+ }
+
+</code></pre>
+                <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button>
             </div>
 
         </article>
         <article class='content-page' id='icon'>
             <h3>Ikoner</h3>
-            <div class='example info-box icon-ex'>
-
+            <div class='example info-box' id="icon-ex">
+                <i class="fa-regular fa-trash-can"></i>
+                <i class="fa-solid fa-wrench"></i>
+                <br>
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <i class="fa-solid fa-car-burst icon-car"></i>
+                <i class="fa-solid fa-truck-fast"></i>
+<br>
+                <i class="fa-solid fa-user-check"></i>
+                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-user-minus"></i>
+<br>
+                <i class="fa-solid fa-arrow-down-wide-short"></i>
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+                
+                
             </div>
             <div class='explain info-box'>
                 <h4>Symboliska ikoner</h4>
-                <p>Bootstraps ikoner används för att förtydliga viss information. Kan animeras valfritt.</p>
+                <p>FontAwesomes ikoner används för att förtydliga viss information. Kan animeras valfritt.</p>
             </div>
             <div class='code info-box'>
                 <pre><code>
-  
+&lt;i class="fa-regular fa-trash-can"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-wrench"&gt;&lt;/i&gt;
+
+&lt;i class="fa-solid fa-arrow-right-from-bracket"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-car-burst icon-car"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-truck-fast"&gt;&lt;/i&gt;
+
+&lt;i class="fa-solid fa-user-check"&gt;&lt;/i&gt;
+S
+&lt;i class="fa-solid fa-user-plus"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-user-minus"&gt;&lt;/i&gt;
+
+&lt;i class="fa-solid fa-arrow-down-wide-short"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-arrow-down-short-wide"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-filter-circle-xmark"&gt;&lt;/i&gt;
                     </code></pre>
-                <button class="copy-btn std-btn"><i class="fa-brands fa-css"></i></button></button>
+                <button class="copy-btn icon-btn std-btn"><i class="fa-brands fa-css"></i></button></button>
             </div>
             <div class="btn-spacer">
-                <button type="button" class="std-btn up-btn">UPP</button>
+                <button type="button" class="std-btn  up-btn">UPP</button>
             </div>
         </article>
     </main>

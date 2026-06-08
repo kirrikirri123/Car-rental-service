@@ -12,8 +12,8 @@
  :root {
      /* Bakgrund */
      --color-bg: #181717;
-     --color-surface: #302822;
      --color-surface-raised: #444347;
+     --color-surface: #302822;
      /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
      --color-text: #D0C5BA;
 
@@ -34,6 +34,7 @@
      /* Font */
      --big-headlines: "BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
+     --info-text: "Noto Serif",sans-serif;
      /* AAA — Ljust tema */
      /* Bakgrund */
      --color-bg-l: #D0C5BA;
@@ -539,8 +540,6 @@
      background-color: var(--color-bg);
      color: var(--color-text);
      overflow: auto;
-
-
  }
 
  th {
