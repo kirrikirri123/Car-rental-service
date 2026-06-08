@@ -115,6 +115,7 @@ header {
 }
 
 .main-content {
+    width:100%;
     grid-area: content;
     display: flex;
     flex-direction: column;
@@ -488,39 +489,7 @@ pre {
 
 
 /* Paneler ------------------------------------------------------------------------------------Panel-visnings exempel---------------------------- */
-/* .box-neutral {
-    border-top: 0.1em dashed var(--border-color);
-    padding: 0.5rem;
-}
 
-.box-neutral:hover {
-    transition: ease-in-out;
-    border-left: 0.17em solid var(--border-color);
-    border-top: 0.17em solid var(--border-color);
-}
-
-.box-pos {
-    border-top: 0.1em solid #FFEB3B;
-    padding: 0.5rem;
-}
-
-.box-pos:hover {
-    transition: ease-in-out;
-    border-top: 0.3em dashed #FFEB3B;
-    border-bottom: 0.3em dashed #FFEB3B;
-}
-
-.box-neg {
-    border-bottom: 0.1em solid #FF5722;
-    padding: 0.5rem;
-}
-
-.box-neg:hover {
-    transition: ease-in-out;
-    border: 0.1em solid #FF5722;
-
-}
- */
 .panel-ex {
     width: 80%;
     border: 0.05em solid var(--border-color);
@@ -615,4 +584,7 @@ pre {
 
 img #small-palette {
     border: 0.2em solid var(--color-border);
+}
+#tabelview{
+    display: none;
 }
