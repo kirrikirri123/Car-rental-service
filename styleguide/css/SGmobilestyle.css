@@ -1,0 +1,618 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Mörkt tema */
+:root {
+    /* Bakgrund */
+    --color-bg: #181717;
+    --color-surface: #302822;
+    --color-surface-raised: #444347;
+    /* Text — uppfyller AA (4.5:1) mot alla bakgrunder */
+    --color-text: #D0C5BA;
+
+    /* Knappar eller liknande element */
+    --color-primary: #712B0D;
+    --color-primary-hover: #944017;
+
+    /* Dekoration */
+    --color-dec-accent: #AC5327;
+
+    /* Kanter */
+    --color-border: #444347;
+
+    /* Utrymme */
+    --padding: 0.7em;
+    --margin: 1.5em;
+
+    /* Font */
+    --big-headlines: "BBH Bartle", sans-serif;
+    --small-headlines: "Racing Sans One", sans-serif;
+    --info-text: "Noto Serif", serif;
+    /* AAA — Ljust tema */
+    /* Bakgrund */
+    --color-bg-l: #D0C5BA;
+    -color-surface-l: #302822;
+
+    /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
+    --color-text-primary-l: #181717;
+    --color-text-secondary-l: #302822;
+
+    /* Primär — AAA för stor text (≥18px), AA annars */
+    --color-primary-l: #712B0D;
+
+    /* Dekoration — INTE för text */
+    --color-accent-l: #944017;
+    --color-accent-warm-l: #AC5327;
+
+    /* Kanter */
+    --color-border-l: #444347;
+
+}
+
+
+/* Font klasser vid behov */
+.racing-sans-one-regular {
+    font-family: "Racing Sans One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.bbh-bartle-regular {
+    font-family: "BBH Bartle", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.noto-serif-bodytext {
+    font-family: "Noto Serif", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+}
+
+body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "nav"
+        "content"
+        "footer";
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    grid-area: header;
+    padding: 1em;
+    background-color: var(--color-bg);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.inner-header {
+    overflow: hidden;
+}
+
+.hamburger-div {
+    text-align: end;
+}
+
+
+/* .code {
+    flex-direction: column;
+} */
+
+.wrapper-block {
+    flex-direction: column;
+}
+
+.main-content {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+}
+
+/* .main-content div {
+    align-items: center;
+} */
+
+.content-page {
+    border: 0.13rem solid var(--color-dec-accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color-bg);
+    background-color: var(--color-text);
+    text-align: center;
+    margin: 0.5em;
+    padding: 1em;
+
+}
+.content-page h3 {
+    font-family: var(--small-headlines);
+    text-transform: uppercase;
+}
+
+.inner-header h4 h3 {
+    font-family: var(--small-headlines);
+    text-transform: uppercase;
+}
+
+
+/* Rubriker-------------------------------------------------------------------------------------------Rubriker--------------------------------------- */
+
+h1 {
+    font-size: clamp(1rem, 6.7vw, 5rem);
+    font-family: var(--big-headlines);
+}
+
+h2 {
+    font-size: clamp(1.52rem, 2.8vw, 4rem);
+    font-family: var(--small-headlines);
+}
+
+h3 {
+    font-size: clamp(1.22rem, 2.24vw, 3.2rem);
+     font-family: var(--small-headlines);
+     text-transform: uppercase;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+p {
+    font-size: 1rem;
+
+}
+
+.font-ex h1, h5{
+    color: var(--color-bg-l);
+    background-color: var(--color-bg);
+}
+
+.font-ex h2{
+    color: var(--color-bg);
+    background-color: var(--color-bg-l);
+}
+.font-ex h3 {
+    color: var(--color-bg-l);
+    background-color: var(--color-primary);
+}
+.h2-ex{
+    text-transform: uppercase;
+}
+
+footer {
+    grid-area: footer;
+    padding: 0.5rem;
+    height: clamp(1rem, 5%, 10rem);
+}
+
+footer div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-style: italic;
+}
+
+
+#hamburger-icon {
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+/* Navigation-------------------------------------------------------------------------------Navigation----------------------- */
+.menu,
+.menu ul li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu {
+    display: none;
+    grid-area: nav;
+    font-family: var(--small-headlines);
+    background-color: var(--color-primary);
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-link {
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-text);
+    background-color: var(--color-primary);
+    padding: 0.7em;
+
+}
+
+.menu-link:hover {
+    background-color: var(--color-primary-hover);
+    transition: background 0.2s, color 0.2s;
+
+}
+
+.under-link {
+    font-size: 0.8rem;
+    padding-left: 1.5em;
+}
+
+.mobile-menu a:focus {
+    background-color: var(--color-primary-hover);
+}
+
+
+
+/* Dialogrutor-------------------------------------------------------------------------------Dialogrutor--------------- */
+.form-dialog {
+    text-align: center;
+    background-color: var(--color-surface-raised);
+    border: 0.19em solid var(--color-dec-accent);
+    color: var(--color-text);
+    border-radius: 2em;
+    padding: 2rem;
+}
+
+
+dialog {
+    position: fixed;
+    top: 30%;
+    left: 15%;
+    translate: -8.5% -20%;
+}
+
+#info-dialog {
+    background-color: var(--color-surface-raised);
+    border: 0.17em solid var(--color-dec-accent);
+    color: var(--color-text);
+    border-radius: 2em;
+    padding: 2rem;
+    position: fixed;
+    top: 70%;
+    translate: -10% -10%;
+}
+
+/*Knappar--------------------------------------------------------------------------Knappar----------------------------------*/
+.std-btn {
+    width: clamp(48px, 80%, 175px);
+    height: clamp(48px, 25%, 55px);
+    border: 0.15rem solid var(--color-dec-accent);
+    font-size: 1.2rem;
+    font-family: var(--small-headlines);
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 1rem;
+    padding: 0.8rem;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.hamburger-btn {
+    text-align: end;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.icon-btn i{
+    font-size: 2rem;
+    text-align: center; 
+
+}
+
+.pos-btn {
+    border: 0.25rem solid var(--color-dec-accent);
+}
+
+.neg-btn {
+    padding: 1rem;
+    border: none;
+}
+
+/* Placering av  en eller flera knappar */
+.btn-spacer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*Formulär------------------------------------------------------------------------Formulär------------------------------------------------ */
+/* Formulärets yttreruta */
+form {
+    width: clamp(27rem, 55vw);
+    height: auto;
+    padding: 2rem;
+    font-size: 1rem;
+}
+
+.input-fields {
+    width: 90%;
+    border: none;
+    padding: 0.3em;
+}
+
+.form-margin {
+    margin-top: 0.2em;
+}
+
+/* wrapper för att få info + knapp på samma rad. */
+.form-radio {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Tabeller ----------------------------------------------------------------------------------------------Tabeller------------------------------*/
+.long-table td {
+    /* width: 100%; */
+    border: 0.5px solid var(--color-dec-accent);
+    border-collapse: collapse;
+}
+
+th {
+    font-family: var(--info-text);
+    background-color: var(--color-surface-raised);
+    border: 0.5px solid #292919;
+    color: var(--color-text);
+    padding: 0.8em;
+}
+
+.long-table tr:nth-child(odd) {
+    background-color: var(--color-surface);
+}
+
+.wide-table td {
+    /* width: 100%; */
+    border: 0.5px solid var(--color-border);
+    border-collapse: collapse;
+    padding-inline: 0.5rem;
+}
+
+.wide-table td:nth-child(odd) {
+    background-color: var(--color-surface);
+}
+
+.table {
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.adm-table {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    overflow: auto;
+
+}
+
+th {
+    font-family: var(--info-text);
+    background-color: var(--color-bg-l);
+    border: 2.5px solid var(--color-dec-accent);
+    font-size: clamp(20px, 1.1rem, 30px);
+    color: var(--color-text-primary-l);
+    padding: 1em;
+    cursor: pointer;
+}
+
+.adm-table td {
+    border: 0.5px solid var(--color-dec-accent);
+    border-collapse: collapse;
+    padding-inline: 0.5rem;
+    padding: 0.8em;
+}
+
+.adm-table td:nth-child(odd) {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+
+}
+
+
+
+
+/*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
+
+/* block-element inom panel som separerar exempel */
+.guide {
+    margin: 1rem;
+}
+
+/* Övergripande klass för blocken med info, kod osv. */
+.info-box {
+    flex-wrap: wrap;
+    font-size: 1rem;
+    border-radius: 2rem; 
+    padding: 1.5rem;
+    margin: 0.5rem;
+
+}
+
+/* Block med olika ramar för exempel, förklaring och kod */
+
+.example {
+    text-align: center;
+    border: 3px solid var(--color-dec-accent);
+}
+ 
+.explain {
+    text-align:start;
+    border:1px solid var(--color-surface);
+}
+ 
+.code {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align:start;
+    border: 1.5px dashed var(--color-surface);
+}
+.code button{
+    align-self:last baseline;
+}
+
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+}
+
+
+.panel-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+ .panel {
+     border: 0.13rem solid var(--color-dec-accent);
+     margin: 0.5em;
+     padding: 1em;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background-color: var(--color-surface-raised);
+     color: var(--color-text);
+ }
+
+
+
+/* Paneler ------------------------------------------------------------------------------------Panel-visnings exempel---------------------------- */
+/* .box-neutral {
+    border-top: 0.1em dashed var(--border-color);
+    padding: 0.5rem;
+}
+
+.box-neutral:hover {
+    transition: ease-in-out;
+    border-left: 0.17em solid var(--border-color);
+    border-top: 0.17em solid var(--border-color);
+}
+
+.box-pos {
+    border-top: 0.1em solid #FFEB3B;
+    padding: 0.5rem;
+}
+
+.box-pos:hover {
+    transition: ease-in-out;
+    border-top: 0.3em dashed #FFEB3B;
+    border-bottom: 0.3em dashed #FFEB3B;
+}
+
+.box-neg {
+    border-bottom: 0.1em solid #FF5722;
+    padding: 0.5rem;
+}
+
+.box-neg:hover {
+    transition: ease-in-out;
+    border: 0.1em solid #FF5722;
+
+}
+ */
+.panel-ex {
+    width: 80%;
+    border: 0.05em solid var(--border-color);
+    background-color: var(--bg);
+    padding: 2em;
+}
+
+/* Meddelenaden  visnignsex- --------------------------------------------------------------------------Meddelanden -visnignsexempel-------- */
+.message-ex {
+    width: clamp(20rem, 55%, 34rem);
+    border: 0.05em solid var(--border-color);
+    background-color: var(--bg);
+    padding: 1em;
+}
+
+.message-pos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-bottom: 0.2rem dashed #FFEB3B;
+    padding: 0.5em;
+}
+
+/* Ikoner-----------------------------------------------------------------------------------------------Ikoner-------------------------------- */
+
+.loading-icon {
+    animation: spin 3s linear infinite;
+    display: inline-block;
+    font-size: 2rem;
+    color: var(--color-primary);
+}
+
+#icon-accent {
+    color: var(--color-primary-hover);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* Div med icon i meddelandetuan */
+
+#icon-pos {
+    color: #FFEB3B;
+    font-size: 2.5rem;
+    font-weight: bolder;
+    align-content: flex-start;
+}
+
+.message-neg {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-bottom: 0.2rem solid #FF5722;
+    padding: 0.5em;
+}
+
+/* Div med text i meddelanderutan */
+.message-text {
+    margin-right: 1.2rem;
+}
+
+#icon-ex {
+    font-size: 1.8rem;
+}
+
+
+#icon-neg {
+    font-size: 2.5rem;
+    align-content: flex-start;
+}
+
+
+
+/*BILDER ------------------------------------------------------------------------------------------Bildrelaterat--------------------------------------*/
+#palette img {
+    width: 60%;
+    height: auto;
+    border: 0.2em solid var(--color-border);
+}
+
+.img-color {
+    text-align: center;
+}
+
+img #small-palette {
+    border: 0.2em solid var(--color-border);
+}

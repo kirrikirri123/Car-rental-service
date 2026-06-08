@@ -644,7 +644,7 @@ function userBookingsPage() {
 }
 
 function admVehiclesPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon - sortera och uppdatera</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon</h2> <p>Sortera, radera och uppdatera.</p></section>
     <div class="panel-sort btn-spacer"> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga fordon</button>
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
@@ -749,7 +749,7 @@ function admCreateVehiclesPage() {
 }
 
 function admBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"> Aktivabokningar - filtrera och avsluta bokningar.</section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Aktiva bokningar </h2> <p>Filtrera, redigera och avsluta bokningar.</p></section>
         <div class="panel-sort btn-spacer">
         <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button>
          </div>
@@ -809,7 +809,7 @@ function admBookingsPage() {
 
 
 function admAllBookingsPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><H2> Alla nuvarande och tidigare bokningar - All info. </H2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2> Alla bokningar</h2><p> Aktiva och historiska. </p></section>
     <div class="panel-sort btn-spacer">
     <button type="button" class=" form-margin std-btn pos-btn"id="activeBookings-sortbtn" >Visa aktiva bokningar</button>
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
@@ -869,7 +869,7 @@ function admAllBookingsPage() {
 }
 
 function admUsersPage() {
-    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Kundinformation - Funktioner att uppdatera och radera.</h2></section>
+    mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Kundinformation </h2><p>Funktioner att uppdatera och radera.</p></section>
     <div class="panel-sort btn-spacer">
     <button type="button" class=" form-margin std-btn pos-btn" id="reset-sortbtn"> Återställ <i class="fa-solid fa-filter-circle-xmark"></i> </button> 
     </div>
@@ -939,7 +939,7 @@ function admUsersPage() {
 
 function admStyleguidePage() {
     mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section>
-    <p>I Wigellkoncernens styleguide återfinns allt du kan behöva veta vid vidare utveckling av denna eller koncernens bolag.</p>
+    <p>I Wigellkoncernens styleguide återfinns allt du kan behöva veta vid utveckling av denna eller koncernbolagens webbplatser.</p>
     <br><h5 id="style-head">Öppna styleguiden i en ny flik:</h5>
     <button aria-labelledby="style-head" class="std-btn pos-btn"id="styleguide-btn">STYLEGUIDE</button>
     </div>`;
@@ -955,7 +955,6 @@ function openStyleGuide(){
 }
 
 /* UPDATERINGS FUNKTIONER */
-
 
 function deleteUserDialog(user) {
     const dialog = document.querySelector('#update-dialog');

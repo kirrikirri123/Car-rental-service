@@ -54,8 +54,8 @@
 
  .main-content {
      grid-area: content;
-     background-color: var(--color-surface); 
-     /* height: 70vh; */
+    
+    
  }
  .content-page{
     display: flex;
@@ -99,12 +99,10 @@
  /* Navigering----------------------------------------------------------------------Navigering------------------------- */
  .desktop-menu {
      grid-area: sidebar;
-     font-family: "Racing Sans One", sans-serif;
+     font-family: var(--small-headlines);
      background-color: var(--color-primary);
      display: flex;
-     flex-direction: column;
-   /*   height:70vh; */
-     
+     flex-direction: column;     
  }
  #hamburger-icon {
      display: none;
