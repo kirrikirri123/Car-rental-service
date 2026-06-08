@@ -6,7 +6,7 @@
 
  /* * { -webkit-tap-highlight-color: transparent; } */
 
- 
+
 
  /* Mörkt tema */
  :root {
@@ -35,23 +35,23 @@
      --big-headlines: "BBH Bartle", sans-serif;
      --small-headlines: "Racing Sans One", sans-serif;
      /* AAA — Ljust tema */
- /* Bakgrund */
- --color-bg-l: #D0C5BA;
- -color-surface-l: #302822;
+     /* Bakgrund */
+     --color-bg-l: #D0C5BA;
+     -color-surface-l: #302822;
 
- /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
- --color-text-primary-l: #181717;
- --color-text-secondary-l: #302822;
+     /* Text — båda uppfyller AAA (7:1) mot #D0C5BA */
+     --color-text-primary-l: #181717;
+     --color-text-secondary-l: #302822;
 
-/* Primär — AAA för stor text (≥18px), AA annars */
- --color-primary-l: #712B0D;
- 
- /* Dekoration — INTE för text */
- --color-accent-l: #944017;
- --color-accent-warm-l: #AC5327;
+     /* Primär — AAA för stor text (≥18px), AA annars */
+     --color-primary-l: #712B0D;
 
- /* Kanter */
- --color-border-l: #444347;
+     /* Dekoration — INTE för text */
+     --color-accent-l: #944017;
+     --color-accent-warm-l: #AC5327;
+
+     /* Kanter */
+     --color-border-l: #444347;
 
  }
 
@@ -86,45 +86,47 @@
      color: var(--color-text);
  }
 
- #hero{ 
-    display: flex;
-    justify-content: center;
-    background-image: url("/img/images/hero-bg.jpg");
-    background-size:cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    border-bottom: 0.1rem solid rgba(208, 197, 186, 0.59);
-    border-top:0.1rem solid rgba(208, 197, 186, 0.59);
-    padding-bottom:3em;;
-    padding-top: 3em;
+ #hero {
+     display: flex;
+     justify-content: center;
+     background-image: url("/img/images/hero-bg.jpg");
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: 50%;
+     border-bottom: 0.1rem solid rgba(208, 197, 186, 0.59);
+     border-top: 0.1rem solid rgba(208, 197, 186, 0.59);
+     padding-bottom: 3em;
+     ;
+     padding-top: 3em;
  }
 
 
- .hero-front{
-    font-family: var(--big-headlines) ;
-    background-color: rgba(208, 197, 186, 0.59);
+ .hero-front {
+     font-family: var(--big-headlines);
+     background-color: rgba(208, 197, 186, 0.59);
      width: fit-content;
      letter-spacing: 0.2em;
-     font-size:clamp(2rem, 7.7vw, 7rem);
+     font-size: clamp(2rem, 7.7vw, 7rem);
      color: var(--color-text-primary-l);
-     padding:0.5em;
+     padding: 0.5em;
      padding-left: 1.5em;
      padding-right: 1.5em;
  }
 
- #hero-headline-ser{
-    display: flex;
-    justify-content:flex-start;
-    }
-
- #hero-headline-sec{
+ #hero-headline-ser {
      display: flex;
-    justify-content: center;
+     justify-content: flex-start;
  }
- #hero-headline-sp{
-    display: flex;
-    justify-content: flex-end;
-     }
+
+ #hero-headline-sec {
+     display: flex;
+     justify-content: center;
+ }
+
+ #hero-headline-sp {
+     display: flex;
+     justify-content: flex-end;
+ }
 
 
 
@@ -164,11 +166,12 @@
      text-transform: uppercase;
      text-align: center;
  }
- #rec-headline{
-    font-family:var(--small-headlines);
-    letter-spacing: 0.2em;
-    padding:0.2em;
-    margin-top:1.5rem;
+
+ #rec-headline {
+     font-family: var(--small-headlines);
+     letter-spacing: 0.2em;
+     padding: 0.2em;
+     margin-top: 1.5rem;
  }
 
  header {
@@ -191,15 +194,13 @@
      text-align: end;
  }
 
- header h2 {
-     align-self: flex-end;
- }
 
  .main-content {
      grid-area: content;
      display: flex;
      flex-direction: column;
-     background-color: var(--color-surface);
+     background-color: var(--color-bg);
+     border-bottom: 0.15rem solid var(--color-border);
  }
 
  .main-content div {
@@ -211,7 +212,8 @@
      padding: var(--padding);
 
  }
-/* containers-----------------------------------------------------------------------------------containers-------------------- */
+
+ /* containers-----------------------------------------------------------------------------------containers-------------------- */
  .content-page {
      display: flex;
      flex-direction: column;
@@ -222,6 +224,7 @@
      padding: var(--padding);
 
  }
+
  /* footer ----------------------------------------------------------------------------------footer.------------------------- */
 
  footer {
@@ -240,7 +243,8 @@
  footer span {
      padding: 0.3rem;
  }
-/* ikoner och animationer--------------------------------------------------------------------ikoner och animationer */
+
+ /* ikoner och animationer--------------------------------------------------------------------ikoner och animationer */
  #w-icon {
      justify-self: flex-end;
  }
@@ -312,7 +316,7 @@
  .mobile-menu {
      display: none;
      grid-area: nav;
-     font-family: "Racing Sans One", sans-serif;
+     font-family: var(--small-headlines);
      background-color: var(--color-primary);
      display: flex;
      flex-direction: column;
@@ -388,11 +392,11 @@
  }
 
  .big-dialog {
-    position: fixed;
-    top: 25%;
-    left: 27%;
-    translate: -25% -25%;
-  } 
+     position: fixed;
+     top: 25%;
+     left: 27%;
+     translate: -25% -25%;
+ }
 
  #view-dialog p {
      text-align: left;
@@ -482,12 +486,10 @@
 
  /* Formulärets yttreruta */
  form {
-    width: clamp(27rem,55vw);
-     /* max-width: 27rem; */
+     width: clamp(27rem, 55vw);
      height: auto;
      padding: 2rem;
      font-size: 1rem;
-     /* border:0.5px solid var(--color-dec-accent); */
  }
 
  .input-fields {
@@ -520,15 +522,15 @@
  }
 
  /* wrapper för att få info + knapp på samma rad. */
- .form-radio{
-    display:flex;
-    flex-direction: row;
-    justify-items: center;
+ .form-radio {
+     display: flex;
+     flex-direction: row;
+     justify-items: center;
  }
 
 
  /*Tabeller--------------------------------------------------------------Tabeller------------------------------------ */
- .table {
+ table {
      flex-wrap: wrap;
      overflow: auto;
  }
@@ -546,13 +548,12 @@
      background-color: var(--color-bg-l);
      border: 2.5px solid var(--color-dec-accent);
      font-size: clamp(20px, 1.1rem, 30px);
-     color: var(--color-text-primary-l);    
+     color: var(--color-text-primary-l);
      padding: 1em;
      cursor: pointer;
  }
 
- .adm-table,
- td {
+ .adm-table td {
      border: 0.5px solid var(--color-dec-accent);
      border-collapse: collapse;
      padding-inline: 0.5rem;
@@ -566,9 +567,9 @@
  }
 
  /*Kort/Sektioner--------------------------------------------------------------Kort/Sektioner------------------------------------ */
- #user-info-wrapper article{
-    padding:2em;
-}
+ #user-info-wrapper article {
+     padding: 2em;
+ }
 
  .panel-wrapper {
      display: flex;
@@ -578,7 +579,7 @@
 
  .panel {
      border: 0.13rem solid var(--color-dec-accent);
-    margin: 0.5em;
+     margin: 0.5em;
      padding: 1em;
      display: flex;
      flex-direction: column;
@@ -586,8 +587,9 @@
      background-color: var(--color-surface-raised);
      color: var(--color-text);
  }
- .panel:hover{
-    border: 0.2rem solid var(--color-dec-accent);
+
+ .panel:hover {
+     border: 0.2rem solid var(--color-dec-accent);
  }
 
  .panel-important {
@@ -610,9 +612,10 @@
      border: 0.1rem solid var(--color-border);
      border-radius: 1em;
  }
- .panel-car ol{
-    text-align: start;
-    min-width: 255px;
+
+ .panel-car ol {
+     text-align: start;
+     min-width: 255px;
  }
 
  .car-booked {
@@ -624,18 +627,21 @@
      background-color: var(--color-text);
      font-size: 1.3rem;
  }
- .panel-advert{
-  border-radius: 0.5em;
-  text-align: center;
+
+ .panel-advert {
+     border-radius: 0.5em;
+     text-align: center;
  }
+
  .panel-advert i {
-    align-self: flex-end;
-    font-size: 2rem;
+     align-self: flex-end;
+     font-size: 2rem;
  }
-  
-  .panel-advert:hover{
-    border: 0.2rem solid var(--color-text);
+
+ .panel-advert:hover {
+     border: 0.2rem solid var(--color-text);
  }
+
  /* -----Containers  -------------------------------------------------------------Containers------------------------*/
 
  /* ---- Tydliga vyer  ----------------------------------------------------------vy-struktur------------------------*/
@@ -655,9 +661,9 @@
      display: contents;
  }
 
-.user{
-    display: none;
-}
+ .user {
+     display: none;
+ }
 
  /* ----------MediaQuerys----------------------------------------------------MediaQuerys--------------------------- */
  @media (orientation: landscape) {
