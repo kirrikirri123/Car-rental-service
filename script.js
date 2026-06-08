@@ -12,7 +12,6 @@ const escapeBtn = document.querySelector("#escape-btn");
 const newUserBtn = document.querySelector("#new-user-btn");
 
 const mql = window.matchMedia("(min-width: 768px)");
-/* mql.addEventListener("change", () => displayData()); */
 
 /* Spara valet om lediga bilar? */
 /* const userSortChoices = {
@@ -118,12 +117,10 @@ function sortTableList(datalist, listName, sortValue) {
 function changeDirectionIcon(valueDirection, sortValue) {
     const icon = document.querySelector(`#${sortValue}-sortbtn span`);
     icon.innerHTML = "";
-    dir = valueDirection === "asc" ? "desc" : "asc";
+    const dir = valueDirection === "asc" ? "desc" : "asc";
     if (dir === "asc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-short-wide " title="Stigande / A-Ö"></i>`; }
     if (dir === "desc") { icon.innerHTML = `<i class="fa-solid fa-arrow-down-wide-short " title="Fallande / Ö-A"></i>`; }
 }
-
-
 
 function carType(carType) {
     switch (carType.toLowerCase()) {
@@ -158,7 +155,7 @@ function updateInfoDialog(message, i) {
 /* Logga in -----------------------------------------------------------------------------Logga in------------------ */
 function showLoginDialog() {
     if (sessionStorage.getItem("principal") !== null) {
-        updateInfoDialog("Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen.");
+        updateInfoDialog('Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen', `<i class="fa-solid fa-car-burst icon-car" alt="Symbol av en bil som tippar."></i>`);
         loginDialog.close();
     } else {
         loginDialog.showModal();
@@ -189,24 +186,26 @@ async function login() {
         updateInfoDialog(`Välkommen ${data.username}! <br> Du är inloggad.`, `<i class="fa-solid fa-user-check icon-larger"></i>`)
         checkRole();
         fetchNSaveUserById();
+        clearInputFields();
 
     } catch (error) {
         if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
+            return;
         }
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
 }
 
 function clearInputFields() {
-    let inputFields = querySelectAll()
-    /* Ta bort data från inloggningsfälten */
-
+    let inputFields = document.querySelectorAll('input');
+    inputFields.forEach(field => field.value = "");
 }
 /* Logga ut -----------------------------------------------------------------------------Logga ut------------------ */
 
 function logout() {
     sessionStorage.clear();
+    clearInputFields();
     showGuestMenu();
     changeMainContent("home");
     updateInfoDialog('Utloggad. Välkommen åter!', `<i class="fa-solid fa-truck-fast icon-swoosh"></i>`);
@@ -261,7 +260,6 @@ function showAdminMenu() {
     navUser.style.display = "none";
 }
 
-
 function checkRole() {
     const principal = JSON.parse(sessionStorage.getItem("principal"));
     if (principal === null) {
@@ -277,7 +275,7 @@ function checkRole() {
 function isAdmin() {
     const principal = JSON.parse(sessionStorage.getItem("user_principal"));
     if (principal.role === "ROLE_ADMIN") { return true; }
-    else if (!principal.role === "ROLE_ADMIN") {
+    else {
         return false;
     }
 }
@@ -393,7 +391,7 @@ function changeMainContent(page) {
             break;
 
         case "adm-new-vehicles":
-            admChangeVehiclesPage();
+            admCreateVehiclesPage();
             break;
 
         case "adm-bookings":
@@ -411,8 +409,7 @@ function changeMainContent(page) {
         case "adm-new-user":
             newUsersPage();
             const selectRole = mainContent.querySelector('#selectRole');
-            const principal = JSON.parse(sessionStorage.getItem('principal'));
-            if (principal.isAdmin) { selectRole.classList.remove('user'); }
+            if (isAdmin()) { selectRole.classList.remove('user'); }
             break;
 
         case "adm-styleguide":
@@ -644,12 +641,9 @@ function userBookingsPage() {
     mainContent.querySelector("#up-btn").addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
-
 }
 
 function admVehiclesPage() {
-    mql.addEventListener("change", () => displayData());/* funkar ej */
-
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2>Fordon - sortera och uppdatera</h2></section>
     <div class="panel-sort btn-spacer"> 
     <button type="button" class=" form-margin std-btn pos-btn" id="availableCars-sortbtn">Visa lediga fordon</button>
@@ -710,7 +704,7 @@ function admVehiclesPage() {
 
 
 
-function admChangeVehiclesPage() {
+function admCreateVehiclesPage() {
     mainContent.innerHTML = `<div class="content-page"><section class="headline-contentpage"><h2></h2></section>
     <div class="panel">            
     <h3>Addera nytt fordon</h3>
@@ -936,7 +930,7 @@ function admUsersPage() {
         const sortedUsers = sortTableList(dataStore.users, "users", "username");
         displayUsersData(sortedUsers);
     });
-         
+
     mainContent.querySelector("#up-btn").addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -944,7 +938,20 @@ function admUsersPage() {
 }
 
 function admStyleguidePage() {
-    mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section>
+    <p>I Wigellkoncernens styleguide återfinns allt du kan behöva veta vid vidare utveckling av denna eller koncernens bolag.</p>
+    <br><h5 id="style-head">Öppna styleguiden i en ny flik:</h5>
+    <button aria-labelledby="style-head" class="std-btn pos-btn"id="styleguide-btn">STYLEGUIDE</button>
+    </div>`;
+
+    document.querySelector("#styleguide-btn").addEventListener("click",() =>{
+        openStyleGuide();
+    });
+}
+
+function openStyleGuide(){
+    window.open('./styleguide/index.html','_blank');
+    updateInfoDialog(`Öppnat styleguide i nytt fönster`, `<i class="fa-solid fa-exclamation"></i>`);
 }
 
 /* UPDATERINGS FUNKTIONER */
@@ -1143,9 +1150,8 @@ async function admBookingDialog(car) {
                     <button id="exit-btn" type="button" class="std-btn neg-btn">Avbryt</button></span>
             </form>
         </div>`
-    const principal = JSON.parse(sessionStorage.getItem('principal'));
     const select = dialog.querySelector('#choose-user');
-    if (principal.isAdmin === true) {
+    if (isAdmin() === true) {
         const users = await fetchUsersForList();
         const optionsOfUsers = users.map(user =>
             `<option value="${user.id}">${user.firstName} ${user.lastName} </option>`
@@ -1154,7 +1160,7 @@ async function admBookingDialog(car) {
         select.innerHTML = `<option value="">Välj kund</option>${optionsOfUsers}`;
 
 
-    } if (principal.isAdmin === false) {
+    } if (isAdmin() === false) {
         const user = JSON.parse(sessionStorage.getItem('user_principal'));
         select.innerHTML = `<option value="">Välj kund</option>
         <option value="${user.id}">${user.firstName} ${user.lastName} </option>`;
@@ -1243,7 +1249,7 @@ async function displayUpdateBookingDialog(booking) {
         <p>
         <b>Tillverkare:</b><br> ${car.name}<br>
         <b>Modell:</b><br> ${car.model}<br>
-        <b>Pris ber dygn:</b><br> ${car.price} SEK <br>
+        <b>Pris per dygn:</b><br> ${car.price} SEK <br>
         <b>Hyrestid:</b><br> ${booking.fromDate} - ${booking.toDate}<br>
         <b>Status:</b><br> ${returnerd}.<br>
         </p></div>
@@ -1417,7 +1423,7 @@ function displayCarsGallery(cars) {
     galleryDiv.innerHTML = "";
 
     if (cars.length === 0) {
-        carDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga fordon att visa. </h3></div>`;
+        galleryDiv.innerHTML = `<div class="panel"><h3> Tyvärr fanns inga fordon att visa. </h3></div>`;
         return;
     }
     cars.forEach(car => {
@@ -1717,7 +1723,7 @@ function displayUsersTable(users) {
 
 function displayActiveBookingsData(bookings) {
     if (mql.matches) {
-        displayActiveBookingsTable(bookings);   // Data
+        displayActiveBookingsTable(bookings);   // Dator
     } else {
         displayActiveBookingsGallery(bookings);   // Mindre skärm
     }
@@ -1762,7 +1768,7 @@ function displayActiveBookingsGallery(bookings) {
 
 
 function displayActiveBookingsTable(bookings) {
-    const tbody = document.querySelector('#activeBookingsTable tbody');
+    const tbody = document.querySelector('#active-bookings-table tbody');
     tbody.innerHTML = "";
 
     bookings.forEach(booking => {
@@ -1853,7 +1859,7 @@ async function displayMyBookings(bookings) {
     const bookDiv = document.querySelector(".bookings-container");
     bookDiv.innerHTML = "";
     if (bookings.length === 0) {
-        carDiv.innerHTML = `<div class="panel"><h3> Inga aktiva bokningar idag! </h3></div>`;
+        Div.innerHTML = `<div class="panel"><h3> Inga aktiva bokningar idag! </h3></div>`;
         return;
     }
     for (const booking of bookings) {
@@ -1882,7 +1888,7 @@ async function displayMyBookings(bookings) {
 
 async function displayBookingsByUserId(id) {
     const bookings = await fetchBookingByUserId(id);
-    const bookingsView = document.querySelector('#usersBookingView');
+    const bookingsView = document.querySelector('#userBookingsView');
     const wrapper = createPanelWrapper();
     for (const booking of bookings) {
         const car = await fetchCarById(booking.carId);
@@ -1953,17 +1959,14 @@ function getLogInInfo() {
         pswrd.setAttribute("aria-invalid", true);
         usern.setAttribute("aria-invalid", true);
         throw new ValidationError(`Hoppsan! <br> Ange inloggningsinformation för att loggas in.`);
-        return;
     }
     if (!usern.value) {
         usern.setAttribute("aria-invalid", true);
         throw new ValidationError(`Glömde du användarnamnet? Tips! Testa din mailadress.`);
-        return;
     }
     if (!pswrd.value) {
         pswrd.setAttribute("aria-invalid", true);
         throw new ValidationError(`Lösenordsfält lämnades tomt. Prova igen.`);
-        return;
     }
 
     const userInfo = {
@@ -1974,24 +1977,22 @@ function getLogInInfo() {
 }
 
 function getNewUserInfo() {
-    const principal = JSON.parse(sessionStorage.getItem('principal'));
     const fname = document.querySelector('#fname').value;
     const lname = document.querySelector(`form #lname`).value;
     const phoneNr = document.querySelector("form #phoneNr").value;
     const email = document.querySelector("form #email").value;
     const password = document.querySelector("form #password").value;
-    const role = "ROLE_USER";
+    let role = "ROLE_USER";
 
     if (!fname || !lname || !phoneNr || !email || !password) {
         throw new ValidationError(`Tomma fält ! Alla fält är obligatoriska för registrering`);
     }
-    if (principal === !null) {
-        if (principal.isAdmin) {
-            const roleInput = document.querySelector("form #role");
-            if (!roleInput.value) { role = "ROLE_USER" }
-        }
-    };
-
+    
+/*     if (isAdmin()) {
+        let roleInput = document.querySelector(".inputfields #role");
+        console.log(roleInput);
+        role = roleInput.value;}
+      */
     const newUser = {
         "firstName": fname,
         "lastName": lname,
@@ -2336,8 +2337,9 @@ async function fetchActiveBookings() {
                 }
             })
         if (!response.ok) {
-            updateInfoDialog(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
-            throw new Error(`Problem vid inladdning. Status: ${response.status}`);
+            console.log("Error in fetching active bookings" + response.status);
+            throw new Error(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
+
         }
 
         const data = await response.json();
@@ -2345,8 +2347,7 @@ async function fetchActiveBookings() {
         displayActiveBookingsData(data);
 
     } catch (error) {
-        console.error('Error:' + error.message, ` `);
-        updateInfoDialog("Fel uppstod: " + error);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i> `);
     }
 }
 
@@ -2578,7 +2579,7 @@ async function deleteBooking(id) {
                 "Authorization": `${credentials}`
             }
         });
-        if (!response.status === 204) {
+        if (response.status !== 204) {
             throw new Error(`Något gick fel vid hämtning av speciell bokning. Status: ${response.status}`);
         }
         updateInfoDialog(`Bokning raderad!`, `<i aria-hidden="true" class="fa-solid fa-circle-minus" title="Deleted"></i>`);
@@ -2772,10 +2773,12 @@ async function createNewUser() {
             throw new Error(`Fel vid skapade av ny användare.`);
         }
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
+        clearInputFields();
 
     } catch (error) {
         if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
+            return;
         }
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
@@ -2790,7 +2793,7 @@ async function deleteUser(id) {
             method: "DELETE",
             headers: { "Authorization": `${credentials}` }
         });
-        if (!responseUser.status === 204) {
+        if (responseUser.status !== 204) {
             throw new Error(`Fel vid borttagning av ny användare. Status: ${responseUser.status}`);
         }
         updateInfoDialog(`Användare raderad!`, `<i class="fa-solid fa-user-minus"></i>`);
