@@ -155,7 +155,7 @@ function updateInfoDialog(message, i) {
 /* Logga in -----------------------------------------------------------------------------Logga in------------------ */
 function showLoginDialog() {
     if (sessionStorage.getItem("principal") !== null) {
-        updateInfoDialog('Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen',`<i class="fa-solid fa-car-burst icon-car" alt="Symbol av en bil som tippar."></i>`);
+        updateInfoDialog('Hmmm.. du verkar redan vara redan inloggad! Stäng appen och prova igen', `<i class="fa-solid fa-car-burst icon-car" alt="Symbol av en bil som tippar."></i>`);
         loginDialog.close();
     } else {
         loginDialog.showModal();
@@ -191,7 +191,7 @@ async function login() {
     } catch (error) {
         if (error instanceof ValidationError) {
             updateInfoDialog(error.message, error.icon);
-             return;
+            return;
         }
         updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i>`);
     }
@@ -199,12 +199,13 @@ async function login() {
 
 function clearInputFields() {
     let inputFields = document.querySelectorAll('input');
-    inputFields.forEach(field => field.value.innerHTML="");
+    inputFields.forEach(field => field.value = "");
 }
 /* Logga ut -----------------------------------------------------------------------------Logga ut------------------ */
 
 function logout() {
     sessionStorage.clear();
+    clearInputFields();
     showGuestMenu();
     changeMainContent("home");
     updateInfoDialog('Utloggad. Välkommen åter!', `<i class="fa-solid fa-truck-fast icon-swoosh"></i>`);
@@ -274,7 +275,8 @@ function checkRole() {
 function isAdmin() {
     const principal = JSON.parse(sessionStorage.getItem("user_principal"));
     if (principal.role === "ROLE_ADMIN") { return true; }
-    else{ return false;
+    else {
+        return false;
     }
 }
 
@@ -928,7 +930,7 @@ function admUsersPage() {
         const sortedUsers = sortTableList(dataStore.users, "users", "username");
         displayUsersData(sortedUsers);
     });
-         
+
     mainContent.querySelector("#up-btn").addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -936,7 +938,20 @@ function admUsersPage() {
 }
 
 function admStyleguidePage() {
-    mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section></div>`;
+    mainContent.innerHTML = `<div class="content-page"><section class ="headline-contentpage" >Styleguide</section>
+    <p>I Wigellkoncernens styleguide återfinns allt du kan behöva veta vid vidare utveckling av denna eller koncernens bolag.</p>
+    <br><h5 id="style-head">Öppna styleguiden i en ny flik:</h5>
+    <button aria-labelledby="style-head" class="std-btn pos-btn"id="styleguide-btn">STYLEGUIDE</button>
+    </div>`;
+
+    document.querySelector("#styleguide-btn").addEventListener("click",() =>{
+        openStyleGuide();
+    });
+}
+
+function openStyleGuide(){
+    window.open('./styleguide/index.html','_blank');
+    updateInfoDialog(`Öppnat styleguide i nytt fönster`, `<i class="fa-solid fa-exclamation"></i>`);
 }
 
 /* UPDATERINGS FUNKTIONER */
@@ -1967,18 +1982,17 @@ function getNewUserInfo() {
     const phoneNr = document.querySelector("form #phoneNr").value;
     const email = document.querySelector("form #email").value;
     const password = document.querySelector("form #password").value;
-    const role = "ROLE_USER";
+    let role = "ROLE_USER";
 
     if (!fname || !lname || !phoneNr || !email || !password) {
         throw new ValidationError(`Tomma fält ! Alla fält är obligatoriska för registrering`);
     }
-    if (principal !== null) {
-        if (isAdmin()) {
-            let roleInput = document.querySelector("form #role");
-            if (!roleInput.value) { role = "ROLE_USER" }
-        }
-    };
-
+    
+/*     if (isAdmin()) {
+        let roleInput = document.querySelector(".inputfields #role");
+        console.log(roleInput);
+        role = roleInput.value;}
+      */
     const newUser = {
         "firstName": fname,
         "lastName": lname,
@@ -2323,9 +2337,9 @@ async function fetchActiveBookings() {
                 }
             })
         if (!response.ok) {
-                console.log("Error in fetching active bookings"+ response.status);
+            console.log("Error in fetching active bookings" + response.status);
             throw new Error(`Något gick fel vid inladdnig av bokningar. Prova igen senare eller kontakta ansvarig för databasen.`);
-            
+
         }
 
         const data = await response.json();
@@ -2333,7 +2347,7 @@ async function fetchActiveBookings() {
         displayActiveBookingsData(data);
 
     } catch (error) {
-        updateInfoDialog(error.message,`<i class="fa-solid fa-car-burst icon-car"></i> `);
+        updateInfoDialog(error.message, `<i class="fa-solid fa-car-burst icon-car"></i> `);
     }
 }
 
@@ -2759,6 +2773,7 @@ async function createNewUser() {
             throw new Error(`Fel vid skapade av ny användare.`);
         }
         updateInfoDialog(`Registrering lyckades!`, `<i class="fa-solid fa-user-plus"></i>`);
+        clearInputFields();
 
     } catch (error) {
         if (error instanceof ValidationError) {
